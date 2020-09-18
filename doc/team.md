@@ -1,5 +1,5 @@
 Full Name		UTORID		Student ID 	Email				Best way to Contact
 ==============		=========	============	====================		============================
 Joseph Boychuk		boychuk5	1005071468	joseph.boychuk@mail.utoronto.ca	Phone: (647)-636-0931
-
+Case Ploeg        ploegcas  1004379102  case.ploeg@mail.utoronto.ca     Phone: (705)-795-8015
 Discord Invite: https://discord.gg/ffVNf6U
