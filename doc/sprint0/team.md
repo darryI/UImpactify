@@ -4,4 +4,5 @@
 | Case Ploeg        | ploegcas  | 1004379102    | case.ploeg@mail.utoronto.ca       | Phone: (705)-795-8015 |
 | Darryl Huang      | huangd17  | 1003340459    | darrylyl.huang@mail.utoronto.ca   | Phone: (416)-389-0996 |
 | Gordie Levitsky   | levitsk5  | 1004342614    | gordie.levitsky@mail.utoronto.ca  | Phone: (647)-654-9449 |
+| Batuhan Dover     | doverbat  | 1004820517    | batuhan.dover@mail.utoronto.ca  | discord or messenger(out of Canada) |
 Discord Invite: https://discord.gg/ffVNf6U
