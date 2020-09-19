@@ -6,5 +6,5 @@
 | Gordie Levitsky   | levitsk5  | 1004342614    | gordie.levitsky@mail.utoronto.ca  | Phone: (647)-654-9449 |
 | Batuhan Dover     | doverbat  | 1004820517    | batuhan.dover@mail.utoronto.ca  | discord or messenger (out of Canada) |
 | Obaida Saleh      | salehoba  | 1005036104    | obaida.saleh@mail.utoronto.ca     | Phone: (647-667-3471) |
-| Zhaohang Yan      | yanzhaoh  | 1004738518    | zhaohang.yan@mail.utoronto.ca     | Phone: discord or messenger (out of Canada) |
+| Zhaohang Yan      | yanzhaoh  | 1004738518    | zhaohang.yan@mail.utoronto.ca     | discord or messenger (out of Canada) |
 Discord Invite: https://discord.gg/ffVNf6U
