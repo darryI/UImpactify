@@ -1,7 +1,7 @@
 # Definition of Done
 
 1. Unit testing is complete (written + passed)
-2. Code reviewing is complete (preferably by 2 people)
+2. Code reviewing is complete (preferably by 1 person)
 3. Acceptance criteria have been met
 4. Functional tests passed
 5. Non-functional requirements met
