@@ -55,7 +55,7 @@ To build an e-learning platform providing credible and relevant courses that tea
 	4. Zachary is able to choose monetization options, including providing free content
 	   through the Giving Garden
 	   
-	5. Zachary interacts with his students and changes content based on feedback
+	5. Zachary interacts with his students and changes content based on feedback and analytics
 
 	6. Through UImpactify Zachary recommends next steps to his students
 
