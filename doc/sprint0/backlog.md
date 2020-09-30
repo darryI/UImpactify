@@ -9,6 +9,7 @@
 
 -   Given that an educator is signed in to U Impactify, when I create a course, then that course should become available to anyone who wishes to take it
 -   When creating the course, instructors should be able to create an intro video
+---
 
 #### Add ability to log in to system
 **User Story:**
@@ -20,7 +21,7 @@ As a user (Zachary), I want to use my credentials to enter into the system and u
 -   A user should have unique identifiers and passwords to log in
 -   A user's role (Impact Consultant, Enthusiast, Organization) should be associated with their unique identifier
 -   A user's role will affect how they are allowed to use the system upon logging in
-
+---
 #### Add ability to take courses
 **User Story:**
 
@@ -29,7 +30,7 @@ As a student (Jessica), I want to be able to take a course on U Impactify after 
 **Acceptance Criteria:**
 
 - Given that I am logged in to U Impactify as a student, when I pay for a course and take that course, I should be able to watch the related videos or engage with whatever course content is available to learn the expected skills.
-
+---
 #### Ability to sign up for U Impactify
 **User Story:**
 
@@ -41,7 +42,7 @@ As a user, I want to be able to create an account so that I can log in to access
 -   Users can specify their relevant personal information
 -   Users can provide relevant payment information for courses
 -   The account should be stored in the database so that the user can log in after sign up
-
+---
 #### Add the ability to delete an account
 **User Story:**
 
@@ -50,10 +51,10 @@ As a Student (Jessica), I want the ability to delete my account from the applica
 **Acceptance Criteria:**
 
 -   Jessica should be able to delete her account, removing all data related to her.
-
+---
 #### Add new quizzes and assignments as teacher for students
 
-
+---
 #### Add ability to provide feedback on courses
 **User Story:**
 
@@ -63,7 +64,7 @@ As a student (Jessica), I would like to be able to provide feedback to instructo
 
 - Given that I am logged in as a student and have paid for a course, when I take that course, then I should be learn whatever skills that course is teaching.
 
-
+---
 #### Add analytical feedback for course instructors
 **User Story:**
 
@@ -73,7 +74,7 @@ As a course instructor, I want to be able to see some analytics on the students 
 
 -   From a course instructor's profile, the instructor should have access to an analytics page only they can access for their course
 -   This page should display the information "# of clicks on intro video/ landing page vs. # of people signed up"
-
+---
 #### Add endorsing courses as a NPO
 **User Story:**
 
@@ -84,7 +85,7 @@ As a user affiliated with an NPO (Josephine), I want the ability to endorse cour
 -   The user affiliated with an NPO should be able to click a button to endorse a course while browsing it's landing page
 -   Once endorsed, the course should display on their homepage showing that they are endorsed by this specific NPO
 -   On the NPO's profile, all students/users should be able to see a list of endorsed courses by that organization
-
+---
 #### Add ability to send messages through mailbox
 **User Story:**
 
@@ -94,7 +95,7 @@ As a user (Jessica), I want to receive updates on courses I have looked at if th
 
 -   A user will have their own mailbox where they can receive messages
 -   A user will be able to send messages to other users
-
+---
 #### Courses can be used as training within NPO's
 
 **User Story:**
@@ -105,7 +106,7 @@ As a user affiliated with an NPO (Josephine), I want the ability to use a course
 
 -   Students/volunteers registered under Josephine's NPO should be able to see their required training material on their profile and be able to access the specified courses
 -   Josephine should be able to specify whether a course created or affiliated through the organization is training material or not
-
+---
 #### Add organization offerings of volunteer and employment options to Giving Garden
 
 **User Story:**
@@ -117,7 +118,7 @@ As a member of a NPO (Josephine), I want to ask for volunteers and provide volun
 -   Volunteer opportunities should come with a description (setting, required skills, etc.)
 -   Organizations should be able to view and filter applicants
 
-
+---
 #### Add ability for instructors to offer free courses and training in Giving Garden
 **User Story:**
 
@@ -126,7 +127,7 @@ As an instructor (Zachary), I want to be able to give back to the community by m
 **Acceptance Criteria:**
 
 -   Instructors should be able to provide a free pass to students who have requested their course in the Giving Garden
-
+---
 #### Add ability to apply for free courses or volunteer work in Giving Garden
 
 **User Story:**
@@ -138,7 +139,7 @@ As a student (Jessica), I want to browse and take courses that are being offered
 -   Users should be able to see all the courses being offered for free
 -   Students should be able to request a free pass for courses they are interested in but can not afford
 -   Users should be able to browse and apply for volunteer opportunities NPOs have posted in the Giving Garden
-
+---
 #### Add the ability to target students with relevant courses
 
 **User Story:**
@@ -149,7 +150,7 @@ As a student, (Jessica) I want to have courses offered to me that I find relevan
 
 -   There is some extra information related to courses that lets users determine more accurately what might interest them
 -   Students should be able to mark courses as relevant or not relevant to them
-
+---
 #### Add the ability to track learning progress
 **User Story:**
 
@@ -159,7 +160,7 @@ As a student, (Jessica) I want to see my progress towards completing specific co
 
 -   There is a level of transparency in courses that tells users how much they have completed and how much is left
 -   The total amount of learning on the app should be displayed somehow
-
+---
 #### Add the ability to contextualize learning with opportunities and trends
 **User Story:**
 
@@ -170,7 +171,7 @@ As a student, (Jessica) I want to be able to understand what opportunities have 
 -   Positions that would benefit from the information in certain courses should become more accessible to students after they have completed parts of these courses in terms of visibility in other parts of the app
 -   Users should be made aware of positions that typically open up for other students who have taken a course that the user has just completed
 -   There should be a way to tell what courses many people are taking or what types of positions seem to be accumulating in high quantity
-
+---
 #### Add the ability to automatically grade tests and quizzes
 
 **User Story:**
@@ -181,7 +182,7 @@ As an Instructor (Zachary), I want the ability to grade a large number of studen
 
 -   Zachary should be able to submit his answers to a quiz or test to be used as an answer sheet for automatic grading
 -   A student taking Zachary's course should be able to submit their answers to a quiz or test and receive instant grading
-
+---
 #### Add non-English support
 **User Story:**
 
@@ -192,7 +193,8 @@ As a Student (Jessica), I want the ability to search for courses depending on la
 -   Instructors should be able to flag their course as whatever language is being primarily used
 -   Students should be able to search for courses depending on language preferences
 -   A non-English user should be able to traverse the website
-
+---
 #### Add average quiz/assignment results so the students can compare themselves.
-
+---
 #### Add ability for teacher to view class results
+---
