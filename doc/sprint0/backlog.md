@@ -144,7 +144,7 @@ As a student (Jessica), I want to browse and take courses that are being offered
 
 **User Story:**
 
-As a student, (Jessica) I want to have courses offered to me that I find relevant based on my goals and previous learning experiences in the app itself.
+As a student, (Jessica) I want to have courses offered to me that I find relevant based on my goals and previous learning experiences in the app itself so that I can continue to build my skills in a way that follows a logical flow.
 
 **Acceptance Criteria:**
 
@@ -154,7 +154,7 @@ As a student, (Jessica) I want to have courses offered to me that I find relevan
 #### Add the ability to track learning progress
 **User Story:**
 
-As a student, (Jessica) I want to see my progress towards completing specific courses as well as how much I've learned on the app overall.
+As a student, (Jessica) I want to see my progress towards completing specific courses as well as how much I've learned on the app overall so that I can appreciate how much the app has helped me and try to motivate myself to make an impact or contribute my skills back to the app.
 
 **Acceptance criteria:**
 
@@ -164,7 +164,7 @@ As a student, (Jessica) I want to see my progress towards completing specific co
 #### Add the ability to contextualize learning with opportunities and trends
 **User Story:**
 
-As a student, (Jessica) I want to be able to understand what opportunities have opened up for me as I am completing courses as well as what skills are in demand.
+As a student, (Jessica) I want to be able to understand what opportunities have opened up for me as I am completing courses as well as what skills are in demand so that I can ultimately secure positions in the non-profit sector.
 
 **Acceptance Criteria:**
 
