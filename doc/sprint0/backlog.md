@@ -52,9 +52,7 @@ As a Student (Jessica), I want the ability to delete my account from the applica
 
 -   Jessica should be able to delete her account, removing all data related to her.
 ---
-#### Add new quizzes and assignments as teacher for students
 
----
 #### Add ability to provide feedback on courses
 **User Story:**
 
@@ -194,7 +192,30 @@ As a Student (Jessica), I want the ability to search for courses depending on la
 -   Students should be able to search for courses depending on language preferences
 -   A non-English user should be able to traverse the website
 ---
-#### Add average quiz/assignment results so the students can compare themselves.
+#### Add average quiz/assignment results so the students can compare themselves
+**User Story:**
+
+As a Student (Jessica), I want the ability to view average results of the tests that I have taken. This will allow me to compare my grade to the average of the class, and thus will give me feedback on whether I need to study more or not.
+
+**Acceptance Criteria:**
+
+- User should be able to see a graph (just like crowdmark's) of mark distribution with their mark and the average of whole class highlighted.
 ---
 #### Add ability for teacher to view class results
+**User Story:**
+As an instructor (Zachary), I want the ability to view marks of the students in a graph. This way I can see how high or low the marks are and this way I can change the overall difficulty of the material or help the students who are underperforming.
+
+**Acceptance Criteria:**
+- Inatructors should be able to see a graph (just like crowdmark's) of mark distribution with their mark and the average of whole class highlighted.
+- There should be a way to tell how many student are in which mark interval.
+- There should be a way to view the student names in the selected mark interval.
+---
+#### Add new quizzes and assignments as teacher for students
+**User Story:**
+
+As an Instructor (Zachary), I want the ability to put new quizzes or tests or assignments on the platform. This way students can test themselves and I can mark these to see which material the students are having problems with.
+
+**Acceptance Criteria:**
+- Instructors should be able to upload pdfs as quiz/test/assignment which will be visible for students taking that course.
+
 ---
