@@ -3,6 +3,9 @@
 # IDE Specific files:
 .vscode/
 
+# architecture diagram dependencies
+/doc/sprint1/venv
+
 # Frontend ignores:
 
 # dependencies
