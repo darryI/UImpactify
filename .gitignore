@@ -3,6 +3,8 @@
 # IDE Specific files:
 .vscode/
 .idea/
+**/__pycache__/
+
 
 # Frontend ignores:
 
