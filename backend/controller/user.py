@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # project resources
 from models.users import Users
-from api.errors import forbidden
+from controller.errors import forbidden
 
 
 class UsersApi(Resource):
@@ -106,7 +106,7 @@ class UserApi(Resource):
         authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            data = request.get_json()
+            data = request.get_json(force=True)
             put_user = Users.objects(id=user_id).update(**data)
             output = {'id': str(put_user.id)}
             return jsonify({'result': output})
@@ -125,7 +125,7 @@ class UserApi(Resource):
         authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            data = request.get_json()
+            data = request.get_json(force=True)
             post_user = Users(**data).save()
             output = {'id': str(post_user.id)}
             return jsonify({'result': output})

@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # project resources
 from models.meals import Meals
-from api.errors import forbidden
+from controller.errors import forbidden
 
 
 class MealsApi(Resource):
@@ -45,10 +45,10 @@ class MealsApi(Resource):
 
         :return: JSON object
         """
-        authorized: bool = Meals.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = True #bool = Meals.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            data = request.get_json()
+            data = request.get_json(force=True)
             post_user = Meals(**data).save()
             output = {'id': str(post_user.id)}
             return jsonify({'result': output})
@@ -92,7 +92,7 @@ class MealApi(Resource):
 
         :return: JSON object
         """
-        data = request.get_json()
+        data = request.get_json(force=True)
         put_user = Meals.objects(id=meal_id).update(**data)
         return jsonify({'result': put_user})
 

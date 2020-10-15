@@ -5,7 +5,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 
 # project resources
 from models.users import Users
-from api.errors import unauthorized
+from controller.errors import unauthorized
 
 # external packages
 import datetime

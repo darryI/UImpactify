@@ -2,9 +2,9 @@
 from flask_restful import Api
 
 # project resources
-from api.authentication import SignUpApi, LoginApi
-from api.user import UsersApi, UserApi
-from api.meal import MealsApi, MealApi
+from controller.authentication import SignUpApi, LoginApi
+from controller.user import UsersApi, UserApi
+from controller.meal import MealsApi, MealApi
 
 
 def create_routes(api: Api):
