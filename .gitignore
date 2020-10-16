@@ -7,6 +7,7 @@
 /doc/sprint1/venv
 
 # Frontend ignores:
+node_modules/
 
 # dependencies
 /frontend/node_modules

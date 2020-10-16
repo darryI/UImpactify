@@ -1,0 +1,9 @@
+.SignUp-colour {
+    background: #32CD32;
+}
+
+input[type="checkbox"]{
+    width:20px;
+    float:left;
+    margin-right:5px;
+}

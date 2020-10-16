@@ -9,18 +9,23 @@ import {
 
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
+import SignUp from './landing/SignUp/SignUp.js'
 
 function App() {
   return (
     <Router>
-      <div>
-        <nav>
+        <div className="header">
+        <img id="logo" src={require('./images/impactify_logo.png')} alt="Logo"/>
+        <nav className="navbar">
           <ul>
-            <li>
+            <li className="navItem float-left">
               <Link to="/">Home</Link>
             </li>
-            <li>
+            <li className="navItem float-left">
               <Link to="/about">About</Link>
+            </li>
+            <li className="navItem float-left">
+                <Link to="/SignUp">SignUp</Link>
             </li>
           </ul>
         </nav>
@@ -29,6 +34,9 @@ function App() {
         <Switch>
           <Route path="/about">
             <About />
+          </Route>
+          <Route path="/SignUp">
+            <SignUp />
           </Route>
           <Route path="/">
             <Home />
