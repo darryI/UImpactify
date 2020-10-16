@@ -20,12 +20,14 @@ const setup = () => {
 };
 
 test('on startup, api call is made to get courses', async () => {
-  const { container } = setup();
+  
 
   const getFunc = jest.spyOn(API, 'getCourses').mockImplementationOnce(() => {
     return Promise.resolve(jsonCourses);
   })
   
+  const { container } = setup();
+
   await waitForElement(() => container.querySelectorAll('.course-card'))
 
   const courseCards = container.querySelectorAll('.course-card');
