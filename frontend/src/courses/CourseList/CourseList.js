@@ -16,7 +16,7 @@ function CourseList(props) {
   }
   
   const cards = props.courses.map((c, i) => 
-    <button onClick={(e) => props.handleSelection(i)} className={cardClassses(i)}>
+    <button key={c.id} onClick={(e) => props.handleSelection(i)} className={cardClassses(i)}>
       <div className="subtitle">{c.name}</div>
     </button>
   );

@@ -31,7 +31,7 @@ function CourseInfo(props) {
 
   let students = null;
   if (course.students.length != 0) {
-    students = course.students.map((s) => <div>{s}</div>);
+    students = course.students.map((s) => <div key={s}>{s}</div>);
   } else {
     students = <p>No one has enrolled in this course yet!</p>
   }
