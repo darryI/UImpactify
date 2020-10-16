@@ -29,7 +29,6 @@ test('clicking edit should move to form and set form values', () => {
   const { course, setFormValues, setShowForm, getByLabelText } = setup();
  
   const editButton = getByLabelText("edit-button");
-  screen.debug(editButton);
 
   fireEvent.click(editButton);
 

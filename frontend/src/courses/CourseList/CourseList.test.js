@@ -33,7 +33,6 @@ test('the current selected post should have the selected class', () => {
   const { selected, courses, getByText } = setup();
  
   const selectedCourseCard = getByText(courses[selected].name).parentElement;
-  screen.debug(selectedCourseCard);
   expect(selectedCourseCard.classList.contains('selected')).toBe(true);
 });
 
