@@ -5,6 +5,10 @@
 .idea/
 **/__pycache__/
 
+/doc/sprint1/venv/
+
+# Backend ignores:
+/backend/venv/
 
 # Frontend ignores:
 
