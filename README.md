@@ -102,8 +102,15 @@ $ flask run
 ```
 
 To generate test data on the database (currently just creates an admin user)
+
 ```
 $ flask init_db
+```
+
+To test out logging in through the api and making authorized requests (while the dev server is running...)
+
+```
+$ flask login
 ```
 
 ### Adding a new python dependency

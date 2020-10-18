@@ -60,6 +60,31 @@ class UsersApi(Resource):
             return forbidden()
 
 
+    # it makes more sense for the USERS resource to handle the creation of a user, because
+    # USERS resource handles the collection of users as a whole (adding one to the collection)
+
+    # also, for each resource it looks like there's needs to be the same number
+    # of parameters used each time. (post methods don't take in user_id's)
+    @jwt_required
+    def post(self: str) -> Response:
+        """
+        POST response method for creating user.
+        JSON Web Token is required.
+        Authorization is required: Access(admin=true)
+
+        :return: JSON object
+        """
+        authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
+
+        if authorized:
+            data = request.form
+            post_user = Users(**data).save()
+            output = {'id': str(post_user.id)}
+            return jsonify({'result': output})
+        else:
+            return forbidden()
+
+
 class UserApi(Resource):
     """
     Flask-resftul resource for returning db.user collection.
@@ -106,28 +131,9 @@ class UserApi(Resource):
         authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            data = request.get_json(force=True)
+            data = request.form
             put_user = Users.objects(id=user_id).update(**data)
             output = {'id': str(put_user.id)}
-            return jsonify({'result': output})
-        else:
-            return forbidden()
-
-    @jwt_required
-    def post(self) -> Response:
-        """
-        POST response method for creating user.
-        JSON Web Token is required.
-        Authorization is required: Access(admin=true)
-
-        :return: JSON object
-        """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
-
-        if authorized:
-            data = request.get_json(force=True)
-            post_user = Users(**data).save()
-            output = {'id': str(post_user.id)}
             return jsonify({'result': output})
         else:
             return forbidden()

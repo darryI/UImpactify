@@ -35,8 +35,7 @@ class SignUpApi(Resource):
 
         :return: JSON object
         """
-        data = request.get_json(force=True)
-        print(data)
+        data = request.form
         post_user = Users(**data)
         post_user.save()
         output = {'id': str(post_user.id)}
@@ -67,7 +66,16 @@ class LoginApi(Resource):
 
         :return: JSON object
         """
-        data = request.get_json(force=True)
+
+        # apparently using request.get_json() is pretty error prone,
+        # a better way to parse parameters is to use request.form for
+        # post requests, and request.args for get requests
+
+        # https://stackoverflow.com/questions/51807114/flask-bad-request-400
+        # https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request.args
+        # https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request.form
+
+        data = request.form
         user = Users.objects.get(email=data.get('email'))
         auth_success = user.check_pw_hash(data.get('password'))
         if not auth_success:

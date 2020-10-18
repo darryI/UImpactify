@@ -11,6 +11,8 @@ from uimpactify.models.users import Users
 
 from mongoengine import NotUniqueError, ValidationError
 
+ADMIN_USER = {"email": "admin@uimpactify.com", "password": "password"}
+
 # creation of db is handled in __init__.py
 def get_db():
     return g.db
@@ -23,7 +25,7 @@ def close_db(e=None):
 
 def create_admin():
     try:
-        user = Users(name="admin", email="admin@uimpactify.com", password="password", access={"admin": True})
+        user = Users(name="admin", email=ADMIN_USER['email'], password=ADMIN_USER['password'], access={"admin": True})
         user.save()
         print(f"Added: {user.name} | {user.email} | {user.password} | Admin-{user.access.admin is True} => {user.id}")
     except NotUniqueError:

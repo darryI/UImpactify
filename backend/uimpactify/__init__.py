@@ -76,4 +76,8 @@ def create_app(config: dict = None) -> app.Flask:
     from . import db
     db.init_app(flask_app)
 
+    # init api commands
+    from . import api
+    api.init_app(flask_app)
+
     return flask_app
