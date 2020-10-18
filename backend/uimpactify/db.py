@@ -9,39 +9,34 @@ from flask.cli import with_appcontext
 
 from uimpactify.models.users import Users
 
-
-import mongoengine
 from mongoengine import NotUniqueError, ValidationError
 
+# creation of db is handled in __init__.py
 def get_db():
-    if 'db' not in g:
-        g.db = mongoengine.connect(**current_app['MONGODB_SETTINGS'])
     return g.db
 
 
+# mongoengine doesn't seem to have any type of clean up code, so we do nothing on close
 def close_db(e=None):
-    db = g.pop('db', None)
-
-    if db is not None:
-        db.close()
+    pass
 
 
 def create_admin():
-  try:
-    user = Users(name="admin", email="admin@uimpactify.com", password="password", access={"admin": True})
-    user.save()
-    print(f"Added: {user.name} | {user.email} | {user.password} | Admin-{user.access.admin is True} => {user.id}")
-  except NotUniqueError:
-      print(f'Invalid Entry: {user.email} is already taken.')
-  except ValidationError:
-      print(f'Validation Error: {user}')
+    try:
+        user = Users(name="admin", email="admin@uimpactify.com", password="password", access={"admin": True})
+        user.save()
+        print(f"Added: {user.name} | {user.email} | {user.password} | Admin-{user.access.admin is True} => {user.id}")
+    except NotUniqueError:
+        print(f'Invalid Entry: {user.email} is already taken.')
+    except ValidationError:
+        print(f'Validation Error: {user}')
 
 
 @click.command('init-db')
 @with_appcontext
 def init_db_command():
-  # creates an admin user
-  create_admin()
+    # creates an admin user
+    create_admin()
 
 
 def init_app(app):

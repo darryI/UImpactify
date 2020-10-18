@@ -1,5 +1,5 @@
 # flask packages
-from flask import Flask, app
+from flask import Flask, app, g
 from flask_restful import Api
 from flask_mongoengine import MongoEngine
 from flask_jwt_extended import JWTManager
@@ -18,7 +18,8 @@ default_config = {'MONGODB_SETTINGS': {
                     'username': 'admin',
                     'password': 'password',
                     'authentication_source': 'admin'},
-                  'JWT_SECRET_KEY': 'changeThisKeyFirst'}
+                  'JWT_SECRET_KEY': 'changeThisKeyFirst',
+                  'SERVER_NAME': 'localhost:5000'}
 
 
 def create_app(config: dict = None) -> app.Flask:
@@ -44,15 +45,32 @@ def create_app(config: dict = None) -> app.Flask:
     if 'JWT_SECRET_KEY' in os.environ:
         flask_app.config['JWT_SECRET_KEY'] = 'ssss'
 
-    # init api and routes
-    api = Api(app=flask_app)
-    create_routes(api=api)
+    # we're using a builder pattern to create the database and api objects
+    # without affecting the state of the app
 
-    # init mongoengine
-    db = MongoEngine(app=flask_app)
+    # db takes in app as context, not the other way around
 
-    # init jwt manager
-    jwt = JWTManager(app=flask_app)
+    # we use the app context to save everything to "g", 
+    # this way we can get references to the db, api and jwt without
+    # opening multiple instances (SINGLETON)
+    # references:
+    # https://flask.palletsprojects.com/en/1.0.x/patterns/appfactories/
+    # https://flask.palletsprojects.com/en/1.1.x/appcontext/
+    # https://flask.palletsprojects.com/en/1.1.x/api/?highlight=g#flask.g
+
+    with flask_app.app_context():
+        # init mongoengine 
+        g.db = MongoEngine()
+        g.db.init_app(app=flask_app)
+
+        # init api and routes
+        g.api = Api()
+        create_routes(api=g.api)
+        g.api.init_app(app=flask_app)
+
+        # init jwt manager
+        g.jwt = JWTManager()
+        g.jwt.init_app(app=flask_app)
 
     # init database commands
     from . import db
