@@ -4,8 +4,8 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # project resources
-from models.meals import Meals
-from controller.errors import forbidden
+from uimpactify.models.meals import Meals
+from uimpactify.controller.errors import forbidden
 
 
 class MealsApi(Resource):

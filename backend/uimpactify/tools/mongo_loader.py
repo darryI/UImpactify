@@ -2,12 +2,12 @@
 import mongoengine
 
 # project resources
-from app import default_config
+from flask import current_app
 
 # external packages
 from types import FunctionType
 
-
+# create mongo decorator --> DESIGN PATTERN
 def mongo(function: FunctionType) -> FunctionType:
     """
     Decorator method for running mongoengine before function execution.
@@ -16,6 +16,7 @@ def mongo(function: FunctionType) -> FunctionType:
     :return: wrapper function
     """
     def load():
-        mongoengine.connect(**default_config['MONGODB_SETTINGS'])
+        mongoengine.connect(**current_app['MONGODB_SETTINGS'])
         function()
+        mongoengine.close()
     return load

@@ -4,8 +4,8 @@ from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # project resources
-from models.users import Users
-from controller.errors import forbidden
+from uimpactify.models.users import Users
+from uimpactify.controller.errors import forbidden
 
 
 class UsersApi(Resource):

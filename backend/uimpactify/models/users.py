@@ -12,7 +12,7 @@ from mongoengine import (Document,
 from flask_bcrypt import generate_password_hash, check_password_hash
 
 # project resources
-from models.meals import Meals
+from uimpactify.models.meals import Meals
 
 # external packages
 import re
@@ -82,7 +82,7 @@ class Users(Document):
     email = EmailField(required=True, unique=True)
     password = StringField(required=True, min_length=6, regex=None)
     access = EmbeddedDocumentField(Access, default=Access(user=True, admin=False))
-    fav_meals = ListField(ReferenceField(Meals))
+    # fav_meals = ListField(ReferenceField(Meals))
     name = StringField(unique=False)
     phone = PhoneField()
 

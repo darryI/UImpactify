@@ -1,8 +1,13 @@
 # mongoengine resources
 from mongoengine import NotUniqueError, ValidationError
 
+# required to make this script into a flask script
+import click
+from flask import Flask
+from app import app
+
 # project resources
-from models.meals import Meals
+# from models.meals import Meals
 from models.users import Users
 from tools.mongo_loader import mongo
 from tools.get_random_document import get_random
@@ -49,7 +54,7 @@ def generate_test_users(filepath: str = 'resources/user_data.csv', delimiter: st
                 user = Users(**datum, __auto_convert=True)
                 # generate random admin access, password, and favorite meals
                 user.access.admin = (randint(0, 1) == 1)
-                user.fav_meals = get_random(Meals, randint(1, 5))
+                # user.fav_meals = get_random(Meals, randint(1, 5))
                 user.password = user.name + str(randint(0, 9))
 
                 user.save()
@@ -70,5 +75,5 @@ def load_all(config: dict = None):
     if config:
         default_config.update(config)
 
-    csv_to_meal()
+    # csv_to_meal()
     generate_test_users()

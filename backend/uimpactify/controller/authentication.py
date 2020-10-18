@@ -4,8 +4,8 @@ from flask_restful import Resource
 from flask_jwt_extended import create_access_token, create_refresh_token
 
 # project resources
-from models.users import Users
-from controller.errors import unauthorized
+from uimpactify.models.users import Users
+from uimpactify.controller.errors import unauthorized
 
 # external packages
 import datetime
