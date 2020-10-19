@@ -73,7 +73,9 @@ test('submitting a new course should call a post request', () => {
   const postFunc = jest.spyOn(API, 'postCourse').mockImplementationOnce(() => {
     return Promise.resolve();
   })
-
+  
+  // the alert function gets mocked out here because the unit test crashes
+  // without it (theres no implementation for window in unit test land)
   const alertFunc = jest.spyOn(window, 'alert').mockImplementationOnce(() => {
     return;
   })

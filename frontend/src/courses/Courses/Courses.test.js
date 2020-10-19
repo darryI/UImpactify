@@ -20,8 +20,6 @@ const setup = () => {
 };
 
 test('on startup, api call is made to get courses', async () => {
-  
-
   const getFunc = jest.spyOn(API, 'getCourses').mockImplementationOnce(() => {
     return Promise.resolve(jsonCourses);
   })

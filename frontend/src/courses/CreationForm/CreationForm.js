@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { ReactComponent as SaveIcon } from 'icons/save.svg';
 
 import './CreationForm.css';
-import { fireEvent } from "@testing-library/react";
 
 function CreationForm(props) {
   const values = props.values;
@@ -20,7 +19,6 @@ function CreationForm(props) {
     // reset form values
     setValues(props.initialValues);
     
-
     // navigate away from the creation form after submitting
     props.setShowForm(false);
     
@@ -33,7 +31,6 @@ function CreationForm(props) {
       API.putCourse(courseJSON);
       alert('A course was updated');
     }
-    
   }
 
   const handleNameChange = (event) => {
@@ -63,9 +60,6 @@ function CreationForm(props) {
       published: event.target.checked
     });
   }
-
-  React.useEffect(() => {
-  })
 
   return (
     <form aria-label="creation-form" className="creationForm" onSubmit={handleSubmit}>

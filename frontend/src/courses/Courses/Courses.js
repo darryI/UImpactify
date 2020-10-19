@@ -16,7 +16,7 @@ function Courses(props) {
   const [showForm, setShowForm] = React.useState(false);
 
 
-  const intialValues = {
+  const initialValues = {
     id: '',
     name: '',
     objective:'',
@@ -26,7 +26,7 @@ function Courses(props) {
     students: []
   };
 
-  const [formValues, setValues] = React.useState(intialValues);
+  const [formValues, setValues] = React.useState(initialValues);
 
 
   // add a new course to the list
@@ -59,7 +59,7 @@ function Courses(props) {
   }, [])
 
   const handleCreate = () => {
-    setValues(intialValues);
+    setValues(initialValues);
     setSelected(courses.length);
     setShowForm(true);
   }
@@ -78,7 +78,7 @@ function Courses(props) {
     if (selected === courses.length || showForm === true) {
       content = <CreationForm 
         values={formValues}
-        initialValues={intialValues}
+        initialValues={initialValues}
         setValues={setValues}
         setShowForm={setShowForm}
         addCourse={addCourse}
