@@ -93,7 +93,9 @@ $ pip install wheel
 $ pip install -r requirements.txt
 ```
 
-Run the development server
+Run the development server 
+
+*MAKE SURE YOU DO NOT USE POWERSHELL IT HAS A DIFFERENT SYNTAX FOR SETTING VARIABLES*
 
 ```
 $ set FLASK_APP=uimpactify
@@ -101,10 +103,13 @@ $ set FLASK_ENV=development
 $ flask run
 ```
 
+## Additional commands
+Run these commands in a seperate tab while the flask server is running
+
 To generate test data on the database (currently just creates an admin user)
 
 ```
-$ flask init_db
+$ flask init-db
 ```
 
 To test out logging in through the api and making authorized requests (while the dev server is running...)
