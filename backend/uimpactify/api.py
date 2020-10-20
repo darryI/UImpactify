@@ -10,6 +10,21 @@ import json
 
 from uimpactify.controller import routes
 
+@click.command("signup")
+@with_appcontext
+def signup():
+    user = {"email": "dead2@uimpactify.com", "password": "password"}
+
+    # builds the endpoint urls based off of the servername and registered resources
+    # reference: https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Api.url_for
+    signup_url = url_for("signupapi")
+
+    # make a request to login using the admin account created by running `flask init-db`
+    # reference: https://requests.readthedocs.io/en/master/user/quickstart/
+    r = requests.post(signup_url, user)
+    print(r.request.headers)
+    res = r.json()
+    print(res)
 
 
 @click.command("login")
@@ -42,3 +57,4 @@ def login():
 
 def init_app(app):
     app.cli.add_command(login)
+    app.cli.add_command(signup)
