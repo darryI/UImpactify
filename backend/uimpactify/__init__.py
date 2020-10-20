@@ -13,7 +13,7 @@ import os
 
 # default mongodb configuration
 default_config = {'MONGODB_SETTINGS': {
-                    'db': 'test_db',
+                    'db': 'uimpactify_dev',
                     'host': 'localhost',
                     'port': 27017,
                     'username': 'admin',
