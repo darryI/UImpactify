@@ -82,6 +82,7 @@ test('submitting a new course should call a post request', () => {
 
   fireEvent.click(submit);
 
+  // checking what params the function was called with: https://jestjs.io/docs/en/mock-functions
   // show form should have been set to false
   expect(setShowForm.mock.calls[0][0]).toBe(false);
   // post function should be called
