@@ -2,6 +2,13 @@
 
 # IDE Specific files:
 .vscode/
+.idea/
+**/__pycache__/
+
+/doc/sprint1/venv/
+
+# Backend ignores:
+/backend/venv/
 
 # architecture diagram dependencies
 /doc/sprint1/venv
@@ -29,3 +36,5 @@
 /frontend/npm-debug.log*
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
+
+/venv/
