@@ -9,6 +9,7 @@
 
 # Backend ignores:
 /backend/venv/
+/backend/uimpactify.egg-info
 
 # architecture diagram dependencies
 /doc/sprint1/venv

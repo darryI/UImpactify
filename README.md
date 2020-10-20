@@ -83,44 +83,35 @@ Activate the environment and install dependencies
 
 ```
 $ venv\Scripts\activate
-$ pip install -r requirements.txt
+$ pip install -e .
 ```
 
-If you're getting an error when installing the flask-mongoengine you may have to run:
-
+## Run the Server
 ```
-$ pip install wheel
-$ pip install -r requirements.txt
-```
-
-Run the development server 
-
-*MAKE SURE YOU DO NOT USE POWERSHELL IT HAS A DIFFERENT SYNTAX FOR SETTING VARIABLES*
-
-```
-$ set FLASK_APP=uimpactify
-$ set FLASK_ENV=development
+$ venv\Scripts\activate
 $ flask run
 ```
-
 ## Additional commands
 Run these commands in a seperate tab while the flask server is running
 
 To generate test data on the database (currently just creates an admin user)
 
 ```
+$ venv\Scripts\activate
 $ flask init-db
 ```
 
 To test out logging in through the api and making authorized requests (while the dev server is running...)
 
 ```
+$ venv\Scripts\activate
 $ flask login
 ```
 
 ### Adding a new python dependency
 
 If you add a new dependency to the python environment, make sure to update requirements.txt
+and the install_requirements in backend/setup.py
 
 ```
 $ pip freeze > .\requirements.txt
