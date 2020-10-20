@@ -3,6 +3,7 @@ from flask import Flask, app, g
 from flask_restful import Api
 from flask_mongoengine import MongoEngine
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 # local packages
 from uimpactify.controller.routes import create_routes
@@ -19,7 +20,8 @@ default_config = {'MONGODB_SETTINGS': {
                     'password': 'password',
                     'authentication_source': 'admin'},
                   'JWT_SECRET_KEY': 'changeThisKeyFirst',
-                  'SERVER_NAME': 'localhost:5000'}
+                  'SERVER_NAME': 'localhost:5000',
+                  'CORS_HEADERS': 'Content-Type'}
 
 
 def create_app(config: dict = None) -> app.Flask:
@@ -31,6 +33,7 @@ def create_app(config: dict = None) -> app.Flask:
     """
     # init flask
     flask_app = Flask(__name__)
+    CORS(flask_app)
 
     # configure app
     config = default_config if config is None else config
