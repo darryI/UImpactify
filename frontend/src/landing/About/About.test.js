@@ -2,8 +2,8 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import About from './About';
 
-test('renders home page', () => {
+test('renders about page', () => {
   const { getByText } = render(<About/>);
-  const homeElement = getByText(/About/);
-  expect(homeElement).toBeInTheDocument();
+  const aboutElements = getByText(/About/);
+  expect(aboutElements).toBeInTheDocument();
 });

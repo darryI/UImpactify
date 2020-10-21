@@ -9,6 +9,7 @@ import {
 
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
+import Login from './landing/Login/Login.js';
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
             <li>
               <Link to="/about">About</Link>
             </li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
           </ul>
         </nav>
         {/* A <Switch> looks through its children <Route>s and
@@ -30,9 +34,13 @@ function App() {
           <Route path="/about">
             <About />
           </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
+
         </Switch>
       </div>
     </Router>
