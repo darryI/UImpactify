@@ -43,7 +43,7 @@ $ source venv/bin/activate
 Install dependencies
 
 ```
-$ pip install -e .
+(venv) $ pip install -e .
 ```
 
 ### Run the Server
