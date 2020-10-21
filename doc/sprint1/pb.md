@@ -1,3 +1,6 @@
+Stories in Backlog
+==================
+
 [LUK-63](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-63)\
 **Add ability to apply for free courses in Giving Garden**\
 \
@@ -148,18 +151,6 @@ From the student\'s profile page, they should be able to provide a valid
 pages, after having given payment information the student should have
 access to the content.
 
-[LUK-33](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-33)\
-**Ability to sign up for U Impactify**\
-\
-**Description**
-
-As a user, I want to be able to create an account so that I can log in
-to access the platform.   Acceptance Criteria: \* Users can select an
-identity for themselves (Student, Facilitator, Coach, social impact
-organizations, etc.) \* Users can specify their relevant personal
-information \* The account should be stored in the database so that the
-user can log in after sign up
-
 [LUK-32](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-32)\
 **Add new quizzes and assignments as teacher for students**\
 \
@@ -303,21 +294,6 @@ should have access to an analytics page only they can access for their
 course \* This page should display the information \"\# of clicks on
 intro video/ landing page vs. \# of people signed up\"
 
-[LUK-17](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-17)\
-**Add ability to take courses**\
-\
-**Description**
-
-As a student (Jessica), I want to be able to take a course on U
-Impactify after paying the required course fee so that I can learn new
-skills and generally acquire relevant knowledge in the non-profit
-sector. Acceptance Criteria: Given that I am logged in to U Impactify as
-a student, when I pay for a course and take that course, I should be
-able to watch the related videos or engage with whatever course content
-is available to learn the expected skills. Specific requirements: \*
-Able to watch videos \* Able to interact with and complete
-quizzes/assignments
-
 [LUK-16](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-16)\
 **Add ability for instructors to offer free courses and training in
 Giving Garden**\
@@ -367,18 +343,6 @@ courses I have looked at if they become offered for free.   \*Acceptance
 Criteria:\* \* A user will have their own mailbox where they can receive
 messages \* A user will be able to send messages to other users
 
-[LUK-12](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-12)\
-**Add ability to log in to system**\
-\
-**Description**
-
-\*User Story:\* As a user (Zachary), I want to use my credentials to
-enter into the system and use it.   \*Acceptance Criteria:\* \* A user
-should have unique identifiers and passwords to log in \* A user\'s role
-(Impact Consultant, Enthusiast, Organization) should be associated with
-their unique identifier \* A user\'s role will affect how they are
-allowed to use the system upon logging in
-
 [LUK-11](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-11)\
 **Add endorsing courses as a NPO**\
 \
@@ -406,6 +370,48 @@ future, thus improving overall course quality on U Impactify  
 Acceptance Criteria: Given that I am logged in as a student and have
 paid for a course, when I take that course, then I should be learn
 whatever skills that course is teaching.
+
+Completed Stories
+=================
+
+[LUK-33](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-33)\
+**Ability to sign up for U Impactify**\
+\
+**Description**
+
+As a user, I want to be able to create an account so that I can log in
+to access the platform.   Acceptance Criteria: \* Users can select an
+identity for themselves (Student, Facilitator, Coach, social impact
+organizations, etc.) \* Users can specify their relevant personal
+information \* The account should be stored in the database so that the
+user can log in after sign up
+
+[LUK-17](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-17)\
+**Add ability to take courses**\
+\
+**Description**
+
+As a student (Jessica), I want to be able to take a course on U
+Impactify after paying the required course fee so that I can learn new
+skills and generally acquire relevant knowledge in the non-profit
+sector. Acceptance Criteria: Given that I am logged in to U Impactify as
+a student, when I pay for a course and take that course, I should be
+able to watch the related videos or engage with whatever course content
+is available to learn the expected skills. Specific requirements: \*
+Able to watch videos \* Able to interact with and complete
+quizzes/assignments
+
+[LUK-12](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-12)\
+**Add ability to log in to system**\
+\
+**Description**
+
+\*User Story:\* As a user (Zachary), I want to use my credentials to
+enter into the system and use it.   \*Acceptance Criteria:\* \* A user
+should have unique identifiers and passwords to log in \* A user\'s role
+(Impact Consultant, Enthusiast, Organization) should be associated with
+their unique identifier \* A user\'s role will affect how they are
+allowed to use the system upon logging in
 
 [LUK-9](https://mcsapps.utm.utoronto.ca/jira/browse/LUK-9)\
 **Add ability to create courses**\
