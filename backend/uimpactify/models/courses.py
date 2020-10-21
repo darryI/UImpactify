@@ -6,7 +6,6 @@ class Courses(Document):
     """
     a mongoengine document, which represents a course.
 
-    ADD EXAMPLE
     """
 
     name = StringField(required=True)
@@ -16,3 +15,4 @@ class Courses(Document):
     students = ListField()
     published = BooleanField()
     courseContent = ListField()
+    courseId = StringField(required=True, unique=True)
