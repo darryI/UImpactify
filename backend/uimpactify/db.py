@@ -25,9 +25,9 @@ def close_db(e=None):
 
 def create_admin():
     try:
-        user = Users(name="admin", email=ADMIN_USER['email'], password=ADMIN_USER['password'], access={"admin": True})
+        user = Users(name="admin", email=ADMIN_USER['email'], password=ADMIN_USER['password'], roles={"admin": True})
         user.save()
-        print(f"Added: {user.name} | {user.email} | {user.password} | Admin-{user.access.admin is True} => {user.id}")
+        print(f"Added: {user.name} | {user.email} | {user.password} | Admin-{user.roles.admin is True} => {user.id}")
     except NotUniqueError:
         print(f'Invalid Entry: {user.email} is already taken.')
     except ValidationError:

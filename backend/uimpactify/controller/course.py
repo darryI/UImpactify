@@ -57,11 +57,11 @@ class CourseApi(Resource):
     #@jwt_required
     def get(self, course_id: str) -> Response:
         """
-        GET response method for single documents in meal collection.
+        GET response method for single documents in course collection.
 
         :return: JSON object
         """
-        output = Courses.objects.get(courseId=course_id)
+        output = Courses.objects.get(id=course_id)
         return jsonify(output)
 
     #@jwt_required
@@ -73,7 +73,7 @@ class CourseApi(Resource):
 
         """
         data = request.get_json()
-        put_user = Courses.objects(courseId=course_id).update(**data)
+        put_user = Courses.objects(id=course_id).update(**data)
         return jsonify(put_user)
 
     #@jwt_required
@@ -87,7 +87,7 @@ class CourseApi(Resource):
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            output = Courses.objects(courseId=course_id).delete()
+            output = Courses.objects(id=course_id).delete()
             return jsonify(output)
         else:
             return forbidden()
@@ -100,7 +100,7 @@ class CourseByInstructorApi(Resource):
     #@jwt_required
     def get(self, instructor_id: str) -> Response:
         """
-        GET response method for single documents in meal collection.
+        GET response method for single documents in course collection.
 
         :return: JSON object
         """
