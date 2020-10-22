@@ -3,11 +3,14 @@ from flask import Response, request, jsonify
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+
 # project resources
 from uimpactify.models.courses import Courses
 from uimpactify.controller.errors import forbidden
 
 from uimpactify.models.users import Users
+
+from uimpactify.utils.mongo_utils import convert_query, convert_doc
 
 
 class CoursesApi(Resource):
@@ -25,8 +28,8 @@ class CoursesApi(Resource):
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            output = Courses.objects()
-            return jsonify(output)
+            query = Courses.objects()
+            return jsonify(convert_query(query))
         else:
             return forbidden()
 
@@ -61,8 +64,9 @@ class CourseApi(Resource):
 
         :return: JSON object
         """
-        output = Courses.objects.get(courseId=course_id)
-        return jsonify(output)
+        course = Courses.objects.get(courseId=course_id).first()
+        
+        return jsonify(convert_doc(course))
 
     #@jwt_required
     def put(self, course_id: str) -> Response:
@@ -73,8 +77,12 @@ class CourseApi(Resource):
 
         """
         data = request.get_json()
-        put_user = Courses.objects(courseId=course_id).update(**data)
-        return jsonify(put_user)
+        print(data)
+        print(course_id)
+
+        res = Courses.objects.get(id=course_id).update(**data)
+       
+        return jsonify(res)
 
     #@jwt_required
     def delete(self, course_id: str) -> Response:
@@ -87,10 +95,11 @@ class CourseApi(Resource):
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            output = Courses.objects(courseId=course_id).delete()
+            output = Courses.objects(id=course_id).delete()
             return jsonify(output)
         else:
             return forbidden()
+
 
 class CourseByInstructorApi(Resource):
     """
@@ -104,5 +113,5 @@ class CourseByInstructorApi(Resource):
 
         :return: JSON object
         """
-        output = Courses.objects(instructor=instructor_id)
-        return jsonify(output)
+        query = Courses.objects(instructor=instructor_id)
+        return jsonify(convert_query(query))

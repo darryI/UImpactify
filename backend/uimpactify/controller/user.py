@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 # project resources
 from uimpactify.models.users import Users
 from uimpactify.controller.errors import forbidden
-
+from uimpactify.utils.mongo_utils import convert_query, convert_doc
 
 class UsersApi(Resource):
     """
@@ -37,8 +37,8 @@ class UsersApi(Resource):
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            output = Users.objects()
-            return jsonify(output)
+            query = Users.objects()
+            return jsonify(convert_query(query))
         else:
             return forbidden()
 
@@ -114,8 +114,8 @@ class UserApi(Resource):
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            output = Users.objects.get(id=user_id)
-            return jsonify(output)
+            user = Users.objects.get(id=user_id)
+            return jsonify(convert_doc(user))
         else:
             return forbidden()
 
