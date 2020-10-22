@@ -6,7 +6,9 @@ from mongoengine import (Document,
                          StringField,
                          EmailField,
                          BooleanField,
-                         ReferenceField)
+                         ReferenceField,
+                         CASCADE,
+                         PULL)
 
 # project resources
 from uimpactify.models.users import Users
@@ -19,7 +21,7 @@ class Courses(Document):
     :param name: required name of the course
     :param objective: course objectives
     :param learningOutcomes: course learning outcomes
-    :param instructor: list of instructors teaching the course
+    :param instructor: instructor teaching the course
     :param students: list of students in the course
     :param endorsedBy: list of organizations endorsing the course
     :param trainingFor: list of organizations using the course as training
@@ -30,9 +32,9 @@ class Courses(Document):
     name = StringField(required=True)
     objective = StringField()
     learningOutcomes = StringField()
-    instructors = ListField(ReferenceField('Users'), required=True)
-    students = ListField(ReferenceField('Users'))
-    endorsedBy = ListField(ReferenceField('Users'))
-    trainingFor = ListField(ReferenceField('Users'))
+    instructor = ReferenceField('Users', reverse_delete_rule=CASCADE, required=True)
+    students = ListField(ReferenceField('Users', reverse_delete_rule=PULL))
+    endorsedBy = ListField(ReferenceField('Users', reverse_delete_rule=PULL))
+    trainingFor = ListField(ReferenceField('Users', reverse_delete_rule=PULL))
     published = BooleanField(default=False)
-    courseContent = ListField(ReferenceField('CourseContent'))
+    courseContent = ListField(ReferenceField('CourseContent', reverse_delete_rule=PULL))
