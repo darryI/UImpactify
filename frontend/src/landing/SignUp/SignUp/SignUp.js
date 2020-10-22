@@ -64,16 +64,17 @@ function SignUp() {
             .then(
                 (response) => {
                     console.log(response);
+                    history.push('/login')
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
                 // exceptions from actual bugs in components.
                 (error) => {
                     //console.log("bumbumshoe")
+                    alert("existing mail")
                 }
             )
             console.log("here?")
-            history.push('/login')
         }else{
             alert("one or more of the required fields arent filled!")
         }
