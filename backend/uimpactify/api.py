@@ -21,7 +21,7 @@ def signup():
 
     # make a request to login using the admin account created by running `flask init-db`
     # reference: https://requests.readthedocs.io/en/master/user/quickstart/
-    r = requests.post(signup_url, user)
+    r = requests.post(signup_url, json=user)
     print(r.request.headers)
     res = r.json()
     print(res)
@@ -39,9 +39,9 @@ def login():
 
     # make a request to login using the admin account created by running `flask init-db`
     # reference: https://requests.readthedocs.io/en/master/user/quickstart/
-    r = requests.post(login_url, ADMIN_USER)
+    r = requests.post(login_url, json=ADMIN_USER)
     res = r.json()
-    access_token = res["result"]["access_token"]
+    access_token = res["access_token"]
     print("Logged in with token:")
     print(f"{access_token}\n")
 

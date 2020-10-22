@@ -16,5 +16,6 @@ setup(
         'flask-bcrypt',
         'flask-restful',
         'flask-jwt-extended',
+        'flask-cors',
     ]
 )
