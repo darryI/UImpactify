@@ -60,13 +60,15 @@ class CourseApi(Resource):
     #@jwt_required
     def get(self, course_id: str) -> Response:
         """
-        GET response method for single documents in meal collection.
+        GET response method for single documents in course collection.
 
         :return: JSON object
         """
-        course = Courses.objects.get(courseId=course_id).first()
+
+        course = Courses.objects.get(id=course_id).first()
         
         return jsonify(convert_doc(course))
+
 
     #@jwt_required
     def put(self, course_id: str) -> Response:
@@ -77,12 +79,10 @@ class CourseApi(Resource):
 
         """
         data = request.get_json()
-        print(data)
-        print(course_id)
 
         res = Courses.objects.get(id=course_id).update(**data)
-       
         return jsonify(res)
+
 
     #@jwt_required
     def delete(self, course_id: str) -> Response:
@@ -109,7 +109,7 @@ class CourseByInstructorApi(Resource):
     #@jwt_required
     def get(self, instructor_id: str) -> Response:
         """
-        GET response method for single documents in meal collection.
+        GET response method for single documents in course collection.
 
         :return: JSON object
         """
