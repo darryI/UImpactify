@@ -184,9 +184,27 @@ function SignUp() {
     }
 
     const handleSignUp = () => {
-        if(email && username && password && type){
-            console.log("signed in?")
+        if(email && username && password){
+            const newUser = {
+                name: username,
+                email: email,
+                password: password
+            }
+            // wait for API call then route somewhere and do something with access token
+            API.postSignUp(newUser)
+            .then(
+                (response) => {
+                    console.log(response);
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    console.log("bumbumshoe")
+                }
+            )
 
+            console.log("signed in?")
         }else{
             alert("one or more of the required fields arent filled!")
         }
@@ -200,7 +218,6 @@ function SignUp() {
             //console.log(`${event.target.value}`)
         }else{
             //alert(`Now chosen:${event.target.id}, changed from: ${category}`)
-
             setCategory(event.target.id)
         }
     }
@@ -225,25 +242,25 @@ function SignUp() {
     );
 }
 
-// export const API = {
+export const API = {
 
-//     postLogin(data) {
-//         const url = 'http://localhost:5000/authentication/signup/';
-//         return fetch(url, {
-//             method: 'POST',
-//             mode: 'cors', // no-cors, *cors, same-origin
-//             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-//             credentials: 'same-origin', // include, *same-origin, omit
-//             headers: {
-//                 'Content-Type': 'application/json',// 'Content-Type': 'application/x-www-form-urlencoded',
-//                 },
-//             redirect: 'follow', // manual, *follow, error
-//             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-//             body: JSON.stringify(data)
-//             })
-//           .then(res => res.json())
-//     }
+    postSignUp(data) {
+        const url = 'http://localhost:5000/authentication/signup/';
+        return fetch(url, {
+            method: 'POST',
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',// 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data)
+            })
+          .then(res => res.json())
+    }
 
-// }
+}
 
 export default SignUp;
