@@ -25,7 +25,7 @@ class UsersApi(Resource):
     >>> api.add_resource(UsersApi, '/user/')
 
     """
-    @jwt_required
+    #@jwt_required
     def get(self) -> Response:
         """
         GET response method for acquiring all user data.
@@ -34,7 +34,7 @@ class UsersApi(Resource):
 
         :return: JSON object
         """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
             output = Users.objects()
@@ -42,7 +42,7 @@ class UsersApi(Resource):
         else:
             return forbidden()
 
-    @jwt_required
+    #@jwt_required
     def delete(self) -> Response:
         """
         DELETE response method for deleting all users.
@@ -51,7 +51,7 @@ class UsersApi(Resource):
 
         :return: JSON object
         """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
             output = Users.objects.delete()
@@ -65,7 +65,7 @@ class UsersApi(Resource):
 
     # also, for each resource it looks like there's needs to be the same number
     # of parameters used each time. (post methods don't take in user_id's)
-    @jwt_required
+    #@jwt_required
     def post(self: str) -> Response:
         """
         POST response method for creating user.
@@ -74,7 +74,7 @@ class UsersApi(Resource):
 
         :return: JSON object
         """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
             data = request.get_json()
@@ -102,7 +102,7 @@ class UserApi(Resource):
     >>> api.add_resource(UserApi, '/user/<user_id>')
 
     """
-    @jwt_required
+    #@jwt_required
     def get(self, user_id: str) -> Response:
         """
         GET response method for acquiring single user data.
@@ -111,7 +111,7 @@ class UserApi(Resource):
 
         :return: JSON object
         """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
             output = Users.objects.get(id=user_id)
@@ -119,7 +119,7 @@ class UserApi(Resource):
         else:
             return forbidden()
 
-    @jwt_required
+    #@jwt_required
     def put(self, user_id: str) -> Response:
         """
         PUT response method for updating a user.
@@ -128,7 +128,7 @@ class UserApi(Resource):
 
         :return: JSON object
         """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
             data = request.get_json()
@@ -138,7 +138,7 @@ class UserApi(Resource):
         else:
             return forbidden()
 
-    @jwt_required
+    #@jwt_required
     def delete(self, user_id: str) -> Response:
         """
         DELETE response method for deleting user.
@@ -147,7 +147,7 @@ class UserApi(Resource):
 
         :return: JSON object
         """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
+        authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
             output = Users.objects(id=user_id).delete()

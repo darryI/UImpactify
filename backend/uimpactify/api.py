@@ -67,7 +67,9 @@ def course_test():
     # reference: https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Api.url_for
     login_url = url_for("loginapi")
     course_url = url_for("coursesapi")
-    test_course_url = url_for("courseapi", course_id="1")
+    test_courseOne_url = url_for("courseapi", course_id="1")
+    test_courseTwo_url = url_for("courseapi", course_id="2")
+    test_courseByInstructor_url = url_for("coursebyinstructorapi", instructor_id="1")
 
     # make a request to login using the admin account created by running `flask init-db`
     # reference: https://requests.readthedocs.io/en/master/user/quickstart/
@@ -79,35 +81,62 @@ def course_test():
     print(f"{access_token}\n")
 
     # Create a course with basic inputs
-    course = {"name": "testCourse", "instructor": 1, "courseId": "1"}
+    courseOne = {"name": "testCourseOne", "instructor": 1, "courseId": "1"}
+    courseTwo = {"name": "testCourseTwo", "instructor": 1, "courseId": "2"}
 
     # use the token as authorization in the request headers to create a course with post call
-    requestPost = requests.post(
+    requestPostOne = requests.post(
         course_url,
-        json=course,
+        json=courseOne,
+        headers={'Authorization': f'Bearer {access_token}'}
+        )
+
+    requestPostTwo = requests.post(
+        course_url,
+        json=courseTwo,
         headers={'Authorization': f'Bearer {access_token}'}
         )
 
     print("\n\n\n***CREATE COURSE***\n")
     print("Course created with headers and mongoid:")
-    print(requestPost.request.headers)
-    res = requestPost.json()
+    print(requestPostOne.request.headers)
+    res = requestPostOne.json()
+    print(res)
+
+    print("Course created with headers and mongoid:")
+    print(requestPostTwo.request.headers)
+    res = requestPostTwo.json()
     print(res)
 
     # use the token as authorization in the request headers to return a course with get call
-    requestGet = requests.get(
-        test_course_url,
+    requestGetSingle = requests.get(
+        test_courseOne_url,
         headers={'Authorization': f'Bearer {access_token}'}
         )
 
-    returnedCourse = requestGet.json()
-    print("\n\n\n***RETURN COURSE***\n")
+    returnedCourse = requestGetSingle.json()
+    print("\n\n\n***RETURN SINGLE COURSE***\n")
     print("Course:")
+    print(json.dumps(returnedCourse, indent=4))
+
+    requestGetInstructors = requests.get(
+        test_courseByInstructor_url,
+        headers={'Authorization': f'Bearer {access_token}'}
+        )
+
+    returnedCourse = requestGetInstructors.json()
+    print("\n\n\n***RETURN COURSES BY INSTRUCTORS***\n")
+    print("Courses:")
     print(json.dumps(returnedCourse, indent=4))
 
     # use the token as authorization in the request headers to delete a course with delete call
     requestDelete = requests.delete(
-        test_course_url,
+        test_courseOne_url,
+        headers={'Authorization': f'Bearer {access_token}'}
+    )
+
+    requestDelete = requests.delete(
+        test_courseTwo_url,
         headers={'Authorization': f'Bearer {access_token}'}
     )
 

@@ -79,6 +79,7 @@ class Users(Document):
     email = EmailField(required=True, unique=True)
     password = StringField(required=True, min_length=6, regex=None)
     access = EmbeddedDocumentField(Access, default=Access(user=True, admin=False))
+    # access will be changed to handle different user roles
     name = StringField(unique=False)
     phone = PhoneField()
 
