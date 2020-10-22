@@ -93,3 +93,18 @@ class CourseApi(Resource):
             return jsonify({'result': output})
         else:
             return forbidden()
+
+class CourseByInstructorApi(Resource):
+    """
+    Flask-resftul resource for returning courses with the same instructor id.
+
+    """
+    @jwt_required
+    def get(self, instructor_id: str) -> Response:
+        """
+        GET response method for single documents in meal collection.
+
+        :return: JSON object
+        """
+        output = Courses.objects.get(instructor=instructor_id)
+        return jsonify({'result': output})
