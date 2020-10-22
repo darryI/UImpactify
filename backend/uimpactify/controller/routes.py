@@ -4,7 +4,7 @@ from flask_restful import Api
 # project resources
 from uimpactify.controller.authentication import SignUpApi, LoginApi
 from uimpactify.controller.user import UsersApi, UserApi
-from uimpactify.controller.meal import MealsApi, MealApi
+from uimpactify.controller.course import CoursesApi, CourseApi, CourseByInstructorApi
 
 
 def create_routes(api: Api):
@@ -25,5 +25,6 @@ def create_routes(api: Api):
     api.add_resource(UsersApi, '/user/')
     api.add_resource(UserApi, '/user/<user_id>')
 
-    api.add_resource(MealsApi, '/meal/')
-    api.add_resource(MealApi, '/meal/<meal_id>')
+    api.add_resource(CoursesApi, '/course/')
+    api.add_resource(CourseApi, '/course/<course_id>')
+    api.add_resource(CourseByInstructorApi, '/course/instructor/<instructor_id>')
