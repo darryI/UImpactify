@@ -1,29 +1,31 @@
 import React from "react";
 import './Login.css';
+import {useHistory} from "react-router-dom";
 
 function LoginForm(props) {
 
     const loginInfo = props.loginInfo;
     const setLoginValues = props.setLoginValues;
-    //make a use state for incorrect login info (failedAuthenticate)
+    const setFailedAuthenticate = props.setFailedAuthenticate;
+    const setAccessToken = props.setAccessToken;
+    const history = useHistory();
 
     const handleLogin = (event) => {
         event.preventDefault();
-        const loginJSON = {
-            ...loginInfo,
-        };
 
         // wait for API call then route somewhere and do something with access token
-        API.postLogin(loginJSON)
+        API.postLogin(loginInfo)
             .then(
                 (result) => {
-                    //console.log(result);
+                    setFailedAuthenticate(false);
+                    setAccessToken(result.access_token);
+                    history.push('/about')
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
                 // exceptions from actual bugs in components.
                 (error) => {
-                    //console.log("bumbumshoe")
+                    setFailedAuthenticate(true);
                 }
             )
     }
@@ -43,6 +45,7 @@ function LoginForm(props) {
     }
 
     return (
+
         <form aria-label="login-form" className="LoginForm" onSubmit={handleLogin}>
            <div className="FormSection">
              <label className="InputLabel" htmlFor="email">Email</label><br/>
@@ -69,11 +72,15 @@ function Login(props) {
         password: ''
     };
 
-    //set usestate failedAuthenticate
     const [loginValues, setLoginValues] = React.useState(initialLoginValues);
+    const [failedAuthenticate, setFailedAuthenticate] = React.useState(false);
 
-    //if failedAuthenticate (INCORRECT EMAIL OR PW)
+    const setAccessToken = props.setAccessToken;
 
+    let content;
+    if (failedAuthenticate === true) {
+        content = <p className="AuthneticationFailed">Incorrect Email/Password</p>
+    }
     return (
         <div className="LoginPage">
             <div className="LeftSideImage">
@@ -82,14 +89,17 @@ function Login(props) {
             </div>
             <div className="LoginBox">
                 <p className="WelcomeBack">Welcome Back</p>
+                {content}
                 <LoginForm
                   loginInfo={loginValues}
                   initialLoginValues={initialLoginValues}
                   setLoginValues={setLoginValues}
+                  setFailedAuthenticate={setFailedAuthenticate}
+                  setAccessToken={setAccessToken}
                 />
                 <a className="ForgotPassword" href="./about">Forgot Password?</a>
             </div>
-        </div>
+       </div>
     );
 }
 
@@ -111,7 +121,6 @@ export const API = {
             })
           .then(res => res.json())
     }
-
 }
 
 export default Login;

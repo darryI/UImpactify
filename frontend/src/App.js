@@ -12,6 +12,9 @@ import Home from './landing/Home/Home.js';
 import Login from './landing/Login/Login.js';
 
 function App() {
+
+  const [accessToken, setAccessToken] = React.useState('');
+
   return (
     <Router>
       <div>
@@ -32,10 +35,14 @@ function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
-            <About />
+            <About
+                accessToken={accessToken}
+             />
           </Route>
           <Route path="/login">
-            <Login />
+            <Login
+                setAccessToken={setAccessToken}
+            />
           </Route>
           <Route path="/">
             <Home />
