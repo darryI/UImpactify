@@ -10,6 +10,7 @@ import {
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
 import SignUp from './landing/SignUp/SignUp.js'
+import Login from './landing/Login/Login.js';
 
 function App() {
   return (
@@ -27,20 +28,26 @@ function App() {
             <li className="navItem float-left">
                 <Link to="/SignUp">SignUp</Link>
             </li>
+            <li className="navItem float-left">
+              <Link to="/login">Login</Link>
+            </li>
           </ul>
         </nav>
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/SignUp">
-            <SignUp />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+            <Route path="/about">
+                <About />
+            </Route>
+            <Route path="/SignUp">
+                <SignUp />
+            </Route>
+            <Route path="/login">
+                <Login />
+            </Route>
+            <Route path="/">
+                <Home />
+            </Route>
         </Switch>
       </div>
     </Router>

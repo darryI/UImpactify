@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useHistory} from 'react-router-dom';
 // import FetchTest from './About/FetchTest.js';
 import './SignUp.css';
 
@@ -146,9 +147,10 @@ function SignUp() {
     const [password, setPassword] = useState('')
     const [identify, setIdentify] = useState([])
     const [category, setCategory] = useState('')
-    const [other, setOther] = useState('')
+    //const [other, setOther] = useState('')
     const [choice, setChoice] = useState('')
 
+    const history = useHistory()
     const handleSelectIdentify = (event) => {
         setIdentify(identify.concat(event.target.name))
         //alert(`${event.target.name} is chosen`)
@@ -180,7 +182,7 @@ function SignUp() {
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
-        console.log(`email is: ${email}`)
+        //console.log(`email is: ${email}`)
     }
 
     const handleSignUp = () => {
@@ -200,11 +202,11 @@ function SignUp() {
                 // instead of a catch() block so that we don't swallow
                 // exceptions from actual bugs in components.
                 (error) => {
-                    console.log("bumbumshoe")
+                    //console.log("bumbumshoe")
                 }
             )
-
-            console.log("signed in?")
+            console.log("here?")
+            history.push('/login')
         }else{
             alert("one or more of the required fields arent filled!")
         }
