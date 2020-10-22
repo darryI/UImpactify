@@ -25,10 +25,10 @@ class CoursesApi(Resource):
         authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            data = request.form
+            data = request.get_json()
             post_user = Courses(**data).save()
             output = {'id': str(post_user.id)}
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()
 
@@ -43,10 +43,10 @@ class CoursesApi(Resource):
         authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            data = request.form
+            data = request.get_json()
             post_user = Courses(**data).save()
             output = {'id': str(post_user.id)}
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()
 
@@ -64,7 +64,7 @@ class CourseApi(Resource):
         :return: JSON object
         """
         output = Courses.objects.get(courseId=course_id)
-        return jsonify({'result': output})
+        return jsonify(output)
 
     @jwt_required
     def put(self, course_id: str) -> Response:
@@ -74,9 +74,9 @@ class CourseApi(Resource):
         Authorization is required: Access(admin=true)
 
         """
-        data = request.form
+        data = request.get_json()
         put_user = Courses.objects(courseId=course_id).update(**data)
-        return jsonify({'result': put_user})
+        return jsonify(put_user)
 
     @jwt_required
     def delete(self, course_id: str) -> Response:
@@ -90,6 +90,6 @@ class CourseApi(Resource):
 
         if authorized:
             output = Courses.objects(courseId=course_id).delete()
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()
