@@ -8,13 +8,14 @@ from mongoengine import (Document,
                          BooleanField,
                          ReferenceField)
 
-
-class Students(Document):
+class CourseContent(Document):
     """
-    Template for a mongoengine document, which represents a student.
+    Template for a mongoengine document, which represents a user.
+    Password is automatically hashed before saving.
 
-    :param userId: the mongodb ObjectId of the related user
+    :param name: required course content name
+
+    .. seealso:: :class:`Roles`, :class:`Phone`
     """
-    
-    userId = StringField(required=True, unique=True)
-    courses = ListField()
+
+    name = StringField(required=True)

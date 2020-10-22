@@ -14,12 +14,6 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 # external packages
 import re
 
-# project resources
-from uimpactify.models.students import Students
-from uimpactify.models.instructors import Instructors
-from uimpactify.models.organizations import Organizations
-
-
 class Roles(EmbeddedDocument):
     """
     Custom EmbeddedDocument to set user authorizations.
@@ -80,22 +74,14 @@ class Users(Document):
     # Use documentation from BCrypt for password hashing
     generate_pw_hash.__doc__ = generate_password_hash.__doc__
 
+
     def check_pw_hash(self, password: str) -> bool:
         return check_password_hash(pw_hash=self.password, password=password)
     # Use documentation from BCrypt for password hashing
     check_pw_hash.__doc__ = check_password_hash.__doc__
 
-    def setup_roles(self):
-        if self.roles.student == True:
-            Students(userId=str(self.id)).save()
-        if self.roles.instructor == True:
-            Instructors(userId=str(self.id)).save()
-        if self.roles.organization == True:
-            Organizations(userId=str(self.id)).save()
 
     def save(self, *args, **kwargs):
         # Overwrite Document save method to generate password hash prior to saving
         self.generate_pw_hash()
         super(Users, self).save(*args, **kwargs)
-        # setup roles after saving so that the new user is assigned an ID
-        self.setup_roles()
