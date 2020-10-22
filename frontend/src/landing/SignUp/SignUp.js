@@ -2,6 +2,24 @@ import React, { useState } from "react";
 // import FetchTest from './About/FetchTest.js';
 import './SignUp.css';
 
+const GenericQuestions = (props) => {
+    return(
+        <form>
+            <label for="email">Email:</label><br/>
+            <input type="text" name="email" placeholder="Email" 
+            value={props.email} onChange={props.handleEmailChange}/><br/>
+
+            <label for="Username">Username:</label><br/>
+            <input type="text" name="username" placeholder="username" 
+            value={props.username} onChange={props.handleUsernameChange}/><br/>
+
+            <label for="password">Password:</label><br/>
+            <input type="password" name="password" placeholder="password" 
+            value={props.password} onChange={props.handlePasswordChange}/><br/>
+        </form>
+    )
+}
+
 const InstructorQuesitons =  (props) => {
     return(
         <div>
@@ -36,7 +54,7 @@ const InstructorQuesitons =  (props) => {
 }
 
 
-const SocialInitiativesQuestions = () => {
+const SocialInitiativesQuestions = (props) => {
     return(
         <div>
         <h2>Additional questions for Social Initiatives</h2>
@@ -57,25 +75,25 @@ const SocialInitiativesQuestions = () => {
         <form>
             <h4>What category does your company fits in?</h4>
             <label>Arts and Culture</label>
-            <input type="checkbox" name="ArtsCulture" id="ArtsCulture" /><br/>
+            <input type="checkbox" name="ArtsCulture" id="ArtsCulture" onChange={props.handleCategory}/><br/>
                 
             <label for="teacher">Civic and Environmental</label>
-            <input type="checkbox" name="Civic" id="Civic" /><br/>
+            <input type="checkbox" name="Civic" id="Civic" onChange={props.handleCategory}/><br/>
                 
             <label for="facilitator">Education</label>
-            <input type="checkbox" name="Educaiton" id="Educaiton" /><br/>
+            <input type="checkbox" name="Educaiton" id="Educaiton" onChange={props.handleCategory}/><br/>
 
             <label for="facilitator">Health Services</label>
-            <input type="checkbox" name="Health" id="Health"/><br/>
+            <input type="checkbox" name="Health" id="Health" onChange={props.handleCategory}/><br/>
 
             <label for="facilitator">International Relations and Development</label>
-            <input type="checkbox" name="InternationalRelations" id="InternationalRelations" /><br/>
+            <input type="checkbox" name="InternationalRelations" id="InternationalRelations" onChange={props.handleCategory}/><br/>
 
             <label for="facilitator">Social and Legal Services</label>
-            <input type="checkbox" name="SocialLegalServices" id="SocialLegalServices"/><br/>
+            <input type="checkbox" name="SocialLegalServices" id="SocialLegalServices" onChange={props.handleCategory}/><br/>
 
             <label for="other">Other: Please List:</label>
-            <input type="text" name="otherInitiativesCategory2" id="otherInitiativesCategory2" /><br/>
+            <input type="text" name="otherInitiativesCategory2" id="otherInitiativesCategory2" onChange={props.handleCategory}/><br/>
         </form>
         <form>
             <h4>What do you want to learn more about? (select all that apply)</h4>
@@ -121,36 +139,19 @@ const UserTypeDeclaration = (props) => {
     )
 }
 
-const GenericQuestions = (props) => {
-    return(
-        <form>
-            <label for="email">Email:</label><br/>
-            <input type="text" name="email" placeholder="Email" 
-            value={props.email} onChange={props.handleEmailChange}/><br/>
-
-            <label for="Username">Username:</label><br/>
-            <input type="text" name="username" placeholder="username" 
-            value={props.username} onChange={props.handleUsernameChange}/><br/>
-
-            <label for="password">Password:</label><br/>
-            <input type="password" name="password" placeholder="password" 
-            value={props.password} onChange={props.handlePasswordChange}/><br/>
-        </form>
-    )
-}
-
 function SignUp() {
     const [email, setEmail] = useState('')
     const [type, setType] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [identify, setIdentify] = useState([])
+    const [category, setCategory] = useState('')
     const [other, setOther] = useState('')
     const [choice, setChoice] = useState('')
 
     const handleSelectIdentify = (event) => {
         setIdentify(identify.concat(event.target.name))
-        alert(`${event.target.name} is chosen`)
+        //alert(`${event.target.name} is chosen`)
         console.log(identify)
     } 
 
@@ -169,11 +170,10 @@ function SignUp() {
     const handleSelectType = (event) => {
         if(type === ''){
             setType(event.target.id)
-            alert(`${event.target.id} is chosen`)
+            //alert(`${event.target.id} is chosen`)
             //console.log(`${event.target.value}`)
         }else{
-            alert(`Now chosen:${event.target.id}, changed from: ${type}`)
-
+            //alert(`Now chosen:${event.target.id}, changed from: ${type}`)
             setType(event.target.id)
         }
     }
@@ -183,8 +183,26 @@ function SignUp() {
         console.log(`email is: ${email}`)
     }
 
-    const handleSignUp = (event) => {
-        console.log("signed in?")
+    const handleSignUp = () => {
+        if(email && username && password && type){
+            console.log("signed in?")
+
+        }else{
+            alert("one or more of the required fields arent filled!")
+        }
+    }
+
+    
+    const handleCategory = (event) =>{
+        if(category === ''){
+            setCategory(event.target.id)
+            //alert(`${event.target.id} is chosen`)
+            //console.log(`${event.target.value}`)
+        }else{
+            //alert(`Now chosen:${event.target.id}, changed from: ${category}`)
+
+            setCategory(event.target.id)
+        }
     }
 
     return (
@@ -200,10 +218,32 @@ function SignUp() {
             <InstructorQuesitons
             handleSelectIdentify={handleSelectIdentify}
             handleSelectChoice={handleSelectChoice}/>
-            <SocialInitiativesQuestions/>
-            <input type="submit" value="Sign Up" onSubmit={handleSignUp}/>
+            <SocialInitiativesQuestions
+            handleCategory={handleCategory}/>
+            <input type="submit" value="Sign Up" onClick={handleSignUp}/>
         </div>
     );
 }
+
+// export const API = {
+
+//     postLogin(data) {
+//         const url = 'http://localhost:5000/authentication/signup/';
+//         return fetch(url, {
+//             method: 'POST',
+//             mode: 'cors', // no-cors, *cors, same-origin
+//             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+//             credentials: 'same-origin', // include, *same-origin, omit
+//             headers: {
+//                 'Content-Type': 'application/json',// 'Content-Type': 'application/x-www-form-urlencoded',
+//                 },
+//             redirect: 'follow', // manual, *follow, error
+//             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+//             body: JSON.stringify(data)
+//             })
+//           .then(res => res.json())
+//     }
+
+// }
 
 export default SignUp;
