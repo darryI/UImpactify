@@ -18,6 +18,7 @@ function Home() {
     // fake user information
     const user = {
       name: "Ninja",
+      userId: 1
     };
     return <Courses user={user}/>;
   } else {

@@ -20,7 +20,7 @@ function Courses(props) {
     id: '',
     name: '',
     objective:'',
-    lrnOutcomes: '',
+    learningOutcomes: '',
     published: false,
     instructor: '',
     students: []
@@ -42,9 +42,10 @@ function Courses(props) {
   }
 
   React.useEffect(() => {
-    API.getCourses()
+    API.getCourses(props.user.userId)
       .then(
         (result) => {
+          console.log(result);
           setIsLoaded(true);
           setCourses(result);
         },
@@ -105,8 +106,8 @@ function Courses(props) {
 }
 
 export const API = {
-  getCourses:  () => {
-    return Promise.resolve(jsonCourses); 
+  getCourses: async (userId) => {
+    return fetch("http://localhost:5000/course/instructor/" + userId).then(res => res.json())
   },
 }
 

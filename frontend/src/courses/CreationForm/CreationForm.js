@@ -16,6 +16,8 @@ function CreationForm(props) {
       instructor: props.user.id,
     };
 
+    delete courseJSON.id;
+
     // reset form values
     setValues(props.initialValues);
     
@@ -24,6 +26,7 @@ function CreationForm(props) {
     
     if (props.isNewCourse) {
       props.addCourse(courseJSON);
+      console.log(courseJSON);
       API.postCourse(courseJSON);
       alert('A new course was created');
     } else {
@@ -50,7 +53,7 @@ function CreationForm(props) {
   const handleLrnChange = (event) => {
     setValues({
       ...values,
-      lrnOutcomes: event.target.value,
+      learningOutcomes: event.target.value,
     });
   }
 
@@ -88,39 +91,35 @@ function CreationForm(props) {
 export const API = {
   // TODO: replace urls with actual api endpoint & implement authentication logic
 
-  postCourse(data) {
-    const url = "https://jsonplaceholder.typicode.com/posts/";
+  postCourse(course) {
+    const url = 'http://localhost:5000/course/';
+    // Default options are marked with *
     return fetch(url, {
-      method: 'POST', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
+      method: 'POST', 
+      mode: 'cors', 
+      cache: 'no-cache', 
+      credentials: 'same-origin', 
       headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
+      body: JSON.stringify(course) // body data type must match "Content-Type" header
+    }).then(res => res.json()); // parses JSON response into native JavaScript objects
   },
 
-  putCourse(data) {
-    const url = "https://jsonplaceholder.typicode.com/posts/";
+  putCourse(course) {
+    const url = 'http://localhost:5000/course/' + course.id;
+    // Default options are marked with *
     return fetch(url, {
-      method: 'PUT', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
+      method: 'PUT', 
+      mode: 'cors', 
+      cache: 'no-cache', 
+      credentials: 'same-origin', 
       headers: {
-        'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-      body: JSON.stringify(data) // body data type must match "Content-Type" header
-    });
-  }
+      body: JSON.stringify(course) // body data type must match "Content-Type" header
+    }).then(res => res.json());
+  },
 
 }
 
