@@ -14,15 +14,24 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 # external packages
 import re
 
+# project resources
+from uimpactify.models.students import Students
+from uimpactify.models.instructors import Instructors
+from uimpactify.models.organizations import Organizations
 
-class Access(EmbeddedDocument):
+
+class Roles(EmbeddedDocument):
     """
     Custom EmbeddedDocument to set user authorizations.
 
-    :param user: boolean value to signify if user is a user
+    :param student: boolean value to signify if user is a student
+    :param instructor: boolean value to signify if user is a instructor
+    :param organization: boolean value to signify if user is an organization
     :param admin: boolean value to signify if user is an admin
     """
-    user = BooleanField(default=True)
+    student = BooleanField(default=True)
+    instructor = BooleanField(default=False)
+    organization = BooleanField(default=False)
     admin = BooleanField(default=False)
 
 
@@ -51,37 +60,20 @@ class Users(Document):
 
     :param email: unique required email-string value
     :param password: required string value, longer than 6 characters
-    :param access: Access object
-    :param fav_meals: List of Meal objects
     :param name: option unique string username
     :param phone: optional string phone-number, must be valid via regex
+    :param roles: Roles object
 
-    :Example:
-
-    >>> import mongoengine
-    >>> from backend.app import default_config
-
-    >>> mongoengine.connect(**default_config['MONGODB_SETTINGS'])
-    MongoClient(host=['localhost:27017'], document_class=dict, tz_aware=False, connect=True, read_preference=Primary())
-
-    # Create test user
-    >>> new_user = Users(email="spam@ham-and-eggs.com", password="hunter2", access={"admin": True})
-    >>> new_user.save()
-    >>> new_user.name = "spammy"
-    >>> new_user.save()
-
-    # Remove test user
-    >>> new_user.delete()
-
-    .. seealso:: :class:`Access`, :class:`Phone`, :class:`models.meals.Meals`
+    .. seealso:: :class:`Roles`, :class:`Phone`
     """
-
+    
     email = EmailField(required=True, unique=True)
     password = StringField(required=True, min_length=6, regex=None)
-    access = EmbeddedDocumentField(Access, default=Access(user=True, admin=False))
-    # access will be changed to handle different user roles
     name = StringField(unique=False)
     phone = PhoneField()
+    # default user is a student
+    default_roles = {'student':True, 'instructor':False, 'organization':False, 'admin':False}
+    roles = EmbeddedDocumentField(Roles, default=Roles(**default_roles))
 
     def generate_pw_hash(self):
         self.password = generate_password_hash(password=self.password).decode('utf-8')
@@ -93,7 +85,17 @@ class Users(Document):
     # Use documentation from BCrypt for password hashing
     check_pw_hash.__doc__ = check_password_hash.__doc__
 
+    def setup_roles(self):
+        if self.roles.student == True:
+            Students(userId=str(self.id)).save()
+        if self.roles.instructor == True:
+            Instructors(userId=str(self.id)).save()
+        if self.roles.organization == True:
+            Organizations(userId=str(self.id)).save()
+
     def save(self, *args, **kwargs):
         # Overwrite Document save method to generate password hash prior to saving
         self.generate_pw_hash()
         super(Users, self).save(*args, **kwargs)
+        # setup roles after saving so that the new user is assigned an ID
+        self.setup_roles()
