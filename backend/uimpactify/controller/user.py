@@ -38,7 +38,7 @@ class UsersApi(Resource):
 
         if authorized:
             output = Users.objects()
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()
 
@@ -55,7 +55,7 @@ class UsersApi(Resource):
 
         if authorized:
             output = Users.objects.delete()
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()
 
@@ -77,10 +77,10 @@ class UsersApi(Resource):
         authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            data = request.form
+            data = request.get_json()
             post_user = Users(**data).save()
             output = {'id': str(post_user.id)}
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()
 
@@ -115,7 +115,7 @@ class UserApi(Resource):
 
         if authorized:
             output = Users.objects.get(id=user_id)
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()
 
@@ -131,10 +131,10 @@ class UserApi(Resource):
         authorized: bool = Users.objects.get(id=get_jwt_identity()).access.admin
 
         if authorized:
-            data = request.form
+            data = request.get_json()
             put_user = Users.objects(id=user_id).update(**data)
             output = {'id': str(put_user.id)}
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()
 
@@ -151,6 +151,6 @@ class UserApi(Resource):
 
         if authorized:
             output = Users.objects(id=user_id).delete()
-            return jsonify({'result': output})
+            return jsonify(output)
         else:
             return forbidden()

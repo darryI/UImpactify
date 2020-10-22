@@ -35,11 +35,11 @@ class SignUpApi(Resource):
 
         :return: JSON object
         """
-        data = request.form
+        data = request.get_json()
         post_user = Users(**data)
         post_user.save()
         output = {'id': str(post_user.id)}
-        return jsonify({'result': output})
+        return jsonify(output)
 
 
 class LoginApi(Resource):
@@ -67,15 +67,8 @@ class LoginApi(Resource):
         :return: JSON object
         """
 
-        # apparently using request.get_json() is pretty error prone,
-        # a better way to parse parameters is to use request.form for
-        # post requests, and request.args for get requests
 
-        # https://stackoverflow.com/questions/51807114/flask-bad-request-400
-        # https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request.args
-        # https://flask.palletsprojects.com/en/1.1.x/api/#flask.Request.form
-
-        data = request.form
+        data = request.get_json()
         user = Users.objects.get(email=data.get('email'))
         auth_success = user.check_pw_hash(data.get('password'))
         if not auth_success:
@@ -84,6 +77,6 @@ class LoginApi(Resource):
             expiry = datetime.timedelta(days=5)
             access_token = create_access_token(identity=str(user.id), expires_delta=expiry)
             refresh_token = create_refresh_token(identity=str(user.id))
-            return jsonify({'result': {'access_token': access_token,
+            return jsonify({'access_token': access_token,
                                        'refresh_token': refresh_token,
-                                       'logged_in_as': f"{user.email}"}})
+                                       'logged_in_as': f"{user.email}"})
