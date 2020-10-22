@@ -149,4 +149,4 @@ def course_test():
 def init_app(app):
     app.cli.add_command(login)
     app.cli.add_command(signup)
-    app.cli.add_command(course_test)
+    #app.cli.add_command(course_test)
