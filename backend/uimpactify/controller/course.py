@@ -57,7 +57,7 @@ class CourseApi(Resource):
     #@jwt_required
     def get(self, course_id: str) -> Response:
         """
-        GET response method for single documents in meal collection.
+        GET response method for single documents in course collection.
 
         :return: JSON object
         """
@@ -100,7 +100,7 @@ class CourseByInstructorApi(Resource):
     #@jwt_required
     def get(self, instructor_id: str) -> Response:
         """
-        GET response method for single documents in meal collection.
+        GET response method for single documents in course collection.
 
         :return: JSON object
         """

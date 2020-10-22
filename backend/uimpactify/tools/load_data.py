@@ -7,7 +7,6 @@ from flask import Flask
 from app import app
 
 # project resources
-# from models.meals import Meals
 from models.users import Users
 from tools.mongo_loader import mongo
 from tools.get_random_document import get_random
