@@ -13,10 +13,7 @@ function CreationForm(props) {
     // update state with the new course
     const courseJSON = {
       ...values,
-      instructor: props.user.id,
     };
-
-    delete courseJSON.id;
 
     // reset form values
     setValues(props.initialValues);
@@ -27,12 +24,12 @@ function CreationForm(props) {
     if (props.isNewCourse) {
       props.addCourse(courseJSON);
       console.log(courseJSON);
-      API.postCourse(courseJSON);
-      alert('A new course was created');
+      API.postCourse(courseJSON, props.accessToken);
+      // alert('A new course was created');
     } else {
       props.updateCourse(courseJSON);
-      API.putCourse(courseJSON);
-      alert('A course was updated');
+      API.putCourse(courseJSON, props.accessToken);
+      // alert('A course was updated');
     }
   }
 
@@ -91,7 +88,7 @@ function CreationForm(props) {
 export const API = {
   // TODO: replace urls with actual api endpoint & implement authentication logic
 
-  postCourse(course) {
+  postCourse(course, token) {
     const url = 'http://localhost:5000/course/';
     // Default options are marked with *
     return fetch(url, {
@@ -101,12 +98,13 @@ export const API = {
       credentials: 'same-origin', 
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(course) // body data type must match "Content-Type" header
     }).then(res => res.json()); // parses JSON response into native JavaScript objects
   },
 
-  putCourse(course) {
+  putCourse(course, token) {
     const url = 'http://localhost:5000/course/' + course.id;
     // Default options are marked with *
     return fetch(url, {
@@ -116,6 +114,7 @@ export const API = {
       credentials: 'same-origin', 
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(course) // body data type must match "Content-Type" header
     }).then(res => res.json());

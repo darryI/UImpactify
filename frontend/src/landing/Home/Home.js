@@ -10,17 +10,12 @@ import './Home.css';
 
 
 
-function Home() {
+function Home(props) {
   let query = LOC.useQuery();
   const dev = query.get("dev");
 
   if (dev) {
-    // fake user information
-    const user = {
-      name: "Ninja",
-      userId: 1
-    };
-    return <Courses user={user}/>;
+    return <p>secret page xd</p>;
   } else {
     return <p className="home-colour">Home</p>;
   }

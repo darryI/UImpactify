@@ -116,4 +116,13 @@ class CourseByInstructorApi(Resource):
         :return: JSON object
         """
         query = Courses.objects(instructor=get_jwt_identity())
-        return jsonify(convert_query(query))
+        fields = {
+            'id',
+            'name',
+            'objective',
+            'learningOutcomes',
+            'published',
+            'students',
+        }
+        values = convert_query(query, fields)
+        return jsonify(values)

@@ -17,12 +17,10 @@ function Courses(props) {
 
 
   const initialValues = {
-    id: '',
     name: '',
     objective:'',
     learningOutcomes: '',
     published: false,
-    instructor: '',
     students: []
   };
 
@@ -42,7 +40,7 @@ function Courses(props) {
   }
 
   React.useEffect(() => {
-    API.getCourses(props.user.userId)
+    API.getCourses(props.accessToken)
       .then(
         (result) => {
           console.log(result);
@@ -84,7 +82,7 @@ function Courses(props) {
         setShowForm={setShowForm}
         addCourse={addCourse}
         updateCourse={updateCourse}
-        user={props.user}
+        accessToken={props.accessToken}
         isNewCourse={selected === courses.length}
       />
     } else {
@@ -97,7 +95,7 @@ function Courses(props) {
 
     return (
       <div>
-        <h1>{`Courses ${props.user.name} is currently teaching:`} </h1>
+        {/* <h1>{`Courses ${props.user.name} is currently teaching:`} </h1> */}
         <CourseList courses={courses} selected={selected} handleCreate={handleCreate} handleSelection={handleSelection}/>
         {content}
       </div>
@@ -106,8 +104,15 @@ function Courses(props) {
 }
 
 export const API = {
-  getCourses: async (userId) => {
-    return fetch("http://localhost:5000/course/instructor/" + userId).then(res => res.json())
+  getCourses: async (token) => {
+    const url = "http://localhost:5000/course/instructor/";
+    console.log(token);
+
+    return fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    }).then(res => res.json());
   },
 }
 
