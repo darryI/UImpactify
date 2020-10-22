@@ -66,10 +66,7 @@ def course_test():
     # builds the endpoint urls based off of the servername and registered resources
     # reference: https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Api.url_for
     login_url = url_for("loginapi")
-    course_url = url_for("coursesapi")
-    test_courseOne_url = url_for("courseapi", course_id="1")
-    test_courseTwo_url = url_for("courseapi", course_id="2")
-    test_courseByInstructor_url = url_for("coursebyinstructorapi", instructor_id="1")
+    courses_url = url_for("coursesapi")
 
     # make a request to login using the admin account created by running `flask init-db`
     # reference: https://requests.readthedocs.io/en/master/user/quickstart/
@@ -81,72 +78,61 @@ def course_test():
     print(f"{access_token}\n")
 
     # Create a course with basic inputs
-    courseOne = {"name": "testCourseOne", "instructor": 1, "courseId": "1"}
-    courseTwo = {"name": "testCourseTwo", "instructor": 1, "courseId": "2"}
+    courseOne = {
+        "name": "testCourseOne",
+    }
+
+    courseTwo = {
+        "name": "testCourseTwo",
+    }
 
     # use the token as authorization in the request headers to create a course with post call
     requestPostOne = requests.post(
-        course_url,
+        courses_url,
         json=courseOne,
         headers={'Authorization': f'Bearer {access_token}'}
         )
 
     requestPostTwo = requests.post(
-        course_url,
+        courses_url,
         json=courseTwo,
         headers={'Authorization': f'Bearer {access_token}'}
         )
 
     print("\n\n\n***CREATE COURSE***\n")
-    print("Course created with headers and mongoid:")
-    print(requestPostOne.request.headers)
     res = requestPostOne.json()
-    print(res)
-
-    print("Course created with headers and mongoid:")
-    print(requestPostTwo.request.headers)
+    c1 = res['id']
     res = requestPostTwo.json()
-    print(res)
+    c2 = res['id']
+    print(c1)
+    print(c2)
 
-    # use the token as authorization in the request headers to return a course with get call
-    requestGetSingle = requests.get(
-        test_courseOne_url,
-        headers={'Authorization': f'Bearer {access_token}'}
-        )
-
-    returnedCourse = requestGetSingle.json()
-    print("\n\n\n***RETURN SINGLE COURSE***\n")
-    print("Course:")
-    print(json.dumps(returnedCourse, indent=4))
+    test_courseByInstructor_url = url_for("coursebyinstructorapi")
 
     requestGetInstructors = requests.get(
-        test_courseByInstructor_url,
-        headers={'Authorization': f'Bearer {access_token}'}
+            test_courseByInstructor_url,
+            headers={'Authorization': f'Bearer {access_token}'}
         )
 
-    returnedCourse = requestGetInstructors.json()
-    print("\n\n\n***RETURN COURSES BY INSTRUCTORS***\n")
+    courses = requestGetInstructors.json()
+    print("\n\n\n***GET COURSES BY INSTRUCTOR***\n")
     print("Courses:")
-    print(json.dumps(returnedCourse, indent=4))
+    print(json.dumps(courses, indent=4))
 
-    # use the token as authorization in the request headers to delete a course with delete call
-    requestDelete = requests.delete(
-        test_courseOne_url,
-        headers={'Authorization': f'Bearer {access_token}'}
-    )
 
-    requestDelete = requests.delete(
-        test_courseTwo_url,
-        headers={'Authorization': f'Bearer {access_token}'}
-    )
+    c1_url = url_for('courseapi', course_id=c1)
+    c2_url = url_for('courseapi', course_id=c2)
 
-    print("\n\n\n***DELETE COURSE***\n")
-    print("Course deleted with response and headers:")
-    print(requestDelete.request.headers)
-    res = requestDelete.json()
-    print(res)
+    r = requests.get(
+            c1_url,
+            headers={'Authorization': f'Bearer {access_token}'}
+        )
+
+    print("\n\n\n***GET COURSE BY ID***\n")
+    print(r.json())
+
 
 def init_app(app):
     app.cli.add_command(login)
     app.cli.add_command(signup)
-    #app.cli.add_command(course_test)
+    app.cli.add_command(course_test)

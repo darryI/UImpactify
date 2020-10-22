@@ -18,7 +18,7 @@ class CoursesApi(Resource):
     Flask-resftul resource for returning db.course collection.
 
     """
-    #@jwt_required
+    @jwt_required
     def get(self) -> Response:
         """
         GET response method for all documents in course collection.
@@ -33,7 +33,7 @@ class CoursesApi(Resource):
         else:
             return forbidden()
 
-    #@jwt_required
+    @jwt_required
     def post(self) -> Response:
         """
         POST response method for creating a course.
@@ -45,8 +45,10 @@ class CoursesApi(Resource):
 
         if authorized:
             data = request.get_json()
-            post_user = Courses(**data).save()
-            output = {'id': str(post_user.id)}
+            # get the instructor id based off of jwt token identity
+            data['instructor'] = get_jwt_identity()
+            course = Courses(**data).save()
+            output = {'id': str(course.id)}
             return jsonify(output)
         else:
             return forbidden()
@@ -57,7 +59,7 @@ class CourseApi(Resource):
     Flask-resftul resource for returning db.course collection.
 
     """
-    #@jwt_required
+    @jwt_required
     def get(self, course_id: str) -> Response:
         """
         GET response method for single documents in course collection.
@@ -65,12 +67,12 @@ class CourseApi(Resource):
         :return: JSON object
         """
 
-        course = Courses.objects.get(id=course_id).first()
+        course = Courses.objects.get(id=course_id)
         
         return jsonify(convert_doc(course))
 
 
-    #@jwt_required
+    @jwt_required
     def put(self, course_id: str) -> Response:
         """
         PUT response method for updating a course.
@@ -84,7 +86,7 @@ class CourseApi(Resource):
         return jsonify(res)
 
 
-    #@jwt_required
+    @jwt_required
     def delete(self, course_id: str) -> Response:
         """
         DELETE response method for deleting single course.
@@ -106,12 +108,12 @@ class CourseByInstructorApi(Resource):
     Flask-resftul resource for returning courses with the same instructor id.
 
     """
-    #@jwt_required
-    def get(self, instructor_id: str) -> Response:
+    @jwt_required
+    def get(self) -> Response:
         """
         GET response method for single documents in course collection.
 
         :return: JSON object
         """
-        query = Courses.objects(instructor=instructor_id)
+        query = Courses.objects(instructor=get_jwt_identity())
         return jsonify(convert_query(query))
