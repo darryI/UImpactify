@@ -9,6 +9,9 @@ import {
 
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
+
+import Courses from './courses/Courses/Courses.js';
+
 import Login from './landing/login/Login/Login.js';
 
 function App() {
@@ -29,6 +32,9 @@ function App() {
             <li>
               <Link to="/login">Login</Link>
             </li>
+            <li>
+              <Link to="/create">Create</Link>
+            </li>
           </ul>
         </nav>
         {/* A <Switch> looks through its children <Route>s and
@@ -44,10 +50,13 @@ function App() {
                 setAccessToken={setAccessToken}
             />
           </Route>
+          <Route path="/create">
+            <Courses accessToken={accessToken}/>
+          </Route>
           <Route path="/">
             <Home />
           </Route>
-
+          
         </Switch>
       </div>
     </Router>
