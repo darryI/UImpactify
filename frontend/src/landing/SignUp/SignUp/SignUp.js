@@ -9,9 +9,11 @@ import './SignUp.css';
 
 function SignUp() {
     const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [type, setType] = useState([])
+    const [type, setType] = useState(["Student"])
+    const [studentChecked, setStudentChecked] = useState(true)
     const [identify, setIdentify] = useState([])
     const [category, setCategory] = useState('')
     //const [other, setOther] = useState('')
@@ -37,6 +39,9 @@ function SignUp() {
     }
     
     const handleSelectType = (event) => {
+        if(event.target.id === "Student"){
+            setStudentChecked(!studentChecked)
+        }
         if(type.includes(event.target.id)){
             setType(type.filter(t => t !== event.target.id))
         }else{
@@ -50,6 +55,11 @@ function SignUp() {
         //console.log(`email is: ${email}`)
     }
 
+    const handlePhoneChange = (event) => {
+        setPhone(event.target.value)
+        //console.log(`email is: ${email}`)
+    }
+
     const handleSignUp = () => {
         if(email && username && password){
             const newUser = {
@@ -57,11 +67,12 @@ function SignUp() {
                 email: email,
                 password: password,
                 roles: {
-                    student: type.includes("Student") ? "True" : "False",
-                    instructor: type.includes("Instructor") ? "True" : "False",
-                    organization: type.includes("Social Initiative") ? "True" : "False",
-                    admin: "False"
-                }
+                    admin: type.includes("admin"),
+                    instructor: type.includes("Instructor"),
+                    organization: type.includes("Social Initiative"),
+                    student: type.includes("Student")
+                },
+                phone: phone
             }
             // wait for API call then route somewhere and do something with access token
             API.postSignUp(newUser)
@@ -78,6 +89,9 @@ function SignUp() {
                     alert("existing mail")
                 }
             )
+            console.log(type.includes("Student") ? "True" : "False")
+            console.log(type.includes("Instructor") ? "True" : "False")
+            console.log(type.includes("Social Initiative") ? "True" : "False")
             console.log("here?")
         }else{
             alert("one or more of the required fields arent filled!")
@@ -104,14 +118,17 @@ function SignUp() {
             email={email} handleEmailChange={handleEmailChange}
             username={username} handleUsernameChange={handleUsernameChange}
             password={password} handlePasswordChange={handlePasswordChange}
+            phone={phone} handlePhoneChange={handlePhoneChange}
             />
-            <UserTypeDeclaration handleSelectType={handleSelectType}/>
+            <UserTypeDeclaration 
+            handleSelectType={handleSelectType}
+            studentChecked={studentChecked}/>
             <InstructorQuesitons
             handleSelectIdentify={handleSelectIdentify}
             handleSelectChoice={handleSelectChoice}/>
             <SocialInitiativesQuestions
             handleCategory={handleCategory}/>
-            <input type="submit" value="Sign Up" onClick={handleSignUp}/>
+            <button id="signInButton" type="submit" onClick={handleSignUp}>Sign Up</button>
         </div>
     );
 }
