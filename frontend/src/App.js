@@ -9,9 +9,10 @@ import {
 
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
-import Login from './landing/Login/Login.js';
+
 import Courses from './courses/Courses/Courses.js';
 
+import Login from './landing/login/Login/Login.js';
 
 function App() {
 
