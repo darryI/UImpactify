@@ -23,7 +23,6 @@ function CreationForm(props) {
     
     if (props.isNewCourse) {
       props.addCourse(courseJSON);
-      console.log(courseJSON);
       API.postCourse(courseJSON, props.accessToken);
       // alert('A new course was created');
     } else {
