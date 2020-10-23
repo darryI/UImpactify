@@ -1,0 +1,58 @@
+import React from 'react';
+import { ReactComponent as EditIcon } from 'icons/7.svg';
+
+import { ReactComponent as CheckIcon } from 'icons/156.svg';
+import { ReactComponent as CrossIcon } from 'icons/44.svg';
+
+import './CourseInfo.css';
+
+
+
+function CourseInfo(props) {
+  const course = props.course
+
+  const handleEdit = (event) => {
+    props.setFormValues(course);
+    props.setShowForm(true);
+  }
+
+  let pub = null;
+  if (course.published) {
+    pub = <span className="published">
+
+      <p>Published</p>
+      </span>;
+  } else {
+    pub = <span className="not-published">
+
+    <p>Not Published</p>
+    </span>;
+  }
+
+  let students = null;
+  if (course.students.length != 0) {
+    students = course.students.map((s) => <div key={s}>{s}</div>);
+  } else {
+    students = <p>No one has enrolled in this course yet!</p>
+  }
+
+  return (
+    <div className="info-card">
+      <h1>{course.name}</h1>
+      <h2>Objective:</h2>
+      <p>{course.objective}</p>
+      <h2>Learning Outcomes</h2>
+      <p>{course.lrnOutcomes}</p>
+
+      <h2>Student Ids:</h2>
+      {students}
+
+      <div className="toolbar">
+        {pub}
+        <button aria-label="edit-button" className="rect-1627" onClick={e => handleEdit(e)}><EditIcon/><p>Edit</p></button>
+      </div>
+    </div>
+  );
+}
+
+export default CourseInfo;

@@ -5,11 +5,15 @@ import App from './App';
 test('renders landing page and navigation', () => {
   const { getAllByText } = render(<App/>);
   const homeElements = getAllByText(/Home/);
-  const aboutElments = getAllByText(/About/);
+  const loginElements = getAllByText(/Login/);
+  const aboutElements = getAllByText(/About/);
   homeElements.forEach(e => {
     expect(e).toBeInTheDocument();
   });
-  aboutElments.forEach(e => {
+  aboutElements.forEach(e => {
+    expect(e).toBeInTheDocument();
+  });
+  loginElements.forEach(e => {
     expect(e).toBeInTheDocument();
   });
 });
