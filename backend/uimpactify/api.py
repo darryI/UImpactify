@@ -114,22 +114,15 @@ def course_test():
             headers={'Authorization': f'Bearer {access_token}'}
         )
 
-    courses = requestGetInstructors.json()
-    print("\n\n\n***GET COURSES BY INSTRUCTOR***\n")
-    print("Courses:")
-    print(json.dumps(courses, indent=4))
-
-
-    c1_url = url_for('courseapi', course_id=c1)
-    c2_url = url_for('courseapi', course_id=c2)
+    print("\n\n\n***GET ALL COURSES ***\n")
 
     r = requests.get(
-            c1_url,
-            headers={'Authorization': f'Bearer {access_token}'}
-        )
-
-    print("\n\n\n***GET COURSE BY ID***\n")
+        courses_url,
+        headers={'Authorization': f'Bearer {access_token}'}
+    )
     print(r.json())
+    
+    
 
 
 def init_app(app):

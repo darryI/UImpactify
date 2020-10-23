@@ -11,5 +11,5 @@ def convert_doc(doc, include=None):
 
 # converts QuerySet object containing multiple documents to a list of
 # dictionaries safe for client side consumption
-def convert_query(queryset, include):
+def convert_query(queryset, include=None):
     return [convert_doc(doc, include) for doc in queryset]
