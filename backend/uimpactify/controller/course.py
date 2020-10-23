@@ -1,3 +1,6 @@
+# packages
+from bson.objectid import ObjectId
+
 # flask packages
 from flask import Response, request, jsonify
 from flask_restful import Resource
@@ -126,3 +129,50 @@ class CourseByInstructorApi(Resource):
         }
         values = convert_query(query, fields)
         return jsonify(values)
+
+class CourseEnrollmentApi(Resource):
+    """
+    Flask-resftul resource for enrolling in courses.
+
+    """
+    @jwt_required
+    def post(self) -> Response:
+        """
+        POST response method for enrolling in a course.
+
+        :return: JSON object
+        """
+        data = request.get_json()
+        user_id=get_jwt_identity()
+        post_enroll = Courses.objects(id=data["courseId"]).update(push__students=ObjectId(user_id))
+        output = {'id': user_id}
+        return jsonify(output)
+
+class CourseDisenrollmentApi(Resource):
+    @jwt_required
+    def delete(self, course_id: str, user_id: str) -> Response:
+        """
+        DELETE response method for disenrolling in a course.
+
+        :return: JSON object
+        """
+        post_disenroll = Courses.objects(id=course_id).update(pull__students=ObjectId(user_id))
+        output = {'id': user_id}
+        return jsonify(output)
+
+class CoursesWithStudentApi(Resource):
+    """
+    Flask-resftul resource for returning courses with the same instructor id.
+
+    """
+    @jwt_required
+    def get(self, student_id: str) -> Response:
+        """
+        GET response method for single documents in course collection.
+
+        :return: JSON object
+        """
+        output = Courses.objects(students=student_id)
+        fields = { 'id', 'name' }
+        converted = convert_query(output, fields)
+        return jsonify(converted)
