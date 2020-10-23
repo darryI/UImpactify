@@ -9,9 +9,9 @@ import './SignUp.css';
 
 function SignUp() {
     const [email, setEmail] = useState('')
-    const [type, setType] = useState('')
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [type, setType] = useState([])
     const [identify, setIdentify] = useState([])
     const [category, setCategory] = useState('')
     //const [other, setOther] = useState('')
@@ -37,14 +37,12 @@ function SignUp() {
     }
     
     const handleSelectType = (event) => {
-        if(type === ''){
-            setType(event.target.id)
-            //alert(`${event.target.id} is chosen`)
-            //console.log(`${event.target.value}`)
+        if(type.includes(event.target.id)){
+            setType(type.filter(t => t !== event.target.id))
         }else{
-            //alert(`Now chosen:${event.target.id}, changed from: ${type}`)
-            setType(event.target.id)
+            setType(type.concat(event.target.id))
         }
+        console.log(type)
     }
 
     const handleEmailChange = (event) => {
@@ -57,7 +55,13 @@ function SignUp() {
             const newUser = {
                 name: username,
                 email: email,
-                password: password
+                password: password,
+                roles: {
+                    student: type.includes("Student") ? "True" : "False",
+                    instructor: type.includes("Instructor") ? "True" : "False",
+                    organization: type.includes("Social Initiative") ? "True" : "False",
+                    admin: "False"
+                }
             }
             // wait for API call then route somewhere and do something with access token
             API.postSignUp(newUser)

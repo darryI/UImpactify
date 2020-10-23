@@ -7,8 +7,8 @@ const GenericQuestions = (props) => {
             <input type="text" name="email" placeholder="Email" 
             value={props.email} onChange={props.handleEmailChange}/><br/>
 
-            <label htmlFor="Username">Username:</label><br/>
-            <input type="text" name="username" placeholder="username" 
+            <label htmlFor="Name">Name:</label><br/>
+            <input type="text" name="Name" placeholder="Name" 
             value={props.username} onChange={props.handleUsernameChange}/><br/>
 
             <label htmlFor="password">Password:</label><br/>

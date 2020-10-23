@@ -1,0 +1,35 @@
+.info-card {
+  width: 600px;
+  /* White Base */
+
+  background: #FFFFFF;
+  /* White Base */
+
+  margin: 20px;
+  padding: 20px;
+  border-radius: 20px;
+
+  display: flex;
+  /* align-items: center;
+  justify-content: center; */
+  flex-direction: column;
+  box-shadow: 0px 8px 16px rgba(137, 176, 175, 0.25) ;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.published {
+  color: green;
+  display: flex;
+  align-items: center;
+}
+
+.not-published {
+  color: red;
+  display: flex;
+  align-items: center;
+}
