@@ -58,7 +58,10 @@ function LoginForm(props) {
              <input aria-label="password-input" className="InfoInput" placeholder="Enter Password Here" type="password"
                value={loginInfo.password} onChange={e => handlePasswordChange(e)} />
            </div>
-           <a className="ForgotPassword" href="./about">Forgot Password?</a><br/>
+           <div className="ForgotPassword">
+             <a href="./about">Forgot Password?</a><br/>
+           </div>
+           
            <button aria-label="submit-button" className="LoginSubmit" type="submit" value="Login">Login</button>
         </form>
     );

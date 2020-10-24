@@ -26,7 +26,7 @@ color: rgba(0, 0, 0, 0.87);
 width: 120px;
 height: 45px;
 margin: auto;
-background: #A78EC3;
+background: #8616b3;
 border-radius: 60px;
 font-family: OpenSans;
 font-style: normal;
@@ -38,6 +38,8 @@ text-align: center;
 letter-spacing: 0.75px;
 text-transform: uppercase;
 color: #F7F7FF;
+cursor: pointer;
+margin-top: 15px;
 }
 
 .FormSection {
@@ -58,12 +60,24 @@ color: rgba(0, 0, 0, 0.87);
 }
 
 .InfoInput {
-width: 100%;
-height: 30px;
-background: #FFFFFF;
-border: 0.7px solid #3E4345;
-border-radius: 10px;
+/* width: 100%; */
+/* height: 30px; */
+  margin-top: 10px;
+  background: #FFFFFF;
+  border-radius: 10px;
+  border: 1px solid #c4bebe;
+  border-radius: 6px;
+  display: block;
+  padding: 12px;
+  font-size: 15px;
+  background: transparent;
+  margin-bottom: 10px;
+  font-size: 20px;
+  width: 100%;
+  max-width: 100%;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
 
 .ForgotPassword {
 text-align: right;
@@ -71,9 +85,11 @@ font-family: OpenSans;
 font-style: normal;
 font-weight: 600;
 font-size: 20px;
+margin-bottom: 35px;
 line-height: 27px;
 letter-spacing: 0.75px;
 text-decoration-line: underline;
 text-transform: capitalize;
 color: rgba(0, 0, 0, 0.87);
+text-align: center;
 }
