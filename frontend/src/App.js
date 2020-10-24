@@ -11,7 +11,7 @@ import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
 import SignUp from './landing/SignUp/SignUp/SignUp.js'
 import Courses from './courses/Courses/Courses.js';
-import Login from './landing/Login/Login/Login.js';
+import Login from './landing/login/Login/Login.js';
 
 function App() {
 
@@ -35,7 +35,7 @@ function App() {
             <li className="navItem float-left">
               <Link to="/login">Login</Link>
             </li>
-            <li>
+            <li className="navItem float-left">
               <Link to="/create">Create</Link>
             </li>
           </ul>
