@@ -1,0 +1,32 @@
+.SignUp-colour {
+    background: #01FF70;
+    font-size: 22px;
+}
+
+.checkboxLeft{
+    width:20px;
+    float:left;
+    margin-right:5px;
+}
+
+h3{
+    background-color: #85144b; /* Maroon */
+    width:85%;
+    text-align: center;
+    font-size: 19px;
+}
+
+#signInButton{
+    background-color: #F012BE; color: white; /* Green */
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    position:absolute; top:-1; right:0;
+}
+
+.genericQ{
+    padding-bottom: 10px; 
+}

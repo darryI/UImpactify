@@ -1,4 +1,41 @@
 body {
-  /* This style is overrides the one specifed in index.css */
-  background-color: #eeeeee;
+    /* This style is overrides the one specifed in index.css */
+    background-color: #ffffff;
+    margin: 0;
+  }
+  
+  /* CSS of elements in header */
+.header {
+    height: 50px;
+    box-shadow: 0 3px 3px rgba(10,10,10,0.5);
+    padding: 10px;
+    background-color: #ffffff;
+    position: relative;
+    z-index: 1;
 }
+  
+.navbar {
+    list-style-type: none;
+    font-size: 16px;
+    margin: 0 0 18px 0;
+    padding: 0 0 10px 0;
+}
+  
+li.navItem {
+    display: inline;
+    border-right: 1px solid rgba(0, 0, 0, 0.5);
+}
+  
+li.navItem a {
+    color: #ab14f1;
+    padding: 0 9px;
+    margin: 0;
+    /* color: #555555; */
+}
+  
+#logo {
+    float: left;
+    height: 50px;
+    padding-right: 20px;
+}
+/* End of CSS of elements in header */

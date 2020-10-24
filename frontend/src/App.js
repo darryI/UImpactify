@@ -9,10 +9,9 @@ import {
 
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
-
+import SignUp from './landing/SignUp/SignUp/SignUp.js'
 import Courses from './courses/Courses/Courses.js';
-
-import Login from './landing/login/Login/Login.js';
+import Login from './landing/Login/Login/Login.js';
 
 function App() {
 
@@ -20,16 +19,20 @@ function App() {
 
   return (
     <Router>
-      <div>
-        <nav>
+        <div className="header">
+        <img id="logo" src={require('./images/impactify_logo.png')} alt="Logo"/>
+        <nav className="navbar">
           <ul>
-            <li>
+            <li className="navItem float-left">
               <Link to="/">Home</Link>
             </li>
-            <li>
+            <li className="navItem float-left">
               <Link to="/about">About</Link>
             </li>
-            <li>
+            <li className="navItem float-left">
+                <Link to="/SignUp">SignUp</Link>
+            </li>
+            <li className="navItem float-left">
               <Link to="/login">Login</Link>
             </li>
             <li>
@@ -42,17 +45,18 @@ function App() {
         <Switch>
           <Route path="/about">
             <About
-                accessToken={accessToken}
-             />
+                accessToken={accessToken}/>
           </Route>
           <Route path="/login">
             <Login
-                setAccessToken={setAccessToken}
-            />
+                setAccessToken={setAccessToken}/>
           </Route>
           <Route path="/create">
             <Courses accessToken={accessToken}/>
           </Route>
+          <Route path="/SignUp">
+                <SignUp />
+            </Route>
           <Route path="/">
             <Home />
           </Route>
