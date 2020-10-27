@@ -4,8 +4,6 @@ import CourseList from '../CourseList/CourseList.js';
 import CreationForm from '../CreationForm/CreationForm.js';
 import CourseInfo from '../CourseInfo/CourseInfo.js';
 
-import jsonCourses from './courses.json';
-
 
 function Courses(props) {
   const [error, setError] = React.useState(null);
@@ -43,7 +41,6 @@ function Courses(props) {
     API.getCourses(props.accessToken)
       .then(
         (result) => {
-          console.log(result);
           setIsLoaded(true);
           setCourses(result);
         },

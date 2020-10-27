@@ -6,6 +6,7 @@ from flask import Response, request, jsonify
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
 
 # project resources
 from uimpactify.models.courses import Courses
@@ -14,7 +15,7 @@ from uimpactify.controller.errors import forbidden
 from uimpactify.models.users import Users
 
 from uimpactify.utils.mongo_utils import convert_query, convert_doc
-
+from uimpactify.controller.errors import unauthorized, bad_request, conflict
 
 class CoursesApi(Resource):
     """
@@ -50,7 +51,10 @@ class CoursesApi(Resource):
             data = request.get_json()
             # get the instructor id based off of jwt token identity
             data['instructor'] = get_jwt_identity()
-            course = Courses(**data).save()
+            try:
+                course = Courses(**data).save()
+            except ValidationError as e:
+                return bad_request(e.to_dict())
             output = {'id': str(course.id)}
             return jsonify(output)
         else:
@@ -84,8 +88,10 @@ class CourseApi(Resource):
 
         """
         data = request.get_json()
-
-        res = Courses.objects.get(id=course_id).update(**data)
+        try:
+            res = Courses.objects.get(id=course_id).update(**data)
+        except ValidationError as e:
+            return bad_request(e.message)
         return jsonify(res)
 
 
@@ -144,7 +150,9 @@ class CourseEnrollmentApi(Resource):
         """
         data = request.get_json()
         user_id=get_jwt_identity()
+
         post_enroll = Courses.objects(id=data["courseId"]).update(push__students=ObjectId(user_id))
+        
         output = {'id': user_id}
         return jsonify(output)
 
@@ -157,6 +165,7 @@ class CourseDisenrollmentApi(Resource):
         :return: JSON object
         """
         post_disenroll = Courses.objects(id=course_id).update(pull__students=ObjectId(user_id))
+
         output = {'id': user_id}
         return jsonify(output)
 

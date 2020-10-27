@@ -83,8 +83,14 @@ export const API = {
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify(data)
-            })
-          .then(res => res.json())
+        })
+        .then(res => {
+            // check to see if the server responded with a 200 request (ok)
+            // if not, then reject the promise so that proper error handling can take place
+            return res.json().then(json => {
+                return res.ok ? json : Promise.reject(json);
+            });
+        });
     }
 }
 
