@@ -1,5 +1,6 @@
 # packages
 from bson.objectid import ObjectId
+from bson.errors import InvalidId
 
 # flask packages
 from flask import Response, request, jsonify
@@ -151,7 +152,15 @@ class CourseEnrollmentApi(Resource):
         data = request.get_json()
         user_id=get_jwt_identity()
 
-        post_enroll = Courses.objects(id=data["courseId"]).update(push__students=ObjectId(user_id))
+
+        try:
+            post_enroll = Courses.objects(id=data["courseId"]).update(push__students=ObjectId(user_id))
+        except InvalidId as e:
+            print(e.__class__.__name__)
+            print(dir(e))
+            return bad_request(str(e))
+        except ValidationError as e:
+            return bad_request(e.message)
         
         output = {'id': user_id}
         return jsonify(output)
@@ -164,7 +173,14 @@ class CourseDisenrollmentApi(Resource):
 
         :return: JSON object
         """
-        post_disenroll = Courses.objects(id=course_id).update(pull__students=ObjectId(user_id))
+        try:
+            post_disenroll = Courses.objects(id=course_id).update(pull__students=ObjectId(user_id))
+        except InvalidId as e:
+            print(e.__class__.__name__)
+            print(dir(e))
+            return bad_request(str(e))
+        except ValidationError as e:
+            return bad_request(e.message)
 
         output = {'id': user_id}
         return jsonify(output)
