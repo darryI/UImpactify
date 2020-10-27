@@ -6,7 +6,7 @@
 	- make a text channel called #remarks in your discord server
     - remark requests must be received within **2 weeks** of receiving your mark
 
-**total mark for phase 1**: 32/38 + x/4
+**total mark for phase 1**: 32/38 + 4/4 = 36/42
 
 ---
 
@@ -133,14 +133,13 @@
 
 ## user experience
 
-**total mark**: x/4
+**total mark**: 4/4
 
 |category|mark|total|
-|user experience is logically related to scenarios (from summary.md)|x|2|
-|graphic representation is clear and represents well intended user interface elements|x|2|
+|user experience is logically related to scenarios (from summary.md)|2|2|
+|graphic representation is clear and represents well intended user interface elements|2|2|
 
 **additional comments**:
-- UNDER REVIEW
 - in the sprint0 handout under user experience: "Use whichever format you’d like, just make it easy for the TA to evaluate."
 	- this was a pain in the ass to look at, UX for viewer = -inf
 		- it's great that you guys went through his mockups and found what you guys liked and didn't like, but I only need to see that the UX is logically related to scenarios, not 100 comments
