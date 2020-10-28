@@ -15,19 +15,36 @@ function CreationForm(props) {
       ...values,
     };
 
-    // reset form values
-    setValues(props.initialValues);
-    
-    // navigate away from the creation form after submitting
-    props.setShowForm(false);
     
     if (props.isNewCourse) {
-      props.addCourse(courseJSON);
-      API.postCourse(courseJSON, props.accessToken);
+      API.postCourse(courseJSON, props.accessToken).then(
+        (result) => {
+          courseJSON.id = result.id;
+          props.addCourse(courseJSON);
+          // reset form values
+          setValues(props.initialValues);
+          // navigate away from the creation form after submitting
+          props.setShowForm(false);
+        },
+        (error) => {
+            alert(JSON.stringify(error));
+        }
+      );
       // alert('A new course was created');
     } else {
-      props.updateCourse(courseJSON);
-      API.putCourse(courseJSON, props.accessToken);
+      API.putCourse(courseJSON, props.accessToken).then(
+        (result) => {
+          props.updateCourse(courseJSON);
+          // reset form values
+          setValues(props.initialValues);
+          // navigate away from the creation form after submitting
+          console.log("setShowForm");
+          props.setShowForm(false);
+        },
+        (error) => {
+            alert(JSON.stringify(error));
+        }
+      );
       // alert('A course was updated');
     }
   }
@@ -69,7 +86,7 @@ function CreationForm(props) {
 
       <textarea aria-label="obj-input" className="rect-2" placeholder="Objective:" type="text" value={values.objective} onChange={e => handleObjChange(e)} />
 
-      <textarea aria-label="lrn-input" className="rect-2" placeholder="Learning Outcomes:" type="text" value={values.lrnOutcomes} onChange={e => handleLrnChange(e)} />
+      <textarea aria-label="lrn-input" className="rect-2" placeholder="Learning Outcomes:" type="text" value={values.learningOutcomes} onChange={e => handleLrnChange(e)} />
 
       <div className="row">
         <div className="labelRectCombo">
@@ -79,7 +96,6 @@ function CreationForm(props) {
         <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/><p>Save</p></button>
         
       </div>
-
     </form>
   );
 }
@@ -100,7 +116,13 @@ export const API = {
         'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(course) // body data type must match "Content-Type" header
-    }).then(res => res.json()); // parses JSON response into native JavaScript objects
+    }).then( res => {
+      // check to see if the server responded with a 200 request (ok)
+      // if not, then reject the promise so that proper error handling can take place
+      return res.json().then(json => {
+          return res.ok ? json : Promise.reject(json);
+      });
+  });
   },
 
   putCourse(course, token) {
@@ -116,7 +138,13 @@ export const API = {
         'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(course) // body data type must match "Content-Type" header
-    }).then(res => res.json());
+    }).then( res => {
+        // check to see if the server responded with a 200 request (ok)
+        // if not, then reject the promise so that proper error handling can take place
+        return res.json().then(json => {
+            return res.ok ? json : Promise.reject(json);
+        });
+    });
   },
 
 }

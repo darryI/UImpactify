@@ -6,6 +6,7 @@ import UserTypeDeclaration from '../TypeDeclaration/TypeDeclaration'
 import SocialInitiativesQuestions from '../SInitiativesQuestions/SInitiativesQuestions'
 import InstructorQuesitons from '../InstructorQuestions/InstructorQuestions'
 import './SignUp.css';
+import { prettyDOM } from "@testing-library/react";
 
 function SignUp() {
     const [email, setEmail] = useState('')
@@ -85,8 +86,7 @@ function SignUp() {
                 // instead of a catch() block so that we don't swallow
                 // exceptions from actual bugs in components.
                 (error) => {
-                    //console.log("bumbumshoe")
-                    alert("existing mail")
+                    alert(JSON.stringify(error, null, 2));
                 }
             )
             console.log(type.includes("Student") ? "True" : "False")
@@ -148,8 +148,14 @@ export const API = {
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify(data)
-            })
-          .then(res => res.json())
+        })
+        .then(res => {
+            // check to see if the server responded with a 200 request (ok)
+            // if not, then reject the promise so that proper error handling can take place
+            return res.json().then(json => {
+                return res.ok ? json : Promise.reject(json);
+            });
+        });
     }
 
 }
