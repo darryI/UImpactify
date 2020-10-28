@@ -19,6 +19,7 @@ function CreationForm(props) {
     if (props.isNewCourse) {
       API.postCourse(courseJSON, props.accessToken).then(
         (result) => {
+          courseJSON.id = result.id;
           props.addCourse(courseJSON);
           // reset form values
           setValues(props.initialValues);
