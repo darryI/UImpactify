@@ -8,7 +8,7 @@ from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
 # project resources
 from uimpactify.models.users import Users
 from uimpactify.controller.errors import unauthorized, bad_request, conflict
-
+from uimpactify.controller.dont_crash import dont_crash
 
 # external packages
 import datetime
@@ -32,6 +32,7 @@ class SignUpApi(Resource):
 
     """
     @staticmethod
+    @dont_crash
     def post() -> Response:
         """
         POST response method for creating user.
@@ -70,6 +71,7 @@ class LoginApi(Resource):
 
     """
     @staticmethod
+    @dont_crash
     def post() -> Response:
         """
         POST response method for retrieving user web token.
@@ -95,4 +97,3 @@ class LoginApi(Resource):
         except DoesNotExist as e:
             # user does not exist (email incorrect)
             return unauthorized()
-        

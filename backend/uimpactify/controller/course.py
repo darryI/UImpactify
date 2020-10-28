@@ -17,6 +17,7 @@ from uimpactify.models.users import Users
 
 from uimpactify.utils.mongo_utils import convert_query, convert_doc
 from uimpactify.controller.errors import unauthorized, bad_request, conflict
+from uimpactify.controller.dont_crash import dont_crash
 
 class CoursesApi(Resource):
     """
@@ -24,6 +25,7 @@ class CoursesApi(Resource):
 
     """
     @jwt_required
+    @dont_crash
     def get(self) -> Response:
         """
         GET response method for all documents in course collection.
@@ -39,6 +41,7 @@ class CoursesApi(Resource):
             return forbidden()
 
     @jwt_required
+    @dont_crash
     def post(self) -> Response:
         """
         POST response method for creating a course.
@@ -47,7 +50,6 @@ class CoursesApi(Resource):
 
         """
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
-
         if authorized:
             data = request.get_json()
             # get the instructor id based off of jwt token identity
@@ -68,6 +70,7 @@ class CourseApi(Resource):
 
     """
     @jwt_required
+    @dont_crash
     def get(self, course_id: str) -> Response:
         """
         GET response method for single documents in course collection.
@@ -81,6 +84,7 @@ class CourseApi(Resource):
 
 
     @jwt_required
+    @dont_crash
     def put(self, course_id: str) -> Response:
         """
         PUT response method for updating a course.
@@ -97,6 +101,7 @@ class CourseApi(Resource):
 
 
     @jwt_required
+    @dont_crash
     def delete(self, course_id: str) -> Response:
         """
         DELETE response method for deleting single course.
@@ -119,6 +124,7 @@ class CourseByInstructorApi(Resource):
 
     """
     @jwt_required
+    @dont_crash
     def get(self) -> Response:
         """
         GET response method for single documents in course collection.
@@ -143,6 +149,7 @@ class CourseEnrollmentApi(Resource):
 
     """
     @jwt_required
+    @dont_crash
     def post(self) -> Response:
         """
         POST response method for enrolling in a course.
@@ -167,6 +174,7 @@ class CourseEnrollmentApi(Resource):
 
 class CourseDisenrollmentApi(Resource):
     @jwt_required
+    @dont_crash
     def delete(self, course_id: str, user_id: str) -> Response:
         """
         DELETE response method for disenrolling in a course.
@@ -191,6 +199,7 @@ class CoursesWithStudentApi(Resource):
 
     """
     @jwt_required
+    @dont_crash
     def get(self, student_id: str) -> Response:
         """
         GET response method for single documents in course collection.
