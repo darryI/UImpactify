@@ -38,6 +38,7 @@ function CreationForm(props) {
           // reset form values
           setValues(props.initialValues);
           // navigate away from the creation form after submitting
+          console.log("setShowForm");
           props.setShowForm(false);
         },
         (error) => {
@@ -85,7 +86,7 @@ function CreationForm(props) {
 
       <textarea aria-label="obj-input" className="rect-2" placeholder="Objective:" type="text" value={values.objective} onChange={e => handleObjChange(e)} />
 
-      <textarea aria-label="lrn-input" className="rect-2" placeholder="Learning Outcomes:" type="text" value={values.lrnOutcomes} onChange={e => handleLrnChange(e)} />
+      <textarea aria-label="lrn-input" className="rect-2" placeholder="Learning Outcomes:" type="text" value={values.learningOutcomes} onChange={e => handleLrnChange(e)} />
 
       <div className="row">
         <div className="labelRectCombo">
@@ -95,7 +96,6 @@ function CreationForm(props) {
         <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/><p>Save</p></button>
         
       </div>
-
     </form>
   );
 }

@@ -17,7 +17,7 @@ from uimpactify.models.users import Users
 
 from uimpactify.utils.mongo_utils import convert_query, convert_doc
 from uimpactify.controller.errors import unauthorized, bad_request, conflict
-from uimpactify.controller.dont_crash import dont_crash
+from uimpactify.controller.dont_crash import dont_crash, user_exists
 
 class CoursesApi(Resource):
     """
@@ -25,6 +25,7 @@ class CoursesApi(Resource):
 
     """
     @jwt_required
+    @user_exists
     @dont_crash
     def get(self) -> Response:
         """
@@ -34,26 +35,38 @@ class CoursesApi(Resource):
         """
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
 
+
         if authorized:
             query = Courses.objects()
-            return jsonify(convert_query(query))
+
+            fields = {
+                'id',
+                'name',
+                'objective',
+                'learningOutcomes',
+                'published',
+            }
+
+            res = convert_query(query, include=fields)
+            return jsonify(res)
         else:
             return forbidden()
 
     @jwt_required
+    @user_exists
     @dont_crash
     def post(self) -> Response:
         """
         POST response method for creating a course.
         JSON Web Token is required.
         Authorization is required: Access(admin=true)
-
         """
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
         if authorized:
             data = request.get_json()
             # get the instructor id based off of jwt token identity
             data['instructor'] = get_jwt_identity()
+            print(get_jwt_identity())
             try:
                 course = Courses(**data).save()
             except ValidationError as e:
@@ -70,6 +83,7 @@ class CourseApi(Resource):
 
     """
     @jwt_required
+    @user_exists
     @dont_crash
     def get(self, course_id: str) -> Response:
         """
@@ -79,18 +93,24 @@ class CourseApi(Resource):
         """
 
         course = Courses.objects.get(id=course_id)
-        
-        return jsonify(convert_doc(course))
+        fields = {
+            'id',
+            'name',
+            'objective',
+            'learningOutcomes',
+            'published',
+        }
+        return jsonify(convert_doc(course, include=fields))
 
 
     @jwt_required
+    @user_exists
     @dont_crash
     def put(self, course_id: str) -> Response:
         """
         PUT response method for updating a course.
         JSON Web Token is required.
         Authorization is required: Access(admin=true)
-
         """
         data = request.get_json()
         try:
@@ -101,6 +121,7 @@ class CourseApi(Resource):
 
 
     @jwt_required
+    @user_exists
     @dont_crash
     def delete(self, course_id: str) -> Response:
         """
@@ -124,6 +145,7 @@ class CourseByInstructorApi(Resource):
 
     """
     @jwt_required
+    @user_exists
     @dont_crash
     def get(self) -> Response:
         """
@@ -138,7 +160,6 @@ class CourseByInstructorApi(Resource):
             'objective',
             'learningOutcomes',
             'published',
-            'students',
         }
         values = convert_query(query, fields)
         return jsonify(values)
@@ -149,6 +170,7 @@ class CourseEnrollmentApi(Resource):
 
     """
     @jwt_required
+    @user_exists
     @dont_crash
     def post(self) -> Response:
         """
@@ -174,6 +196,7 @@ class CourseEnrollmentApi(Resource):
 
 class CourseDisenrollmentApi(Resource):
     @jwt_required
+    @user_exists
     @dont_crash
     def delete(self, course_id: str, user_id: str) -> Response:
         """
@@ -199,6 +222,7 @@ class CoursesWithStudentApi(Resource):
 
     """
     @jwt_required
+    @user_exists
     @dont_crash
     def get(self, student_id: str) -> Response:
         """
