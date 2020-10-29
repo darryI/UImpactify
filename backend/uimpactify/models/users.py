@@ -57,6 +57,7 @@ class Users(Document):
     :param name: option unique string username
     :param phone: optional string phone-number, must be valid via regex
     :param roles: Roles object
+    :param jwtId: jwt identity for the user
 
     .. seealso:: :class:`Roles`, :class:`Phone`
     """

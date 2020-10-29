@@ -154,3 +154,22 @@ class UserApi(Resource):
             return jsonify(output)
         else:
             return forbidden()
+
+
+class SelfDeleteApi(Resource):
+    """
+    Flask-resftul resource for returning db.user collection.
+
+    """
+
+    @jwt_required
+    def delete(self) -> Response:
+        """
+        DELETE response method for deleting currently logged in user.
+        JSON Web Token is required.
+
+        :return: JSON object
+        """
+
+        output = Users.objects(id=get_jwt_identity()).delete()
+        return jsonify(output)
