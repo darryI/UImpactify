@@ -19,27 +19,36 @@ function App() {
 
   return (
     <Router>
-        <div className="header">
-        <img id="logo" src={require('./images/impactify_logo.png')} alt="Logo"/>
+      <div className="header">
+        <Link to="/login">
+          <button className="navbarButton">LOGIN</button>
+        </Link>
+        <Link to="/SignUp">
+          <button className="navbarButton" id="navbarSignUpButton">SIGN UP</button>
+        </Link>
+        <img id="logo" src={require('./images/logo.svg')} alt="Logo"/>
         <nav className="navbar">
           <ul>
-            <li className="navItem float-left">
+            <li className="navItem">
               <Link to="/">Home</Link>
             </li>
-            <li className="navItem float-left">
+            <li className="navItem">
               <Link to="/about">About</Link>
             </li>
-            <li className="navItem float-left">
+            {/* <li className="navItem">
                 <Link to="/SignUp">SignUp</Link>
-            </li>
-            <li className="navItem float-left">
+            </li> */}
+            {/* <li className="navItem">
               <Link to="/login">Login</Link>
-            </li>
-            <li className="navItem float-left">
+            </li> */}
+            <li className="navItem">
               <Link to="/create">Create</Link>
             </li>
+            
           </ul>
+          
         </nav>
+        
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>

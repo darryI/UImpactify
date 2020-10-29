@@ -276,9 +276,9 @@ color: rgba(0, 0, 0, 0.87);
 
 /* =============== Buttons =============== */
 button {
-  border: 2px solid #a153d4;
+  border: 2px solid #A78EC3;
   border-radius: 6px;
-  background: #8616b3;
+  background: #A78EC3;
   color: #ffffff;
   display: inline-block;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -286,12 +286,13 @@ button {
   padding: 10px 15px;
   text-align: center;
   cursor: pointer;
+  box-shadow: 0 2px 2px 0 rgba(59, 56, 56, 0.5);
 }
 
 [type=submit] {
   border: 2px solid #a153d4;
   border-radius: 6px;
-  background: #8616b3;
+  background: #A78EC3;
   color: #ffffff;
   display: inline-block;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -302,14 +303,14 @@ button {
 }
 
 button:hover, [type=submit]:hover {
-  border: 2px solid #a153d4;
-  background: #7403a1;
+  border: 2px solid #A78EC3;
+  background: #8956c4;
   color: #ffffff;
 }
 
-button:focus, button:active, [type=submit]:focus, [type=submit]:active {
-  border: 2px solid #a153d4;
-  background: #5d0381;
+/* button:focus, button:active, [type=submit]:focus, [type=submit]:active {
+  border: 2px solid #A78EC3;
+  background: #7838c2;
   color: #ffffff;
-}
+} */
 /* =============== Buttons =============== */
