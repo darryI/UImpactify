@@ -5,7 +5,7 @@ import CreationForm from '../CreationForm/CreationForm.js';
 import CourseInfo from '../CourseInfo/CourseInfo.js';
 
 
-function Courses(props) {
+function CourseCreation(props) {
   const [error, setError] = React.useState(null);
   const [isLoaded, setIsLoaded] = React.useState(false);
 
@@ -86,7 +86,7 @@ function Courses(props) {
       content = <CourseInfo 
         setFormValues={setValues} 
         setShowForm={setShowForm} 
-        course={courses[selected]} 
+        course={courses[selected]}
       />
     }
 
@@ -113,4 +113,4 @@ export const API = {
   },
 }
 
-export default Courses;
+export default CourseCreation;
