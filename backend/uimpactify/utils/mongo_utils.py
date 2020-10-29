@@ -13,8 +13,8 @@ def convert_doc(doc, include=None, save_as=None):
         fields = {save_as[field]: getattr(doc, str(field)) for field in doc if ((include is None) or (str(field) in include))}
     else:
         fields = {field: getattr(doc, str(field)) for field in doc if ((include is None) or (str(field) in include))}
+        # serialized the object id into it's string version
         fields['id'] = str(fields['id'])
-    # serialized the object id into it's string version
     return fields
                 
 
