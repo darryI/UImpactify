@@ -45,6 +45,8 @@ def get_embedded_attr(doc, embedded, save_as):
 
 # converts QuerySet object containing multiple documents with embedded document objects
 # to a list of dictionaries safe for client side consumption
+# embedded is a dictionary of {embedded doc name: desired embedded doc fields}
+# save_as is a dictionary of {embedded doc name: {desired embedded doc fields: new name for field}}
 def convert_embedded_query(queryset, non_embedded, embedded, save_as):
     res = []
     for doc in queryset:
