@@ -19,7 +19,13 @@ function App() {
 
   return (
     <Router>
-        <div className="header">
+      <div className="header">
+        <Link to="/login">
+          <button className="navbarButton">LOGIN</button>
+        </Link>
+        <Link to="/SignUp">
+          <button className="navbarButton" id="navbarSignUpButton">SIGN UP</button>
+        </Link>
         <img id="logo" src={require('./images/logo.svg')} alt="Logo"/>
         <nav className="navbar">
           <ul>
@@ -29,17 +35,20 @@ function App() {
             <li className="navItem">
               <Link to="/about">About</Link>
             </li>
-            <li className="navItem">
+            {/* <li className="navItem">
                 <Link to="/SignUp">SignUp</Link>
-            </li>
-            <li className="navItem">
+            </li> */}
+            {/* <li className="navItem">
               <Link to="/login">Login</Link>
-            </li>
+            </li> */}
             <li className="navItem">
               <Link to="/create">Create</Link>
             </li>
+            
           </ul>
+          
         </nav>
+        
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>

@@ -38,4 +38,17 @@ li.navItem a {
     height: 50px;
     padding-right: 20px;
 }
+
+.navbarButton {
+    float: right;
+    margin-top: 5px;
+    margin-right: 15px;
+}
+
+#navbarSignUpButton {
+    background: #ffffff !important;
+    color: #A78EC3;
+}
+
+
 /* End of CSS of elements in header */
