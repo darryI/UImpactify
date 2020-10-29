@@ -15,7 +15,7 @@ from uimpactify.controller.errors import forbidden
 
 from uimpactify.models.users import Users
 
-from uimpactify.utils.mongo_utils import convert_query, convert_doc
+from uimpactify.utils.mongo_utils import convert_query, convert_doc, convert_embedded_query
 from uimpactify.controller.errors import unauthorized, bad_request, conflict
 from uimpactify.controller.dont_crash import dont_crash, user_exists
 
@@ -233,4 +233,28 @@ class CoursesWithStudentApi(Resource):
         output = Courses.objects(students=student_id)
         fields = { 'id', 'name' }
         converted = convert_query(output, fields)
+        return jsonify(converted)
+
+
+class PublishedCoursesApi(Resource):
+    """
+    Flask-resftul resource for returning all published courses.
+
+    """
+    @dont_crash
+    def get(self) -> Response:
+        """
+        GET response method for all documents in course collection with published=true.
+
+        :return: JSON object
+        """
+        output = Courses.objects(published=True)
+        fields = {
+            'id',
+            'name', 
+            'objective'
+            }
+        embedded = {'instructor': {'name'}}
+        save_as = {'instructor': {'name': 'instructor'}}
+        converted = convert_embedded_query(output, fields, embedded, save_as)
         return jsonify(converted)
