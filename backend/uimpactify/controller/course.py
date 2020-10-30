@@ -254,7 +254,6 @@ class PublishedCoursesApi(Resource):
             'name', 
             'objective'
             }
-        embedded = {'instructor': {'name'}}
-        save_as = {'instructor': {'name': 'instructor'}}
-        converted = convert_embedded_query(output, fields, embedded, save_as)
+        embedded = {'instructor': {'name': 'instructor'}}
+        converted = convert_embedded_query(output, fields, embedded)
         return jsonify(converted)
