@@ -7,7 +7,6 @@ import {
   Link
 } from "react-router-dom";
 
-import { LoggedInNavbar, LoggedOutNavbar } from "./utils/Navigation.js"
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
 import SignUp from './landing/SignUp/SignUp/SignUp.js'
