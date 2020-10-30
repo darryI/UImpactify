@@ -4,14 +4,6 @@ import CourseCard from '../CourseCard/CourseCard.js';
 import './CoursesPage.css';
 import jsonCourses from '../courses.json'
 
-import Course from '../Course/Course.js';
-
-import {
-    BrowserRouter, Switch, Route
-} from "react-router-dom";
-
-
-
 function CoursesPage(props) {
 
     const [error, setError] = React.useState(null);
@@ -38,33 +30,38 @@ function CoursesPage(props) {
 
     const courseCards = courses.map(c => <CourseCard key={c.id} course={c}/>);
 
-    return (
-        <div className="courses-page">  
-            <div className="middle">
-                {courseCards}
+
+    if (error) {
+        return <p>courses could not be loaded</p>
+    } else if (!isLoaded) {
+        return <p>... loading</p>
+    } else {
+        return (
+            <div className="courses-page">  
+                <div className="middle">
+                    {courseCards}
+                </div>
             </div>
-        </div>
-    );
+        ); 
+    }
 }
 
 
 export const API = {
     getCourses: async (token) => {
-        console.log('not mocked');
-        return Promise.resolve(jsonCourses);
-    },
-
-
-    // getCourses: async (token) => {
-    //   const url = "http://localhost:5000/course/";
-    //   console.log(token);
+      const url = "http://localhost:5000/course/published/";
   
-    //   return fetch(url, {
-    //     headers: {
-    //       'Authorization': `Bearer ${token}`,
-    //     }
-    //   }).then(res => res.json());
-    // },
+      return fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then( async res => {
+        // check to see if the server responded with a 200 request (ok)
+        // if not, then reject the promise so that proper error handling can take place
+        const json = await res.json();
+        return res.ok ? json : Promise.reject(json);
+      });
+    },
 }
 
 export default CoursesPage;
