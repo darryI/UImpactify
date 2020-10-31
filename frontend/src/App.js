@@ -4,7 +4,8 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 
 import About from './landing/About/About.js';
@@ -12,58 +13,26 @@ import Home from './landing/Home/Home.js';
 import SignUp from './landing/SignUp/SignUp/SignUp.js'
 import Courses from './courses/Courses/Courses.js';
 import Login from './landing/login/Login/Login.js';
+import TopBar from './utils/Navigation.js';
 import Logout from './landing/login/Logout/Logout.js';
 
 function App() {
 
   const [loggedIn, setLoggedIn] = React.useState(false);
 
-  let topBar;
-
-  React.useEffect(() => {
+/*  React.useEffect(() => {
       var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
       if ( token === null) {
-         console.log("not logged in yet")
-
+        console.log(loggedIn)
       } else {
-          console.log("logged in babos")
+        console.log(loggedIn)
       }
-    }, [loggedIn])
+    }, [loggedIn])*/
 
   return (
     <Router>
       <div className="header">
-        <Link to="/logout">
-          <button className="navbarButton">LOGOUT</button>
-        </Link>
-        <Link to="/login">
-          <button className="navbarButton">LOGIN</button>
-        </Link>
-        <Link to="/SignUp">
-          <button className="navbarButton" id="navbarSignUpButton">SIGN UP</button>
-        </Link>
-        <img id="logo" src={require('./images/logo.svg')} alt="Logo"/>
-        <nav className="navbar">
-          <ul>
-            <li className="navItem">
-              <Link to="/">Home</Link>
-            </li>
-            <li className="navItem">
-              <Link to="/about">About</Link>
-            </li>
-            {/* <li className="navItem">
-                <Link to="/SignUp">SignUp</Link>
-            </li> */}
-            {/* <li className="navItem">
-              <Link to="/login">Login</Link>
-            </li> */}
-            <li className="navItem">
-              <Link to="/create">Create</Link>
-            </li>
-
-          </ul>
-
-        </nav>
+        <TopBar loggedIn={loggedIn} />
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}

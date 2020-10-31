@@ -43,7 +43,7 @@ function CreationForm(props) {
         if ( token === null) {
         history.push("/login")
       } else {
-        API.putCourse(courseJSON, props.access_token).then(
+        API.putCourse(courseJSON, token.access_token).then(
           (result) => {
             props.updateCourse(courseJSON);
             // reset form values
