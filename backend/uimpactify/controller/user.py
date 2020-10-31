@@ -7,6 +7,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from uimpactify.models.users import Users
 from uimpactify.controller.errors import forbidden
 from uimpactify.utils.mongo_utils import convert_query, convert_doc
+from uimpactify.controller.dont_crash import dont_crash, user_exists
 
 class UsersApi(Resource):
     """
@@ -162,6 +163,8 @@ class SelfDeleteApi(Resource):
 
     """
 
+    @dont_crash
+    @user_exists
     @jwt_required
     def delete(self) -> Response:
         """
