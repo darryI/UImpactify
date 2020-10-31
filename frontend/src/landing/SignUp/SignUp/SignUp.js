@@ -111,24 +111,32 @@ function SignUp() {
     }
 
     return (
-        <div>
-            <p className="SignUp-colour">Sign Up</p>
-            <h1>Create an Account</h1>
-            <GenericQuestions 
-            email={email} handleEmailChange={handleEmailChange}
-            username={username} handleUsernameChange={handleUsernameChange}
-            password={password} handlePasswordChange={handlePasswordChange}
-            phone={phone} handlePhoneChange={handlePhoneChange}
-            />
-            <UserTypeDeclaration 
-            handleSelectType={handleSelectType}
-            studentChecked={studentChecked}/>
-            <InstructorQuesitons
-            handleSelectIdentify={handleSelectIdentify}
-            handleSelectChoice={handleSelectChoice}/>
+        <div className="SignUpPage">
+            {/* <p className="SignUp-colour">Sign Up</p> */}
+            <br/><h1>Welcome to U-Impactify!</h1>
+            <div className="SignUpSection1">
+                <GenericQuestions 
+                    email={email} handleEmailChange={handleEmailChange}
+                    username={username} handleUsernameChange={handleUsernameChange}
+                    password={password} handlePasswordChange={handlePasswordChange}
+                    phone={phone} handlePhoneChange={handlePhoneChange}
+                />
+                <div className="SignUpImg1"></div>
+            </div>
+            
+            <div className="SignUpSection2">
+                <UserTypeDeclaration 
+                    handleSelectType={handleSelectType}
+                    studentChecked={studentChecked}/>
+                <InstructorQuesitons
+                    handleSelectIdentify={handleSelectIdentify}
+                    handleSelectChoice={handleSelectChoice}/>
+                <div className="SignUpImg2"></div>
+            </div>
+            
             <SocialInitiativesQuestions
             handleCategory={handleCategory}/>
-            <button id="signInButton" type="submit" onClick={handleSignUp}>Sign Up</button>
+            <button id="signInButton" type="submit" onClick={handleSignUp}>CONFIRM</button>
         </div>
     );
 }
