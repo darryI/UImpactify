@@ -1,7 +1,8 @@
 .SignUpPage {
-    padding: 0px 40px 100px 40px;
+    padding: 0px 0 100px 30px;
     background: #F8FDFD;
     font-family: OpenSans;
+    width: 1170px;
 }
 
 .SignUp-colour {
