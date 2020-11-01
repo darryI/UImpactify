@@ -41,7 +41,7 @@ function CourseInfo(props) {
       <h1>{course.name}</h1>
       <h2>Objective:</h2>
       <p>{course.objective}</p>
-      <h2>Learning Outcomes</h2>
+      <h2>Learning Outcomes:</h2>
       <p>{course.learningOutcomes}</p>
 
       <h2>Student Ids:</h2>
