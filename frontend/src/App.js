@@ -15,6 +15,7 @@ import CoursesPage from './courses/CoursesPage/CoursesPage.js';
 import Course from './courses/Course/Course.js';
 import Login from './landing/login/Login/Login.js';
 
+import CourseLanding from './courses/CourseLanding/CourseLanding'
 
 function App() {
 
@@ -69,8 +70,11 @@ function App() {
           <Route path="/create">
             <CourseCreation accessToken={accessToken}/>
           </Route>
-          <Route path="/courses/:id">
+          {/* <Route path="/courses/:id">
               <Course accessToken={accessToken}/>
+          </Route> */}
+          <Route path="/courses/:id">
+              <CourseLanding accessToken={accessToken}/>
           </Route>
           <Route path="/courses">
             <CoursesPage accessToken={accessToken}/>
