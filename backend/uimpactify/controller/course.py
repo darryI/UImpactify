@@ -263,7 +263,7 @@ class PublishedCourseApi(Resource):
     Flask-resftul resource for returning a specified published courses.
 
     """
-    # @dont_crash
+    @dont_crash
     def get(self, course_id: str) -> Response:
         """
         GET response method for a specific course in course collection with published=true.
