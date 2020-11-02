@@ -2,10 +2,10 @@
 from flask_restful import Api
 
 # project resources
-from uimpactify.controller.authentication import SignUpApi, LoginApi
-from uimpactify.controller.user import UsersApi, UserApi, SelfDeleteApi
-from uimpactify.controller.course import (CoursesApi, CourseApi, CourseByInstructorApi,
-                                          CourseEnrollmentApi, CourseDisenrollmentApi, CoursesWithStudentApi)
+from uimpactify.controller.authentication import *
+from uimpactify.controller.user import *
+from uimpactify.controller.course import *
+
 
 
 def create_routes(api: Api):
@@ -33,5 +33,9 @@ def create_routes(api: Api):
     api.add_resource(CourseByInstructorApi, '/course/instructor/')
 
     api.add_resource(CourseEnrollmentApi, '/course/enroll/')
+
     api.add_resource(CourseDisenrollmentApi, '/course/disenroll/<course_id>/<user_id>/')
+
     api.add_resource(CoursesWithStudentApi, '/course/student/<student_id>/')
+
+    api.add_resource(PublishedCoursesApi, '/course/published/')

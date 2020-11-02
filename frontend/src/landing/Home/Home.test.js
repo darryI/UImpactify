@@ -8,21 +8,8 @@ test('renders home page', () => {
     return new URLSearchParams();
   })
 
-  // const { getByText } = render(<Home/>);
-  // const homeElement = getByText('Home');
-  // expect(homeElement).toBeInTheDocument();
-
-  const homeElements = getAllByText(/Home/);
-  const loginElements = getAllByText(/Login/);
-  const aboutElements = getAllByText(/About/);
-  homeElements.forEach(e => {
-    expect(e).toBeInTheDocument();
-  });
-  aboutElements.forEach(e => {
-    expect(e).toBeInTheDocument();
-  });
-  loginElements.forEach(e => {
-    expect(e).toBeInTheDocument();
-  });
-  
+  const { getAllByText, getByText } = render(<Home/>);
+   expect(getByText(/Learn More About What U-Impactify Does/)).toBeInTheDocument();
 });
+  
+

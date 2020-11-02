@@ -63,7 +63,7 @@ class Users(Document):
     
     email = EmailField(required=True, unique=True)
     password = StringField(required=True, min_length=6, regex=None)
-    name = StringField(unique=False)
+    name = StringField()
     phone = PhoneField()
     # default user is a student
     default_roles = {'student':True, 'instructor':False, 'organization':False, 'admin':False}

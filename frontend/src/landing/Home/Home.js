@@ -1,6 +1,5 @@
 import React from 'react';
 import './Home.css';
-import Courses from '../../courses/Courses/Courses.js';
 
 import {
   useLocation
@@ -49,7 +48,7 @@ function Home(props) {
           <div className="HomePageTestimonials"></div>
           <div>
             <a href="/SignUp">
-              <button className="">GET STARTED</button>
+              <button>GET STARTED</button>
             </a>
             <p className="HomePageRequestDemoText">Request an instant demo</p>
           </div>
@@ -94,8 +93,8 @@ function Home(props) {
               <br></br>
               <a href="/">LinkedIn</a>
               <p>Language&nbsp;&nbsp;🌏</p>
-              <select className="languageSelect">
-                <option selected="selected" value="0">English (CA)</option>
+              <select defaultValue={0} className="languageSelect">
+                <option value="0">English (CA)</option>
                 <option value="1">English (US)</option>
                 <option value="2">اَلْعَرَبِيَّةُ‎</option>
                 <option value="3">Türkçe</option>
