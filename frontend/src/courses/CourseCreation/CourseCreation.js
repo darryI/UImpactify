@@ -3,6 +3,7 @@ import React from 'react';
 import CourseList from '../CourseList/CourseList.js';
 import CreationForm from '../CreationForm/CreationForm.js';
 import CourseInfo from '../CourseInfo/CourseInfo.js';
+import './CourseCreation.css';
 
 
 function CourseCreation(props) {
@@ -91,7 +92,7 @@ function CourseCreation(props) {
     }
 
     return (
-      <div>
+      <div className="CreateCoursePage">
         {/* <h1>{`Courses ${props.user.name} is currently teaching:`} </h1> */}
         <CourseList courses={courses} selected={selected} handleCreate={handleCreate} handleSelection={handleSelection}/>
         {content}

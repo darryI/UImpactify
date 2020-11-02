@@ -48,7 +48,7 @@ function Home(props) {
           <div className="HomePageTestimonials"></div>
           <div>
             <a href="/SignUp">
-              <button className="">GET STARTED</button>
+              <button>GET STARTED</button>
             </a>
             <p className="HomePageRequestDemoText">Request an instant demo</p>
           </div>
