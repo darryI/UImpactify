@@ -1,9 +1,10 @@
 import React from 'react';
+import DeleteAccountButton from 'landing/DeleteAccount/DeleteAccountButton';
 import './About.css';
 
 function About(props) {
 
-    const accessToken = props.accessToken;
+  const accessToken = props.accessToken;
 
   return (
     <div className="AboutPage">
@@ -11,6 +12,7 @@ function About(props) {
       <div className="AboutPageFirstSection">
         <p className="AboutPageText">About U-Impactify</p>
         <div className="AboutPageIMac"></div>
+        { accessToken !== '' ? <DeleteAccountButton /> : null }
       </div>
 
       <div className="AboutPageSecondSection">

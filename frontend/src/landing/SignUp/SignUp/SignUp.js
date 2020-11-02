@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {useHistory} from 'react-router-dom';
-// import FetchTest from './About/FetchTest.js';
 import GenericQuestions from '../GenericQuesitons/GenericQuestions'
 import UserTypeDeclaration from '../TypeDeclaration/TypeDeclaration'
 import SocialInitiativesQuestions from '../SInitiativesQuestions/SInitiativesQuestions'
