@@ -31,11 +31,11 @@
   height: 190px;
 }
 
-.course-card {
+.course-list-card {
   border: 2px solid #C6CACC;
   box-sizing: border-box;
   border-radius: 20px;
-  
+  min-width: 100px;
 }
 
 .create-card {
@@ -44,6 +44,7 @@
   border-radius: 20px;
   background: #ffffff;
   box-shadow: none;
+  min-width: 160px;
 }
 
 .create-card:hover {

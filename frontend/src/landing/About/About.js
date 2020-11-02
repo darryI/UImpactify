@@ -7,11 +7,6 @@ function About(props) {
     const accessToken = props.accessToken;
 
   return (
-    // <div>
-    //   <p className="about-colour">About</p>
-    //   <FetchTest/>
-    //   {accessToken}
-    // </div>
     <div className="AboutPage">
       
       <div className="AboutPageFirstSection">
