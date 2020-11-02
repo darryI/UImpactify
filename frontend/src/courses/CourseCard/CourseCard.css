@@ -1,8 +1,8 @@
 .course-card {
     /* padding: 10px; */
-    padding: 10px;
+    padding: 20px 20px 30px 20px;
     margin-bottom: 10px;
-    border-radius: 4px;
+    border-radius: 6px;
     background-color: #E2F4F4;
     min-width: 500px;
     max-width: 500px;
@@ -11,10 +11,11 @@
     /* keep a transparent border always so that the content
      doesn't shift when border is added on hover */
     border: 1.5px solid transparent;
+    font-family: OpenSans;
 }
 
 .course-card:hover {
-    border: 1.7px solid #C6CACC;
+    border: 1.5px solid #C6CACC;
     background-color: #bedbdb;
 }
 
