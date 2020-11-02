@@ -10,8 +10,11 @@ import {
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
 import SignUp from './landing/SignUp/SignUp/SignUp.js'
-import Courses from './courses/Courses/Courses.js';
+import CourseCreation from './courses/CourseCreation/CourseCreation.js';
+import CoursesPage from './courses/CoursesPage/CoursesPage.js';
+import Course from './courses/Course/Course.js';
 import Login from './landing/login/Login/Login.js';
+
 
 function App() {
 
@@ -44,6 +47,9 @@ function App() {
             <li className="navItem">
               <Link to="/create">Create</Link>
             </li>
+            <li className="navItem">
+              <Link to="/courses">Courses</Link>
+            </li>
             
           </ul>
           
@@ -61,7 +67,13 @@ function App() {
                 setAccessToken={setAccessToken}/>
           </Route>
           <Route path="/create">
-            <Courses accessToken={accessToken}/>
+            <CourseCreation accessToken={accessToken}/>
+          </Route>
+          <Route path="/courses/:id">
+              <Course accessToken={accessToken}/>
+          </Route>
+          <Route path="/courses">
+            <CoursesPage accessToken={accessToken}/>
           </Route>
           <Route path="/SignUp">
                 <SignUp />
@@ -69,7 +81,6 @@ function App() {
           <Route path="/">
             <Home />
           </Route>
-          
         </Switch>
       </div>
     </Router>

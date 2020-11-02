@@ -1,0 +1,34 @@
+.course-card {
+    /* padding: 10px; */
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background-color: #E2F4F4;
+    min-width: 500px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    /* keep a transparent border always so that the content
+     doesn't shift when border is added on hover */
+    border: 1.5px solid transparent;
+}
+
+.course-card:hover {
+    border: 1.5px solid #333333;
+}
+
+#instructor { 
+    align-self: flex-end;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+blockquote {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
