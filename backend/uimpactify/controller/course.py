@@ -260,7 +260,7 @@ class PublishedCoursesApi(Resource):
 
 class PublishedCourseApi(Resource):
     """
-    Flask-resftul resource for returning all published courses.
+    Flask-resftul resource for returning a specified published courses.
 
     """
     @dont_crash
