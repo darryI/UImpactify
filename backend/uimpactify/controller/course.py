@@ -15,7 +15,7 @@ from uimpactify.controller.errors import forbidden
 
 from uimpactify.models.users import Users
 
-from uimpactify.utils.mongo_utils import convert_query, convert_doc, convert_embedded_query
+from uimpactify.utils.mongo_utils import convert_query, convert_doc, convert_embedded_doc, convert_embedded_query
 from uimpactify.controller.errors import unauthorized, bad_request, conflict, not_found
 from uimpactify.controller.dont_crash import dont_crash, user_exists
 
@@ -263,7 +263,7 @@ class PublishedCourseApi(Resource):
     Flask-resftul resource for returning a specified published courses.
 
     """
-    @dont_crash
+    # @dont_crash
     def get(self, course_id: str) -> Response:
         """
         GET response method for a specific course in course collection with published=true.
@@ -271,7 +271,12 @@ class PublishedCourseApi(Resource):
 
         :return: JSON object
         """
-        output = Courses.objects(id=course_id, published=True)
+        try:
+            output = Courses.objects.get(id=course_id)
+        except DoesNotExist:
+            return not_found()
+        if output.published == False:
+            return not_found()
         fields = {
             'id',
             'name',
@@ -279,7 +284,5 @@ class PublishedCourseApi(Resource):
             'learningOutcomes'
             }
         embedded = {'instructor': {'name': 'instructor'}}
-        converted = convert_embedded_query(output, fields, embedded)
-        if converted == []:
-            return not_found()
+        converted = convert_embedded_doc(output, fields, embedded)
         return jsonify(converted)
