@@ -5,6 +5,7 @@ import './About.css';
 function About(props) {
 
   const accessToken = props.accessToken;
+  const setAccessToken = props.setAccessToken;
 
   return (
     <div className="AboutPage">
@@ -12,7 +13,13 @@ function About(props) {
       <div className="AboutPageFirstSection">
         <p className="AboutPageText">About U-Impactify</p>
         <div className="AboutPageIMac"></div>
-        { accessToken !== '' ? <DeleteAccountButton /> : null }
+        { accessToken !== '' ?
+          <DeleteAccountButton
+            accessToken={accessToken}
+            setAccessToken={setAccessToken}
+          />
+          : null 
+        }
       </div>
 
       <div className="AboutPageSecondSection">

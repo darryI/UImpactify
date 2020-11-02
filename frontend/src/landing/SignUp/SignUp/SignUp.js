@@ -22,8 +22,6 @@ function SignUp() {
     const history = useHistory()
     const handleSelectIdentify = (event) => {
         setIdentify(identify.concat(event.target.name))
-        //alert(`${event.target.name} is chosen`)
-        console.log(identify)
     } 
 
     const handleSelectChoice = (event) =>{
@@ -47,17 +45,14 @@ function SignUp() {
         }else{
             setType(type.concat(event.target.id))
         }
-        console.log(type)
     }
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
-        //console.log(`email is: ${email}`)
     }
 
     const handlePhoneChange = (event) => {
         setPhone(event.target.value)
-        //console.log(`email is: ${email}`)
     }
 
     const handleSignUp = () => {
@@ -78,7 +73,6 @@ function SignUp() {
             API.postSignUp(newUser)
             .then(
                 (response) => {
-                    console.log(response);
                     history.push('/login')
                 },
                 // Note: it's important to handle errors here
@@ -88,10 +82,6 @@ function SignUp() {
                     alert(JSON.stringify(error, null, 2));
                 }
             )
-            console.log(type.includes("Student") ? "True" : "False")
-            console.log(type.includes("Instructor") ? "True" : "False")
-            console.log(type.includes("Social Initiative") ? "True" : "False")
-            console.log("here?")
         }else{
             alert("one or more of the required fields arent filled!")
         }
@@ -101,10 +91,7 @@ function SignUp() {
     const handleCategory = (event) =>{
         if(category === ''){
             setCategory(event.target.id)
-            //alert(`${event.target.id} is chosen`)
-            //console.log(`${event.target.value}`)
         }else{
-            //alert(`Now chosen:${event.target.id}, changed from: ${category}`)
             setCategory(event.target.id)
         }
     }

@@ -60,7 +60,7 @@ function App() {
         <Switch>
           <Route path="/about">
             <About
-                accessToken={accessToken}/>
+                accessToken={accessToken} setAccessToken={setAccessToken}/>
           </Route>
           <Route path="/login">
             <Login

@@ -104,7 +104,6 @@ function CourseCreation(props) {
 export const API = {
   getCourses: async (token) => {
     const url = "http://localhost:5000/course/instructor/";
-    console.log(token);
 
     return fetch(url, {
       headers: {
