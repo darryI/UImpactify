@@ -36,3 +36,4 @@ def create_routes(api: Api):
     api.add_resource(CoursesWithStudentApi, '/course/student/<student_id>')
 
     api.add_resource(PublishedCoursesApi, '/course/published/')
+    api.add_resource(PublishedCourseApi, '/course/published/<course_id>')
