@@ -44,6 +44,13 @@ def get_embedded_attr(doc, embedded):
         result.update(fields)
     return result
 
+# converts an EmbeddedDoc to a dictionary safe for client side consumption
+# embedded is a dictionary of {embedded doc name: {desired embedded doc fields: name to save field as}}
+def convert_embedded_doc(doc, non_embedded, embedded):
+    c = convert_doc(doc, include=non_embedded)
+    embedded_objs = get_embedded_attr(doc, embedded)
+    c.update(embedded_objs)
+    return c
 
 # converts QuerySet object containing multiple documents with embedded document objects
 # to a list of dictionaries safe for client side consumption
@@ -52,12 +59,10 @@ def convert_embedded_query(queryset, non_embedded, embedded):
     res = []
     for doc in queryset:
         try:
-            c = convert_doc(doc, include=non_embedded)
-            embedded_objs = get_embedded_attr(doc, embedded)
-            c.update(embedded_objs)
-            res.append(c)
+            res.append(convert_embedded_doc(doc, non_embedded, embedded))
         except DoesNotExist as e:
             print("some part of this document does not exist:", doc.to_json(), sep='\n')
         except Exception as e:
             print("document can't be parsed")
     return res
+
