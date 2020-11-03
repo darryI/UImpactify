@@ -47,7 +47,6 @@ function CreationForm(props) {
             // reset form values
             setValues(props.initialValues);
             // navigate away from the creation form after submitting
-            console.log("setShowForm");
             props.setShowForm(false);
           },
           (error) => {
@@ -55,7 +54,6 @@ function CreationForm(props) {
           }
         );
       }
-      // alert('A course was updated');
     }
   }
 

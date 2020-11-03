@@ -111,12 +111,11 @@ function CourseCreation(props) {
 export const API = {
   getCourses: async (token) => {
     const url = "http://localhost:5000/course/instructor/";
-    console.log(token);
-      return fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        }
-      }).then(res => res.json());
+    return fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    }).then(res => res.json());
   },
 }
 
