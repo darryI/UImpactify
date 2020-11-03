@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {useHistory} from 'react-router-dom';
-// import FetchTest from './About/FetchTest.js';
 import GenericQuestions from '../GenericQuesitons/GenericQuestions'
 import UserTypeDeclaration from '../TypeDeclaration/TypeDeclaration'
 import SocialInitiativesQuestions from '../SInitiativesQuestions/SInitiativesQuestions'
@@ -23,8 +22,6 @@ function SignUp() {
     const history = useHistory()
     const handleSelectIdentify = (event) => {
         setIdentify(identify.concat(event.target.name))
-        //alert(`${event.target.name} is chosen`)
-        console.log(identify)
     } 
 
     const handleSelectChoice = (event) =>{
@@ -48,17 +45,14 @@ function SignUp() {
         }else{
             setType(type.concat(event.target.id))
         }
-        console.log(type)
     }
 
     const handleEmailChange = (event) => {
         setEmail(event.target.value)
-        //console.log(`email is: ${email}`)
     }
 
     const handlePhoneChange = (event) => {
         setPhone(event.target.value)
-        //console.log(`email is: ${email}`)
     }
 
     const handleSignUp = () => {
@@ -79,7 +73,6 @@ function SignUp() {
             API.postSignUp(newUser)
             .then(
                 (response) => {
-                    console.log(response);
                     history.push('/login')
                 },
                 // Note: it's important to handle errors here
@@ -89,10 +82,6 @@ function SignUp() {
                     alert(JSON.stringify(error, null, 2));
                 }
             )
-            console.log(type.includes("Student") ? "True" : "False")
-            console.log(type.includes("Instructor") ? "True" : "False")
-            console.log(type.includes("Social Initiative") ? "True" : "False")
-            console.log("here?")
         }else{
             alert("one or more of the required fields arent filled!")
         }
@@ -102,33 +91,38 @@ function SignUp() {
     const handleCategory = (event) =>{
         if(category === ''){
             setCategory(event.target.id)
-            //alert(`${event.target.id} is chosen`)
-            //console.log(`${event.target.value}`)
         }else{
-            //alert(`Now chosen:${event.target.id}, changed from: ${category}`)
             setCategory(event.target.id)
         }
     }
 
     return (
-        <div>
-            <p className="SignUp-colour">Sign Up</p>
-            <h1>Create an Account</h1>
-            <GenericQuestions 
-            email={email} handleEmailChange={handleEmailChange}
-            username={username} handleUsernameChange={handleUsernameChange}
-            password={password} handlePasswordChange={handlePasswordChange}
-            phone={phone} handlePhoneChange={handlePhoneChange}
-            />
-            <UserTypeDeclaration 
-            handleSelectType={handleSelectType}
-            studentChecked={studentChecked}/>
-            <InstructorQuesitons
-            handleSelectIdentify={handleSelectIdentify}
-            handleSelectChoice={handleSelectChoice}/>
+        <div className="SignUpPage">
+            {/* <p className="SignUp-colour">Sign Up</p> */}
+            <br/><h1>Welcome to U-Impactify!</h1>
+            <div className="SignUpSection1">
+                <GenericQuestions 
+                    email={email} handleEmailChange={handleEmailChange}
+                    username={username} handleUsernameChange={handleUsernameChange}
+                    password={password} handlePasswordChange={handlePasswordChange}
+                    phone={phone} handlePhoneChange={handlePhoneChange}
+                />
+                <div className="SignUpImg1"></div>
+            </div>
+            
+            <div className="SignUpSection2">
+                <UserTypeDeclaration 
+                    handleSelectType={handleSelectType}
+                    studentChecked={studentChecked}/>
+                <InstructorQuesitons
+                    handleSelectIdentify={handleSelectIdentify}
+                    handleSelectChoice={handleSelectChoice}/>
+                <div className="SignUpImg2"></div>
+            </div>
+            
             <SocialInitiativesQuestions
             handleCategory={handleCategory}/>
-            <button id="signInButton" type="submit" onClick={handleSignUp}>Sign Up</button>
+            <button id="signInButton" type="submit" onClick={handleSignUp}>CONFIRM</button>
         </div>
     );
 }
