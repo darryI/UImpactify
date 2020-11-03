@@ -26,9 +26,9 @@ test('on startup, api call is made to get courses', async () => {
   
   const { container } = setup();
 
-  await waitForElement(() => container.querySelectorAll('.course-card'))
+  await waitForElement(() => container.querySelectorAll('.course-list-card'))
 
-  const courseCards = container.querySelectorAll('.course-card');
+  const courseCards = container.querySelectorAll('.course-list-card');
   
   expect(courseCards.length).toBe(jsonCourses.length);
   expect(getFunc).toHaveBeenCalled();
