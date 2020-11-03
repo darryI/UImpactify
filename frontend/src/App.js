@@ -4,8 +4,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useHistory
 } from "react-router-dom";
 
 import About from './landing/About/About.js';
@@ -20,14 +18,14 @@ function App() {
 
   const [loggedIn, setLoggedIn] = React.useState(false);
 
-/*  React.useEffect(() => {
+  React.useEffect(() => {
       var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
-      if ( token === null) {
-        console.log(loggedIn)
+      if (token === null) {
+        setLoggedIn(false);
       } else {
-        console.log(loggedIn)
+        setLoggedIn(true);
       }
-    }, [loggedIn])*/
+    }, [loggedIn])
 
   return (
     <Router>

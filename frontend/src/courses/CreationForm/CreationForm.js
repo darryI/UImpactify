@@ -17,13 +17,12 @@ function CreationForm(props) {
       ...values,
     };
 
-    
+    var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
     if (props.isNewCourse) {
-      var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
-      if ( token === null) {
+      if ( jwtToken === null) {
         history.push("/login")
       } else {
-        API.postCourse(courseJSON, token.access_token).then(
+        API.postCourse(courseJSON, jwtToken.access_token).then(
           (result) => {
             courseJSON.id = result.id;
             props.addCourse(courseJSON);
@@ -39,11 +38,10 @@ function CreationForm(props) {
       }
       // alert('A new course was created');
     } else {
-      var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
-        if ( token === null) {
+        if ( jwtToken === null) {
         history.push("/login")
       } else {
-        API.putCourse(courseJSON, token.access_token).then(
+        API.putCourse(courseJSON, jwtToken.access_token).then(
           (result) => {
             props.updateCourse(courseJSON);
             // reset form values

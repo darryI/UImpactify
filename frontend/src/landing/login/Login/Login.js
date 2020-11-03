@@ -15,8 +15,6 @@ function Login(props) {
     const [loginValues, setLoginValues] = React.useState(initialLoginValues);
     const [failedAuthenticate, setFailedAuthenticate] = React.useState(false);
 
-    const setAccessToken = props.setAccessToken;
-
     let content;
     if (failedAuthenticate === true) {
         content = <p className="AuthenticationFailed">Incorrect Email/Password</p>

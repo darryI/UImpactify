@@ -80,17 +80,13 @@ function Courses(props) {
   } else {
     let content;
     if (selected === courses.length || showForm === true) {
-      var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
-      content = <CreationForm 
+      content = <CreationForm
         values={formValues}
         initialValues={initialValues}
         setValues={setValues}
         setShowForm={setShowForm}
         addCourse={addCourse}
         updateCourse={updateCourse}
-/*
-        accessToken={token.access_token}
-*/
         isNewCourse={selected === courses.length}
       />
     } else {
