@@ -14,9 +14,9 @@ function CoursesPage(props) {
     const [courses, setCourses] = React.useState([]);
 
     React.useEffect(() => {
-      var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
-      if (token) {
-        API.getCourses(props.accessToken)
+      var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
+      if (jwtToken) {
+        API.getCourses(jwtToken.access_token)
             .then(
             (result) => {
                 setIsLoaded(true);

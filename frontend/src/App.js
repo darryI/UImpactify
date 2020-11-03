@@ -33,43 +33,8 @@ function App() {
   return (
     <Router>
       <div className="header">
-<<<<<<< HEAD
         <TopBar loggedIn={loggedIn} />
 
-=======
-        <Link to="/login">
-          <button className="navbarButton">LOGIN</button>
-        </Link>
-        <Link to="/SignUp">
-          <button className="navbarButton" id="navbarSignUpButton">SIGN UP</button>
-        </Link>
-        <img id="logo" src={require('./images/logo.svg')} alt="Logo"/>
-        <nav className="navbar">
-          <ul>
-            <li className="navItem">
-              <Link to="/">Home</Link>
-            </li>
-            <li className="navItem">
-              <Link to="/about">About</Link>
-            </li>
-            {/* <li className="navItem">
-                <Link to="/SignUp">SignUp</Link>
-            </li> */}
-            {/* <li className="navItem">
-              <Link to="/login">Login</Link>
-            </li> */}
-            <li className="navItem">
-              <Link to="/create">Create</Link>
-            </li>
-            <li className="navItem">
-              <Link to="/courses">Courses</Link>
-            </li>
-            
-          </ul>
-          
-        </nav>
-        
->>>>>>> develop
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
@@ -84,31 +49,23 @@ function App() {
           <Route path="/login">
             <Login
                 setLoggedIn={setLoggedIn}
-             />
+            />
           </Route>
           <Route path="/create">
-<<<<<<< HEAD
-            <Courses />
-=======
-            <CourseCreation accessToken={accessToken}/>
+            <CourseCreation />
           </Route>
           <Route path="/courses/:id">
-              <Course accessToken={accessToken}/>
+            <Course/>
           </Route>
           <Route path="/courses">
-            <CoursesPage accessToken={accessToken}/>
->>>>>>> develop
+            <CoursesPage />
           </Route>
           <Route path="/SignUp">
-                <SignUp />
-            </Route>
+            <SignUp />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
-<<<<<<< HEAD
-
-=======
->>>>>>> develop
         </Switch>
       </div>
     </Router>
