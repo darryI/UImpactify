@@ -94,16 +94,18 @@ function CreationForm(props) {
         <input aria-label="name-input" className="rect-1643"   type="text" value={values.name} onChange={e => handleNameChange(e)} />
       </div>
 
-      <textarea aria-label="obj-input" className="rect-2" placeholder="Objective:" type="text" value={values.objective} onChange={e => handleObjChange(e)} />
+      <label className="label-text">Objective:</label>  
+      <textarea aria-label="obj-input" className="rect-2" placeholder="Enter the objective" type="text" value={values.objective} onChange={e => handleObjChange(e)} />
 
-      <textarea aria-label="lrn-input" className="rect-2" placeholder="Learning Outcomes:" type="text" value={values.learningOutcomes} onChange={e => handleLrnChange(e)} />
+      <label className="label-text">Learning Outcomes:</label>  
+      <textarea aria-label="lrn-input" className="rect-2" placeholder="Enter the learning outcomes" type="text" value={values.learningOutcomes} onChange={e => handleLrnChange(e)} />
 
       <div className="row">
         <div className="labelRectCombo">
           <label className="label-text">Publish?</label>
           <input aria-label="publish-input" type="checkbox" className="checkbox" checked={values.published} onChange={e => handlePublishChange(e)}></input>
         </div>
-        <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/><p>Save</p></button>
+        <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/>Save</button>
         
       </div>
     </form>

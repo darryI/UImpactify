@@ -7,7 +7,7 @@ import { ReactComponent as AddIcon } from 'icons/add.svg';
 function CourseList(props) {
 
   const cardClassses = (i) => {
-    let classes = ["card", "course-card"];
+    let classes = ["card", "course-list-card"];
     if (i === props.selected) {
       classes.push("selected");
     }
