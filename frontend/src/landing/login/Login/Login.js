@@ -5,6 +5,8 @@ import LoginForm from '../LoginForm/LoginForm.js';
 
 function Login(props) {
 
+    const setLoggedIn = props.setLoggedIn;
+
     const initialLoginValues = {
         email: '',
         password: ''
@@ -12,8 +14,6 @@ function Login(props) {
 
     const [loginValues, setLoginValues] = React.useState(initialLoginValues);
     const [failedAuthenticate, setFailedAuthenticate] = React.useState(false);
-
-    const setAccessToken = props.setAccessToken;
 
     let content;
     if (failedAuthenticate === true) {
@@ -33,7 +33,7 @@ function Login(props) {
                   initialLoginValues={initialLoginValues}
                   setLoginValues={setLoginValues}
                   setFailedAuthenticate={setFailedAuthenticate}
-                  setAccessToken={setAccessToken}
+                  setLoggedIn={setLoggedIn}
                 />
 
             </div>

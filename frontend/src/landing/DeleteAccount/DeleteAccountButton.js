@@ -1,28 +1,37 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import ConfirmationPopup from 'landing/ConfirmationPopup/ConfirmationPopup';
 import './DeleteAccountButton.css';
 
 function DeleteAccountButton(props) {
-  const accessToken = props.accessToken;
-  const setAccessToken = props.setAccessToken;
+
   const [showPopup, setShowPopup] = React.useState(false);
+  const setLoggedIn = props.setLoggedIn;
+  const history = useHistory();
 
   const togglePopup = () => {
     setShowPopup(!showPopup)
   }
 
   const handleDelete = () => {
+    var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
     // call the delete user API
-    API.deleteUser(accessToken).then(
-      () => {
-        // remove the access token on success
-        setAccessToken('');
-      },
-      (error) => {
-        alert(JSON.stringify(error));
-      }
-    );
-    togglePopup();
+    if (jwtToken) {
+        API.deleteUser(jwtToken.access_token).then(
+          () => {
+            // remove the access token on success
+            localStorage.removeItem("jwtAuthToken")
+            setLoggedIn(false);
+            history.push("./")
+          },
+          (error) => {
+            alert(JSON.stringify(error));
+          }
+        );
+        togglePopup();
+    } else {
+        history.push("./login")
+    }
   }
 
   return (
