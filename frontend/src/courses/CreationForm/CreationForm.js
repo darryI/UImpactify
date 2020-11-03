@@ -136,7 +136,7 @@ export const API = {
   },
 
   putCourse(course, token) {
-    const url = 'http://localhost:5000/course/' + course.id;
+    const url = 'http://localhost:5000/course/' + course.id + '/';
     // Default options are marked with *
     return fetch(url, {
       method: 'PUT', 

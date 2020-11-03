@@ -4,8 +4,6 @@ import './About.css';
 
 function About(props) {
 
-  const accessToken = props.accessToken;
-  const setAccessToken = props.setAccessToken;
   var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
 
   let delAccButton;
@@ -15,7 +13,7 @@ function About(props) {
   } else {
     delAccButton = null
   }
-  
+
   return (
 
     <div className="AboutPage">
