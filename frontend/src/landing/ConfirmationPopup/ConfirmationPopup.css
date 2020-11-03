@@ -8,6 +8,7 @@
     bottom: 0;
     margin: auto;
     background-color: rgba(0,0,0, 0.5);
+    
   }
   .popup_inner {
     position: absolute;
@@ -17,4 +18,17 @@
     bottom: 25%;
     margin: auto;
     background: white;
+    border-radius: 20px;
+    font-family: OpenSans;
+    padding-top: 120px;
+    padding-bottom: 100px;
+    background-color: #edfafa;
+    box-shadow: 0px 8px 16px rgba(137, 176, 175, 0.25);
+  }
+  
+  .confirmPopupButton {
+    margin: 30px 25px;
+    padding: 12px 35px;
+    font-size: 16px;
+    text-transform: uppercase;
   }

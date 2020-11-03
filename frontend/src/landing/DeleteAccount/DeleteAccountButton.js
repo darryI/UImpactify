@@ -1,5 +1,6 @@
 import React from "react";
 import ConfirmationPopup from 'landing/ConfirmationPopup/ConfirmationPopup';
+import './DeleteAccountButton.css';
 
 function DeleteAccountButton(props) {
   const accessToken = props.accessToken;
@@ -26,11 +27,11 @@ function DeleteAccountButton(props) {
 
   return (
     <div>
-      <button onClick={togglePopup}>Delete Account</button>
+      <button className="deleteAccButton" onClick={togglePopup}>Delete Account</button>
       {showPopup ? 
         <ConfirmationPopup
           text='Are you sure you want to delete your account?'
-          description='This action will delete all data associated with this account'
+          description='This action will delete all data associated with this account.'
           yesOption={handleDelete}
           noOption={togglePopup}
         />

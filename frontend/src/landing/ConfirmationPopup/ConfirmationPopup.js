@@ -8,8 +8,8 @@ function ConfirmationPopup(props) {
       <div className='popup_inner'>
         <h1>{props.text}</h1>
         <p>{props.description}</p>
-        <button onClick={props.yesOption}>Yes</button>
-        <button onClick={props.noOption}>No</button>
+        <button className="confirmPopupButton" onClick={props.yesOption}>Yes</button>
+        <button className="confirmPopupButton" onClick={props.noOption}>No</button>
       </div>
     </div>
   );
