@@ -30,7 +30,6 @@ function CreationForm(props) {
             alert(JSON.stringify(error));
         }
       );
-      // alert('A new course was created');
     } else {
       API.putCourse(courseJSON, props.accessToken).then(
         (result) => {
@@ -38,14 +37,12 @@ function CreationForm(props) {
           // reset form values
           setValues(props.initialValues);
           // navigate away from the creation form after submitting
-          console.log("setShowForm");
           props.setShowForm(false);
         },
         (error) => {
             alert(JSON.stringify(error));
         }
       );
-      // alert('A course was updated');
     }
   }
 

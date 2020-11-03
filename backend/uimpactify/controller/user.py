@@ -163,9 +163,9 @@ class SelfDeleteApi(Resource):
 
     """
 
+    @jwt_required
     @dont_crash
     @user_exists
-    @jwt_required
     def delete(self) -> Response:
         """
         DELETE response method for deleting currently logged in user.
@@ -173,6 +173,5 @@ class SelfDeleteApi(Resource):
 
         :return: JSON object
         """
-
         output = Users.objects(id=get_jwt_identity()).delete()
         return jsonify(output)
