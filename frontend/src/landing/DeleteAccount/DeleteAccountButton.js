@@ -16,8 +16,8 @@ function DeleteAccountButton(props) {
   const handleDelete = () => {
     var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
     // call the delete user API
-    if (token) {
-        API.deleteUser(jwtAuthToken).then(
+    if (jwtToken) {
+        API.deleteUser(jwtToken.access_token).then(
           () => {
             // remove the access token on success
             localStorage.removeItem("jwtAuthToken")
