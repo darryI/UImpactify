@@ -22,7 +22,7 @@ function DeleteAccountButton(props) {
             // remove the access token on success
             localStorage.removeItem("jwtAuthToken")
             setLoggedIn(false);
-            history.push("./signup")
+            history.push("./")
           },
           (error) => {
             alert(JSON.stringify(error));
