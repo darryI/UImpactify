@@ -4,8 +4,7 @@ import ConfirmationPopup from 'landing/ConfirmationPopup/ConfirmationPopup';
 import './DeleteAccountButton.css';
 
 function DeleteAccountButton(props) {
-  const accessToken = props.accessToken;
-  const setAccessToken = props.setAccessToken;
+
   const [showPopup, setShowPopup] = React.useState(false);
   const history = useHistory();
 
