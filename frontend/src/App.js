@@ -39,7 +39,7 @@ function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
-            <About />
+            <About setLoggedIn={setLoggedIn} />
           </Route>
           <Route path="/logout">
             <Logout

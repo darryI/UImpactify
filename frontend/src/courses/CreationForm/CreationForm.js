@@ -38,7 +38,7 @@ function CreationForm(props) {
       }
       // alert('A new course was created');
     } else {
-        if ( jwtToken === null) {
+      if ( jwtToken === null) {
         history.push("/login")
       } else {
         API.putCourse(courseJSON, jwtToken.access_token).then(

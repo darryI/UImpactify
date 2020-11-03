@@ -6,6 +6,7 @@ import './DeleteAccountButton.css';
 function DeleteAccountButton(props) {
 
   const [showPopup, setShowPopup] = React.useState(false);
+  const setLoggedIn = props.setLoggedIn;
   const history = useHistory();
 
   const togglePopup = () => {
@@ -20,6 +21,8 @@ function DeleteAccountButton(props) {
           () => {
             // remove the access token on success
             localStorage.removeItem("jwtAuthToken")
+            setLoggedIn(false);
+            history.push("./signup")
           },
           (error) => {
             alert(JSON.stringify(error));

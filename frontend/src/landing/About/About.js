@@ -4,12 +4,14 @@ import './About.css';
 
 function About(props) {
 
+  const setLoggedIn = props.setLoggedIn;
+
   var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
 
   let delAccButton;
 
   if (jwtToken) {
-    delAccButton = <DeleteAccountButton />
+    delAccButton = <DeleteAccountButton setLoggedIn={setLoggedIn} />
   } else {
     delAccButton = null
   }
