@@ -2,44 +2,22 @@ import React from 'react';
 import {
     useParams
   } from "react-router-dom";
-  import jsonCourses from '../courses.json'
-
-
-// import {
-//     Link
-// } from "react-router-dom";
-
-    // const link = `/courses/${props.course.id}`
-  
-        // <Link to={link}>
-        //     <div className="course-card">
-        //         <div id="instructor">{props.course.instructor}</div>
-        //         <div><h2>{props.course.name}</h2></div>
-        //         <div><blockquote>{props.course.objective}</blockquote></div>
-        //     </div>
-        // </Link>
 
 function CourseLanding(props) {
     let { id } = useParams();
-    // console.log(`id is ${id}`)
-    const [allCourses, setAllCourses] = React.useState([])
     const [currCourse, setCurrCourse] = React.useState([])
 
     React.useEffect(() => {
-        API.getCourses(props.accessToken)
+        API.getCourses(props.accessToken, id)
             .then(
             (result) => {
-                setAllCourses(result)
-                const course = result.find(course => course.id == id)
-                setCurrCourse(course)
+                setCurrCourse(result)
             },
             // Note: it's important to handle errors here
             // instead of a catch() block so that we don't swallow
             // exceptions from actual bugs in components.
             (error) => {
-                // setIsLoaded(true);
-                // setError(error);
-                console.log('anan')
+                console.log('problem getting the requested course')
             }
             )
     }, [])
@@ -58,10 +36,19 @@ function CourseLanding(props) {
 }
 
 export const API = {
-    getCourses: async (token) => {
-        console.log('not mocked');
-        return Promise.resolve(jsonCourses);
-    }
+    getCourses: async (token, id) => {
+      const url = `http://localhost:5000/course/published/${id}`;
+      return fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then( async res => {
+        // check to see if the server responded with a 200 request (ok)
+        // if not, then reject the promise so that proper error handling can take place
+        const json = await res.json();
+        return res.ok ? json : Promise.reject(json);
+      });
+    },
 }
 
 export default CourseLanding;
