@@ -26,7 +26,5 @@
 - merging branches into dev without running `npm test`
 
 ## What was your best/worst experience during sprint 2 
-[BEST]
-- team bonding on discord
-[WORST]
-- dealing with leftover errors from sprint1
+- [BEST] team bonding on discord
+- [WORST] dealing with leftover errors from sprint1
