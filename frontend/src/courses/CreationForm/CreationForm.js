@@ -1,4 +1,5 @@
 import React from "react";
+import {useHistory} from "react-router-dom";
 
 import { ReactComponent as SaveIcon } from 'icons/save.svg';
 
@@ -7,6 +8,7 @@ import './CreationForm.css';
 function CreationForm(props) {
   const values = props.values;
   const setValues = props.setValues;
+  const history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -15,37 +17,43 @@ function CreationForm(props) {
       ...values,
     };
 
-    
+    var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
     if (props.isNewCourse) {
-      API.postCourse(courseJSON, props.accessToken).then(
-        (result) => {
-          courseJSON.id = result.id;
-          props.addCourse(courseJSON);
-          // reset form values
-          setValues(props.initialValues);
-          // navigate away from the creation form after submitting
-          props.setShowForm(false);
-        },
-        (error) => {
-            alert(JSON.stringify(error));
-        }
-      );
+      if ( jwtToken === null) {
+        history.push("/login")
+      } else {
+        API.postCourse(courseJSON, jwtToken.access_token).then(
+          (result) => {
+            courseJSON.id = result.id;
+            props.addCourse(courseJSON);
+            // reset form values
+            setValues(props.initialValues);
+            // navigate away from the creation form after submitting
+            props.setShowForm(false);
+          },
+          (error) => {
+              alert(JSON.stringify(error));
+          }
+        );
+      }
       // alert('A new course was created');
     } else {
-      API.putCourse(courseJSON, props.accessToken).then(
-        (result) => {
-          props.updateCourse(courseJSON);
-          // reset form values
-          setValues(props.initialValues);
-          // navigate away from the creation form after submitting
-          console.log("setShowForm");
-          props.setShowForm(false);
-        },
-        (error) => {
-            alert(JSON.stringify(error));
-        }
-      );
-      // alert('A course was updated');
+      if ( jwtToken === null) {
+        history.push("/login")
+      } else {
+        API.putCourse(courseJSON, jwtToken.access_token).then(
+          (result) => {
+            props.updateCourse(courseJSON);
+            // reset form values
+            setValues(props.initialValues);
+            // navigate away from the creation form after submitting
+            props.setShowForm(false);
+          },
+          (error) => {
+              alert(JSON.stringify(error));
+          }
+        );
+      }
     }
   }
 
@@ -84,16 +92,18 @@ function CreationForm(props) {
         <input aria-label="name-input" className="rect-1643"   type="text" value={values.name} onChange={e => handleNameChange(e)} />
       </div>
 
-      <textarea aria-label="obj-input" className="rect-2" placeholder="Objective:" type="text" value={values.objective} onChange={e => handleObjChange(e)} />
+      <label className="label-text">Objective:</label>  
+      <textarea aria-label="obj-input" className="rect-2" placeholder="Enter the objective" type="text" value={values.objective} onChange={e => handleObjChange(e)} />
 
-      <textarea aria-label="lrn-input" className="rect-2" placeholder="Learning Outcomes:" type="text" value={values.learningOutcomes} onChange={e => handleLrnChange(e)} />
+      <label className="label-text">Learning Outcomes:</label>  
+      <textarea aria-label="lrn-input" className="rect-2" placeholder="Enter the learning outcomes" type="text" value={values.learningOutcomes} onChange={e => handleLrnChange(e)} />
 
       <div className="row">
         <div className="labelRectCombo">
           <label className="label-text">Publish?</label>
           <input aria-label="publish-input" type="checkbox" className="checkbox" checked={values.published} onChange={e => handlePublishChange(e)}></input>
         </div>
-        <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/><p>Save</p></button>
+        <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/>Save</button>
         
       </div>
     </form>
@@ -126,7 +136,7 @@ export const API = {
   },
 
   putCourse(course, token) {
-    const url = 'http://localhost:5000/course/' + course.id;
+    const url = 'http://localhost:5000/course/' + course.id + '/';
     // Default options are marked with *
     return fetch(url, {
       method: 'PUT', 

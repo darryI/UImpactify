@@ -15,8 +15,8 @@ from uimpactify.controller.errors import forbidden
 
 from uimpactify.models.users import Users
 
-from uimpactify.utils.mongo_utils import convert_query, convert_doc
-from uimpactify.controller.errors import unauthorized, bad_request, conflict
+from uimpactify.utils.mongo_utils import convert_query, convert_doc, convert_embedded_doc, convert_embedded_query
+from uimpactify.controller.errors import unauthorized, bad_request, conflict, not_found
 from uimpactify.controller.dont_crash import dont_crash, user_exists
 
 class CoursesApi(Resource):
@@ -233,4 +233,56 @@ class CoursesWithStudentApi(Resource):
         output = Courses.objects(students=student_id)
         fields = { 'id', 'name' }
         converted = convert_query(output, fields)
+        return jsonify(converted)
+
+
+class PublishedCoursesApi(Resource):
+    """
+    Flask-resftul resource for returning all published courses.
+
+    """
+    @dont_crash
+    def get(self) -> Response:
+        """
+        GET response method for all documents in course collection with published=true.
+
+        :return: JSON object
+        """
+        output = Courses.objects(published=True)
+        fields = {
+            'id',
+            'name',
+            'objective'
+            }
+        embedded = {'instructor': {'name': 'instructor'}}
+        converted = convert_embedded_query(output, fields, embedded)
+        return jsonify(converted)
+
+class PublishedCourseApi(Resource):
+    """
+    Flask-resftul resource for returning a specified published courses.
+
+    """
+    @dont_crash
+    def get(self, course_id: str) -> Response:
+        """
+        GET response method for a specific course in course collection with published=true.
+        Returns a 404 error if the course is not published or doesn't exist.
+
+        :return: JSON object
+        """
+        try:
+            output = Courses.objects.get(id=course_id)
+        except DoesNotExist:
+            return not_found()
+        if output.published == False:
+            return not_found()
+        fields = {
+            'id',
+            'name',
+            'objective',
+            'learningOutcomes'
+            }
+        embedded = {'instructor': {'name': 'instructor'}}
+        converted = convert_embedded_doc(output, fields, embedded)
         return jsonify(converted)

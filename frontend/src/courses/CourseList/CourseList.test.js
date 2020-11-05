@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CourseList from './CourseList.js';
-import jsonCourses from '../Courses/courses.json';
+import jsonCourses from '../courses.json';
 
 
 const setup = () => {

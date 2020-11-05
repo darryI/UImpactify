@@ -1,11 +1,13 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
 
 import CourseList from '../CourseList/CourseList.js';
 import CreationForm from '../CreationForm/CreationForm.js';
 import CourseInfo from '../CourseInfo/CourseInfo.js';
+import './CourseCreation.css';
 
 
-function Courses(props) {
+function CourseCreation(props) {
   const [error, setError] = React.useState(null);
   const [isLoaded, setIsLoaded] = React.useState(false);
 
@@ -13,6 +15,7 @@ function Courses(props) {
   const [selected, setSelected] = React.useState(0);
   const [showForm, setShowForm] = React.useState(false);
 
+  const history = useHistory();
 
   const initialValues = {
     name: '',
@@ -38,20 +41,26 @@ function Courses(props) {
   }
 
   React.useEffect(() => {
-    API.getCourses(props.accessToken)
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          setCourses(result);
-        },
-        // Note: it's important to handle errors here
-        // instead of a catch() block so that we don't swallow
-        // exceptions from actual bugs in components.
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      )
+    var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
+    if ( token === null) {
+        history.push("/login")
+    } else {
+
+        API.getCourses(token.access_token)
+          .then(
+            (result) => {
+                setIsLoaded(true);
+                setCourses(result);
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+              setIsLoaded(true);
+              setError(error);
+            }
+          )
+      }
   }, [])
 
   const handleCreate = () => {
@@ -72,26 +81,25 @@ function Courses(props) {
   } else {
     let content;
     if (selected === courses.length || showForm === true) {
-      content = <CreationForm 
+      content = <CreationForm
         values={formValues}
         initialValues={initialValues}
         setValues={setValues}
         setShowForm={setShowForm}
         addCourse={addCourse}
         updateCourse={updateCourse}
-        accessToken={props.accessToken}
         isNewCourse={selected === courses.length}
       />
     } else {
       content = <CourseInfo 
         setFormValues={setValues} 
         setShowForm={setShowForm} 
-        course={courses[selected]} 
+        course={courses[selected]}
       />
     }
 
     return (
-      <div>
+      <div className="CreateCoursePage">
         {/* <h1>{`Courses ${props.user.name} is currently teaching:`} </h1> */}
         <CourseList courses={courses} selected={selected} handleCreate={handleCreate} handleSelection={handleSelection}/>
         {content}
@@ -103,8 +111,6 @@ function Courses(props) {
 export const API = {
   getCourses: async (token) => {
     const url = "http://localhost:5000/course/instructor/";
-    console.log(token);
-
     return fetch(url, {
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -113,4 +119,4 @@ export const API = {
   },
 }
 
-export default Courses;
+export default CourseCreation;

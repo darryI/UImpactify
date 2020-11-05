@@ -12,6 +12,7 @@ def dont_crash(function):
             res = function(*args, **kwargs)
             return res
         except Exception as e:
+            print(e)
             return bad_request()
 
     return d_c    
