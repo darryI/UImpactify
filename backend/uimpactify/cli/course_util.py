@@ -7,13 +7,14 @@ from flask import current_app, g, url_for
 from flask.cli import with_appcontext
 
 from uimpactify.cli.db import ADMIN_USER
+from uimpactify.cli import auth_util
+
 from uimpactify.controller import routes
 from uimpactify.models.courses import Courses
 
 @click.command("course-test")
 @with_appcontext
 def course_test():
-    # admin_user = {"email": "admin@uimpactify.com", "password": "password"}
 
     # builds the endpoint urls based off of the servername and registered resources
     # reference: https://flask-restful.readthedocs.io/en/latest/api.html#flask_restful.Api.url_for
