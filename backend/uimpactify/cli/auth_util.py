@@ -10,10 +10,10 @@ def signup(signup_json):
     signup_url = url_for("signupapi")
 
     r = requests.post(signup_url, json=signup_json)
-    print(r.request.headers)
     res = r.json()
-    print(res)
+    print("New user id: ", res["id"], "\n")
     return res["id"]
+
 
 def login(login_json=ADMIN_USER):
     login_url = url_for("loginapi")
