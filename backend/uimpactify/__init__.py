@@ -76,11 +76,11 @@ def create_app(config: dict = None) -> app.Flask:
         g.jwt.init_app(app=flask_app)
 
     # init database commands
-    from . import db
+    from uimpactify.cli import db
     db.init_app(flask_app)
 
     # init api commands
-    from . import api
+    from uimpactify.cli import api
     api.init_app(flask_app)
 
     return flask_app

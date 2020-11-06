@@ -34,9 +34,9 @@ def create_routes(api: Api):
 
     api.add_resource(CourseEnrollmentApi, '/course/enroll/')
 
-    api.add_resource(CourseDisenrollmentApi, '/course/disenroll/<course_id>/<user_id>/')
+    api.add_resource(CourseDisenrollmentApi, '/course/disenroll/<course_id>/')
 
-    api.add_resource(CoursesWithStudentApi, '/course/student/<student_id>/')
+    api.add_resource(CoursesWithStudentApi, '/course/student/')
 
     api.add_resource(PublishedCoursesApi, '/course/published/')
     api.add_resource(PublishedCourseApi, '/course/published/<course_id>')
