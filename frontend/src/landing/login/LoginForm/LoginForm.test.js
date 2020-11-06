@@ -1,4 +1,6 @@
 import React from 'react';
+import { Router } from 'react-router-dom';
+import {createMemoryHistory} from 'history';
 import { render, fireEvent, wait } from '@testing-library/react';
 import LoginForm, {API} from './LoginForm.js';
 
@@ -9,27 +11,25 @@ const setup = () => {
     "password" : "password"
   }
 
-  const accessToken = '1234';
-
   // mocking all the functions that are given as props to the form
   const setLoginValues = jest.fn((loginInfo) => {});
   const setFailedAuthenticate = jest.fn((auth) => {});
   const setLoggedIn = jest.fn((logged) => {});
-  const history = jest.mock('react-router-dom', () => ({
-                          useHistory: () => ({
-                            push: jest.fn(),
-                          }),
-                        }));
+
+  
+  const history = createMemoryHistory();
+  const pushSpy = jest.spyOn(history, 'push');
 
   const utils = render(
-    <LoginForm
-      loginInfo={loginValues}
-      initialLoginValues={loginValues}
-      setLoginValues={setLoginValues}
-      setFailedAuthenticate={setFailedAuthenticate}
-      setLoggedIn={setLoggedIn}
-      history={history}
-    />
+    <Router history={history}>
+      <LoginForm
+        loginInfo={loginValues}
+        initialLoginValues={loginValues}
+        setLoginValues={setLoginValues}
+        setFailedAuthenticate={setFailedAuthenticate}
+        setLoggedIn={setLoggedIn}
+      />
+    </Router>
   );
 
   // getLabelText matches off of the aria-label property on input tags
@@ -46,13 +46,14 @@ const setup = () => {
     setLoginValues,
     setFailedAuthenticate,
     setLoggedIn,
-    history,
+    pushSpy,
     ...utils,
   }
 }
 
 test('submitting login should call a POST request', async () => {
-    const { submit, setFailedAuthenticate, setLoggedIn, history } = setup();
+    const { submit, setFailedAuthenticate, setLoggedIn, pushSpy } = setup();
+
     const setItemSpy = jest.spyOn(Object.getPrototypeOf(window.localStorage), 'setItem');
     const postFunc = jest.spyOn(API, 'postLogin').mockImplementationOnce(() => {
         return Promise.resolve({
@@ -74,15 +75,14 @@ test('submitting login should call a POST request', async () => {
     expect(setItemSpy).toHaveBeenCalledTimes(1);
     expect(setLoggedIn.mock.calls[0][0]).toBe(true);
     expect(setFailedAuthenticate.mock.calls[0][0]).toBe(false);
-    expect(history.push.mock.calls[0]).toEqual([ ("localhost:3000/about"), ]);
+    expect(pushSpy).toHaveBeenCalledWith('/about');
 
 });
 
 
 test('changing input values should update the state', () => {
   const { email, setLoginValues } = setup();
-
-  fireEvent.change(email[1], { target: { value: 'email@aemail.com' }});
+  fireEvent.change(email[0], { target: { value: 'email@aemail.com' }});
 
   expect(setLoginValues).toHaveBeenCalled();
 });
