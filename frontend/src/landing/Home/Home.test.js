@@ -8,7 +8,8 @@ test('renders home page', () => {
     return new URLSearchParams();
   })
 
-  const { getByText } = render(<Home/>);
-  const homeElement = getByText('Home');
-  expect(homeElement).toBeInTheDocument();
+  const { getAllByText, getByText } = render(<Home/>);
+   expect(getByText(/Learn More About What U-Impactify Does/)).toBeInTheDocument();
 });
+  
+

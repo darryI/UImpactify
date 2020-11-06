@@ -29,7 +29,7 @@ class Courses(Document):
     :param courseContent: required string ID of course instructor
     """
 
-    name = StringField(required=True)
+    name = StringField(required=True, min_length=1)
     objective = StringField()
     learningOutcomes = StringField()
     instructor = ReferenceField('Users', reverse_delete_rule=CASCADE, required=True)

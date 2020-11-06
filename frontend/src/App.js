@@ -4,63 +4,68 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 
 import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
 import SignUp from './landing/SignUp/SignUp/SignUp.js'
-import Courses from './courses/Courses/Courses.js';
+import CourseCreation from './courses/CourseCreation/CourseCreation.js';
+import CoursesPage from './courses/CoursesPage/CoursesPage.js';
+import Course from './courses/Course/Course.js';
 import Login from './landing/login/Login/Login.js';
+import TopBar from './utils/Navigation.js';
+import Logout from './landing/login/Logout/Logout.js';
+
 
 function App() {
 
-  const [accessToken, setAccessToken] = React.useState('');
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
+  React.useEffect(() => {
+      var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
+      if (token === null) {
+        setLoggedIn(false);
+      } else {
+        setLoggedIn(true);
+      }
+    }, [loggedIn])
 
   return (
     <Router>
-        <div className="header">
-        <img id="logo" src={require('./images/impactify_logo.png')} alt="Logo"/>
-        <nav className="navbar">
-          <ul>
-            <li className="navItem float-left">
-              <Link to="/">Home</Link>
-            </li>
-            <li className="navItem float-left">
-              <Link to="/about">About</Link>
-            </li>
-            <li className="navItem float-left">
-                <Link to="/SignUp">SignUp</Link>
-            </li>
-            <li className="navItem float-left">
-              <Link to="/login">Login</Link>
-            </li>
-            <li className="navItem float-left">
-              <Link to="/create">Create</Link>
-            </li>
-          </ul>
-        </nav>
+      <div className="header">
+        <TopBar loggedIn={loggedIn} />
+
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
-            <About
-                accessToken={accessToken}/>
+            <About setLoggedIn={setLoggedIn} />
+          </Route>
+          <Route path="/logout">
+            <Logout
+              setLoggedIn={setLoggedIn}
+            />
           </Route>
           <Route path="/login">
             <Login
-                setAccessToken={setAccessToken}/>
+                setLoggedIn={setLoggedIn}
+            />
           </Route>
           <Route path="/create">
-            <Courses accessToken={accessToken}/>
+            <CourseCreation />
+          </Route>
+          <Route path="/courses/:id">
+            <Course/>
+          </Route>
+          <Route path="/courses">
+            <CoursesPage />
           </Route>
           <Route path="/SignUp">
-                <SignUp />
-            </Route>
+            <SignUp />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
-          
         </Switch>
       </div>
     </Router>

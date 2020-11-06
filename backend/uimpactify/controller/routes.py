@@ -2,10 +2,10 @@
 from flask_restful import Api
 
 # project resources
-from uimpactify.controller.authentication import SignUpApi, LoginApi
-from uimpactify.controller.user import UsersApi, UserApi
-from uimpactify.controller.course import (CoursesApi, CourseApi, CourseByInstructorApi,
-                                          CourseEnrollmentApi, CourseDisenrollmentApi, CoursesWithStudentApi)
+from uimpactify.controller.authentication import *
+from uimpactify.controller.user import *
+from uimpactify.controller.course import *
+
 
 
 def create_routes(api: Api):
@@ -24,13 +24,19 @@ def create_routes(api: Api):
     api.add_resource(LoginApi, '/authentication/login/')
 
     api.add_resource(UsersApi, '/user/')
-    api.add_resource(UserApi, '/user/<user_id>')
+    api.add_resource(UserApi, '/user/<user_id>/')
+    api.add_resource(SelfDeleteApi, '/user/delete-self/')
 
     api.add_resource(CoursesApi, '/course/')
-    api.add_resource(CourseApi, '/course/<course_id>')
+    api.add_resource(CourseApi, '/course/<course_id>/')
 
     api.add_resource(CourseByInstructorApi, '/course/instructor/')
 
-    api.add_resource(CourseEnrollmentApi, '/course/enroll')
-    api.add_resource(CourseDisenrollmentApi, '/course/disenroll/<course_id>/<user_id>')
-    api.add_resource(CoursesWithStudentApi, '/course/student/<student_id>')
+    api.add_resource(CourseEnrollmentApi, '/course/enroll/')
+
+    api.add_resource(CourseDisenrollmentApi, '/course/disenroll/<course_id>/')
+
+    api.add_resource(CoursesWithStudentApi, '/course/student/')
+
+    api.add_resource(PublishedCoursesApi, '/course/published/')
+    api.add_resource(PublishedCourseApi, '/course/published/<course_id>')
