@@ -17,6 +17,9 @@ from uimpactify.controller import routes
 @click.command("auth-test")
 @with_appcontext
 def auth_test():
+    auth_run_test()
+
+def auth_run_test():
     # Create a new user, sign in as the user, and delete the user
     user = {"email": "test_user@uimpactify.com", "password": "password"}
     user_id = auth_util.signup(user)
@@ -27,18 +30,30 @@ def auth_test():
 @click.command("course-test")
 @with_appcontext
 def course_test():
+    course_run_test()
+
+def course_run_test():
     # CREATING SAMPLE DATA
     access_token = auth_util.login()
 
     # creating a separate instructor user
-    inst_user = {
+    inst_json = {
         "name": "instructor person",
         "email": "instructor_person@uimpactify.com",
         "password": "password",
         "roles": {"student": True, "instructor": True},
         }
-    inst_id = auth_util.signup(inst_user)
-    inst_token = auth_util.login(inst_user)
+    inst_id = auth_util.signup(inst_json)
+    inst_token = auth_util.login(inst_json)
+
+    # creating a test student
+    s_json = {
+        "name": "student",
+        "email": "student_person@uimpactify.com",
+        "password": "password",
+        }
+    s_id = auth_util.signup(s_json)
+    s_token = auth_util.login(s_json)
 
     # creating a bunch of courses
     c1_json = { "name": "testCourseOne", }
@@ -49,13 +64,22 @@ def course_test():
     c2 = course_util.create_course(access_token, c2_json)
     c3 = course_util.create_course(inst_token, c3_json)
 
+    # enroll a student in some courses
+    course_util.enroll_student(s_token, c2)
+    course_util.enroll_student(s_token, c3)
+
     # getting info on the created courses
     course_util.get_all_courses(access_token)
     course_util.get_courses_by_instructor(inst_token)
+    course_util.get_courses_with_student(s_token)
 
     # CLEAN UP
-    # removing the new instructor
+    # disenroll a student
+    course_util.disenroll_student(s_token, c2)
+
+    # removing the new users
     user_util.delete_self(inst_token)
+    user_util.delete_self(s_token)
 
     # removing new courses
     course_util.delete_course(access_token, c1)
@@ -63,6 +87,23 @@ def course_test():
 
     # getting all courses again to show that they are gone
     course_util.get_all_courses(access_token)
+
+@click.command("test")
+@with_appcontext
+def test_all():
+    print(
+        "----------------------------\n" +
+        "RUNNING AUTHENTICATION TESTS\n" +
+        "----------------------------\n"
+        )
+    auth_run_test()
+
+    print(
+        "----------------------------\n" +
+        "RUNNING COURSE RELATED TESTS\n" +
+        "----------------------------\n"
+        )
+    course_run_test()
 
 
 @click.command("init-data")
@@ -141,8 +182,8 @@ def init_data():
     course_util.enroll_student(s3_token, c2)
 
 
-
 def init_app(app):
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
+    app.cli.add_command(test_all)
     app.cli.add_command(init_data)

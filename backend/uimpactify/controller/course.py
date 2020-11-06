@@ -181,7 +181,6 @@ class CourseEnrollmentApi(Resource):
         data = request.get_json()
         user_id=get_jwt_identity()
 
-
         try:
             post_enroll = Courses.objects(id=data["courseId"]).update(push__students=ObjectId(user_id))
         except InvalidId as e:
@@ -198,12 +197,13 @@ class CourseDisenrollmentApi(Resource):
     @jwt_required
     @user_exists
     @dont_crash
-    def delete(self, course_id: str, user_id: str) -> Response:
+    def delete(self, course_id: str) -> Response:
         """
         DELETE response method for disenrolling in a course.
 
         :return: JSON object
         """
+        user_id=get_jwt_identity()
         try:
             post_disenroll = Courses.objects(id=course_id).update(pull__students=ObjectId(user_id))
         except InvalidId as e:
@@ -218,18 +218,19 @@ class CourseDisenrollmentApi(Resource):
 
 class CoursesWithStudentApi(Resource):
     """
-    Flask-resftul resource for returning courses with the same instructor id.
+    Flask-resftul resource for returning courses containing the same student.
 
     """
     @jwt_required
     @user_exists
     @dont_crash
-    def get(self, student_id: str) -> Response:
+    def get(self) -> Response:
         """
         GET response method for single documents in course collection.
 
         :return: JSON object
         """
+        student_id=get_jwt_identity()
         output = Courses.objects(students=student_id)
         fields = { 'id', 'name' }
         converted = convert_query(output, fields)
