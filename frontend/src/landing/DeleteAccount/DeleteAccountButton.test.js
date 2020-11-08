@@ -1,17 +1,31 @@
 import React from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
+import { Router } from 'react-router-dom';
+import {createMemoryHistory} from 'history';
 import DeleteAccountButton, {API} from './DeleteAccountButton';
 
 const setup = () => {
+  // testing with localStorage sucks: https://stackoverflow.com/questions/32911630/how-do-i-deal-with-localstorage-in-jest-tests
+  jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
+
   // mocking all the objects that are given as props to the button
   const accessToken = 'fake-token';
   const setAccessToken = jest.fn((values) => {});
+  const setLoggedIn = jest.fn((values) => {});
+
+  const history = createMemoryHistory();
+  const pushSpy = jest.spyOn(history, 'push');
+
 
   const utils = render(
-    <DeleteAccountButton
-      accessToken={accessToken}
-      setAccessToken={setAccessToken}
-    />
+    <Router history={history}>
+      <DeleteAccountButton
+        accessToken={accessToken}
+        setAccessToken={setAccessToken}
+        setLoggedIn={setLoggedIn}
+      />
+    </Router>
+
   );
   
   return {
@@ -40,7 +54,7 @@ test('clicking button opens popup, clicking no closes popup', () => {
 });
 
 test('clicking yes on popup makes delete user API call', async () => {
-  const getFunc = jest.spyOn(API, 'deleteUser').mockImplementationOnce(() => {
+  const deleteFunc = jest.spyOn(API, 'deleteUser').mockImplementationOnce(() => {
     return Promise.resolve();
   })
 
@@ -50,6 +64,5 @@ test('clicking yes on popup makes delete user API call', async () => {
   const yesButton = getByText("Yes");
   fireEvent.click(yesButton);
 
-  await wait (() => expect(getFunc).toHaveBeenCalled());
-  expect(setAccessToken).toHaveBeenCalled();
+  await wait (() => expect(deleteFunc).toHaveBeenCalled());
 });

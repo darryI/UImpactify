@@ -17,7 +17,7 @@ function CreationForm(props) {
       ...values,
     };
 
-    var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
+    var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
     if (props.isNewCourse) {
       if ( jwtToken === null) {
         history.push("/login")
