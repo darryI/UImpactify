@@ -6,6 +6,9 @@ import jsonCourses from '../courses.json';
 import { StaticRouter } from 'react-router-dom'
 
 const setup = () => {
+  // testing with localStorage sucks: https://stackoverflow.com/questions/32911630/how-do-i-deal-with-localstorage-in-jest-tests
+  jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
+
   const utils = render(
     // need to wrap the CoursePage component with a static router to 
     // simulate the Router information for the real app

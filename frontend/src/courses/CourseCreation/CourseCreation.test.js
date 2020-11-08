@@ -6,12 +6,11 @@ import jsonCourses from '../courses.json';
 
 
 const setup = () => {
-  const user = {
-    name: "Ninja",
-  };
+  // testing with localStorage sucks: https://stackoverflow.com/questions/32911630/how-do-i-deal-with-localstorage-in-jest-tests
+  jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
 
   const utils = render(
-    <CourseCreation user={user}/>
+    <CourseCreation />
   );
     
   return {
