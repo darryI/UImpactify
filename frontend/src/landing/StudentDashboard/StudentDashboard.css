@@ -1,0 +1,42 @@
+.student-dashboard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dashboard-course-card {
+    /* padding: 10px; */
+    padding: 20px 20px 30px 20px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    background-color: #e6d8f7;
+    min-width: 500px;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    /* keep a transparent border always so that the content
+     doesn't shift when border is added on hover */
+    border: 1.5px solid transparent;
+    font-family: OpenSans;
+}
+
+.dashboard-course-card:hover {
+    border: 1.5px solid #d4b8f5;
+    background-color: #d4b8f5;
+}
+
+#student { 
+    align-self: flex-end;
+    font-weight: bold;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+blockquote {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

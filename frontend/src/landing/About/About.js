@@ -4,17 +4,17 @@ import './About.css';
 
 function About(props) {
 
-  const setLoggedIn = props.setLoggedIn;
+  // const setLoggedIn = props.setLoggedIn;
 
-  var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
+  // var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
 
-  let delAccButton;
+  // let delAccButton;
 
-  if (jwtToken) {
-    delAccButton = <DeleteAccountButton setLoggedIn={setLoggedIn} />
-  } else {
-    delAccButton = null
-  }
+  // if (jwtToken) {
+  //   delAccButton = <DeleteAccountButton setLoggedIn={setLoggedIn} />
+  // } else {
+  //   delAccButton = null
+  // }
 
   return (
 
@@ -23,7 +23,7 @@ function About(props) {
       <div className="AboutPageFirstSection">
         <p className="AboutPageText">About U-Impactify</p>
         <div className="AboutPageIMac"></div>
-        {delAccButton}
+        {/* {delAccButton} */}
       </div>
 
       <div className="AboutPageSecondSection">
