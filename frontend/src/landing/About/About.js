@@ -1,5 +1,5 @@
 import React from 'react';
-import DeleteAccountButton from 'landing/DeleteAccount/DeleteAccountButton';
+// import DeleteAccountButton from 'landing/DeleteAccount/DeleteAccountButton';
 import './About.css';
 
 function About(props) {

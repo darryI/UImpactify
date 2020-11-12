@@ -46,7 +46,7 @@ function StudentDashboard(props) {
     }, [])
 
     const courseCards = courses.map(c => <DashboardCourseCard key={c.id} course={c}/>);
-
+    // const dropButtons = courses.map(c => <DropButton key={c.id} course={c}/>);
 
     if (error) {
         return <p>courses could not be loaded</p>
@@ -57,6 +57,7 @@ function StudentDashboard(props) {
             <div className="student-dashboard">  
                 <div className="middle">
                     {courseCards}
+                    {/* {dropButtons} */}
                 </div>
                 <div>
                     {delAccButton}
@@ -73,8 +74,19 @@ function DashboardCourseCard(props) {
             <div className="dashboard-course-card">
                 <div id="student">{props.course.id}</div>
                 <div><h2>{props.course.name}</h2></div>
-                {/* <button onClick></button> */}
+                <DropButton course={props.course}/>
             </div>
+        </Link>
+    )
+}
+
+
+// Drop button does not work while the route is correct when clicked the drop button
+function DropButton(props) {
+    const disenrol = `/course/disenroll/${props.course.id}`
+    return (
+        <Link to={disenrol}>
+            <button>Drop</button>
         </Link>
     )
 }
