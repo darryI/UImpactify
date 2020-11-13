@@ -86,7 +86,7 @@ function DropButton(props) {
     const disenrol = `/course/disenroll/${props.course.id}`
     return (
         <Link to={disenrol}>
-            <button>Drop</button>
+            <button id="dropButton">Drop</button>
         </Link>
     )
 }

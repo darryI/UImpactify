@@ -15,7 +15,17 @@ function CourseCard(props) {
                 <div id="instructor">{props.course.instructor}</div>
                 <div><h2>{props.course.name}</h2></div>
                 <div><blockquote>{props.course.objective}</blockquote></div>
+                <EnrolButton />
             </div>
+        </Link>
+    )
+}
+
+function EnrolButton(props) {
+    const link = `/course/enroll/`
+    return (
+        <Link to={link}>
+            <button id="enrolButton">Enrol</button>
         </Link>
     )
 }
