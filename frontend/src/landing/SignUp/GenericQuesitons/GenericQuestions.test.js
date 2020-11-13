@@ -3,10 +3,6 @@ import { fireEvent, getByLabelText, render } from '@testing-library/react';
 import GenericQuestions, {API} from './GenericQuestions'
 
 const setup = () => {
-  // mocking all the objects that are given as props to the button
-  const accessToken = 'fake-token';
-  const setAccessToken = jest.fn((values) => {});
-
     const email = "batu@gmail.com"
     const username = "batu"
     const password = "123456"

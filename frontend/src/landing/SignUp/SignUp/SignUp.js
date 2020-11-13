@@ -122,7 +122,8 @@ function SignUp() {
             
             <SocialInitiativesQuestions
             handleCategory={handleCategory}/>
-            <button id="signInButton" type="submit" onClick={handleSignUp}>CONFIRM</button>
+            <button id="signInButton" aria-label="submit-button" type="submit" 
+            onClick={handleSignUp}>CONFIRM</button>
         </div>
     );
 }
