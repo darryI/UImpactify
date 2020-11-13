@@ -12,8 +12,10 @@ export default function DropButton(props) {
     const history = useHistory();
     const [courses, setCourses] = React.useState([]);
 
-    React.useEffect(() => {
-        var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
+    const handleClick = (event) => {
+      event.preventDefault();
+
+      var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
     
         if (jwtToken) {
           API.dropCourse(props.course.id, jwtToken.access_token)
@@ -33,11 +35,10 @@ export default function DropButton(props) {
         } else {
           history.push("./login")
         }
-    }, [])
-
+    }
 
     return (
-        <button id="dropButton">Drop</button>
+        <button id="dropButton" onClick={handleClick}>Drop</button>
     )
 }
 

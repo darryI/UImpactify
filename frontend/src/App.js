@@ -58,9 +58,6 @@ function App() {
           <Route path="/courses/:id">
             <Course/>
           </Route>
-          <Route path="/course/disenroll/:id">
-            <StudentDashboard/>
-          </Route>
           <Route path="/courses">
             <CoursesPage />
           </Route>
