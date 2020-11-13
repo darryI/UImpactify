@@ -66,7 +66,6 @@ class CoursesApi(Resource):
             data = request.get_json()
             # get the instructor id based off of jwt token identity
             data['instructor'] = get_jwt_identity()
-            print(get_jwt_identity())
             try:
                 course = Courses(**data).save()
             except ValidationError as e:
