@@ -10,3 +10,20 @@
   margin: auto;
   box-shadow: 0px 8px 16px rgba(137, 176, 175, 0.25);
 }
+
+.mult-question {
+  background-color: indianred;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.mult-option {
+  margin-bottom: .25em;
+}
+
+input[type=radio] {
+  border: 0px;
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+}
