@@ -41,9 +41,6 @@ blockquote {
     text-overflow: ellipsis;
 }
 
-#dropButton {
+.float-right {
     float: right;
-    padding: 8px 30px;
-    font-size: 20px;
-    text-transform: uppercase;
 }

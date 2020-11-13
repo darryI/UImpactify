@@ -6,6 +6,7 @@ import {
 
 import DeleteAccountButton from '../DeleteAccount/DeleteAccountButton';
 
+import DropButton from './DropButton/DropButton'
 
 import './StudentDashboard.css';
 
@@ -55,6 +56,7 @@ function StudentDashboard(props) {
     } else {
         return (
             <div className="student-dashboard">  
+                <h2>Hello!</h2>
                 <div className="middle">
                     {courseCards}
                     {/* {dropButtons} */}
@@ -74,19 +76,11 @@ function DashboardCourseCard(props) {
             <div className="dashboard-course-card">
                 <div id="student">{props.course.id}</div>
                 <div><h2>{props.course.name}</h2></div>
-                <DropButton course={props.course}/>
+                <div className="float-right">
+                    <DropButton course={props.course}/>
+                </div>
+                
             </div>
-        </Link>
-    )
-}
-
-
-// Drop button does not work while the route is correct when clicked the drop button
-function DropButton(props) {
-    const disenrol = `/course/disenroll/${props.course.id}`
-    return (
-        <Link to={disenrol}>
-            <button id="dropButton">Drop</button>
         </Link>
     )
 }
