@@ -49,10 +49,12 @@ def forbidden() -> Response:
     return resp
 
 
-def not_found() -> Response:
+def not_found(msg=None) -> Response:
+    if msg is None:
+        msg = "404 error: The requested resource could not be found but may be available in the future"
     output = {
         "error": {
-            "msg": "404 error: The requested resource could not be found but may be available in the future"
+            "msg": msg
         }
     }
     resp = jsonify(output)
