@@ -1,14 +1,21 @@
 import React from 'react';
+import { Router } from 'react-router-dom';
+import {createMemoryHistory} from 'history';
+
 import { render, fireEvent, wait } from '@testing-library/react';
 import SignUp, {API} from './SignUp.js';
 import jsonMockUser from './mockUser.json';
 
 const setup = () => {
+    const history = createMemoryHistory();
+    const pushSpy = jest.spyOn(history, 'push');
     const utils = render(
-        <SignUp/>
+        <Router history={history}>
+            <SignUp />
+        </Router>
     );
 
-    const submit = utils.getAllByLabelText('submit-button');
+    const submit = utils.getByLabelText('submit-button');
     const username = utils.getByLabelText(/Name/);
     // const password = utils.getByLabelText('obj-input');
     // const type = utils.getByLabelText('lrn-input');
@@ -16,9 +23,10 @@ const setup = () => {
     // const email = utils.getByLabelText('creation-form');
 
     return{
-        ...utils,
         submit,
-        username
+        username,
+        pushSpy,
+        ...utils
         // password,
         // type,
         // phone,
@@ -26,17 +34,21 @@ const setup = () => {
     }
 };
 
+
 test('when submit is clicked, API call is made to post the user to the database', async () => {
-    const { submit } = setup();
     const getFunc = jest.spyOn(API, 'postSignUp').mockImplementationOnce(() => {
-      return Promise.resolve(jsonMockUser);
+      return Promise.resolve();
     })
+
+    const { submit, pushSpy } = setup();
     const alertFunc = jest.spyOn(window, 'alert').mockImplementationOnce(() => {
         return;
       })
-    fireEvent.click(submit[0]);
-  
-    await wait (() => expect(getFunc).toHaveBeenCalledTimes(1));
+    fireEvent.click(submit);
+
+    await wait (() => expect(getFunc).toHaveBeenCalled());
+    expect(pushSpy).toHaveBeenCalledWith('/login');
+
   
     // // check that all the cards in the test data are rendered
     // const user = container.querySelectorAll('.course-card');

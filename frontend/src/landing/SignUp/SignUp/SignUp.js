@@ -56,7 +56,9 @@ function SignUp() {
     }
 
     const handleSignUp = () => {
-        if(email && username && password){
+        console.log("heyyy1")
+        // if(email && username && password){
+            console.log("heyyy2")
             const newUser = {
                 name: username,
                 email: email,
@@ -73,6 +75,7 @@ function SignUp() {
             API.postSignUp(newUser)
             .then(
                 (response) => {
+                    console.log("heyyy3")
                     history.push('/login')
                 },
                 // Note: it's important to handle errors here
@@ -82,9 +85,9 @@ function SignUp() {
                     alert(JSON.stringify(error, null, 2));
                 }
             )
-        }else{
-            alert("one or more of the required fields arent filled!")
-        }
+        // }else{
+        //     alert("one or more of the required fields arent filled!")
+        // }
     }
 
     
