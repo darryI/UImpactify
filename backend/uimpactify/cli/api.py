@@ -10,6 +10,7 @@ from uimpactify.cli.db import ADMIN_USER
 from uimpactify.cli import auth_util
 from uimpactify.cli import course_util
 from uimpactify.cli import user_util
+from uimpactify.cli import feedback_util
 
 from uimpactify.controller import routes
 
@@ -73,6 +74,28 @@ def course_run_test():
     course_util.get_courses_by_instructor(inst_token)
     course_util.get_courses_with_student(s_token)
 
+    # create feedback for some courses
+    f1_json = {
+        "comment": "Hello readers of this public feedback",
+        "course": c2,
+        "public": True
+    }
+    f1 = feedback_util.create_feedback(s_token, f1_json)
+
+    f2_json = {
+        "comment": "Hello instructor! Moo!",
+        "course": c3,
+        "public": False
+    }
+    f2 = feedback_util.create_feedback(s_token, f2_json)
+
+    # getting the public feedback
+    feedback_util.get_feedback(s_token, c2)
+    # getting private feedback (empty)
+    feedback_util.get_feedback(s_token, c3)
+    # getting private feedback as instructor (not empty)
+    feedback_util.get_feedback(inst_token, c3)
+
     # CLEAN UP
     # disenroll a student
     course_util.disenroll_student(s_token, c2)
@@ -120,7 +143,7 @@ def init_data():
     inst1 = auth_util.signup(inst1_json)
     inst1_token = auth_util.login(inst1_json)
     
-    inst2_json= {
+    inst2_json = {
         "name": "Instructor 2",
         "email": "inst2@uimpactify.com",
         "password": "password",
@@ -130,7 +153,7 @@ def init_data():
     inst2_token = auth_util.login(inst2_json) 
     
     # Create students
-    s1_json= {
+    s1_json = {
         "name": "Student 1", 
         "email": "s1@uimpactify.com", 
         "password": "password",
@@ -138,7 +161,7 @@ def init_data():
     s1 = auth_util.signup(s1_json)
     s1_token = auth_util.login(s1_json)
     
-    s2_json= {
+    s2_json = {
         "name": "Student 2", 
         "email": "s2@uimpactify.com", 
         "password": "password",
@@ -146,7 +169,7 @@ def init_data():
     s2 = auth_util.signup(s2_json)
     s2_token = auth_util.login(s2_json)
     
-    s3_json= {
+    s3_json = {
         "name": "Student 3", 
         "email": "s3@uimpactify.com", 
         "password": "password",
@@ -155,7 +178,7 @@ def init_data():
     s3_token = auth_util.login(s3_json)
     
     # Create NPOs
-    npo1_json= {
+    npo1_json = {
         "name": "Organization 1", 
         "email": "npo1@uimpactify.com", 
         "password": "password",
@@ -180,6 +203,35 @@ def init_data():
     course_util.enroll_student(s1_token, c2)
     course_util.enroll_student(s2_token, c2)
     course_util.enroll_student(s3_token, c2)
+
+    # Add feedback to courses
+    f1_json = {
+        "comment": "This course was the best course I've ever taken and I'm so glad it was able to provide so much value it's just absolutely insane I loved it and I feel like a better human being for taking it and I'm about to change the world by removing financial burgers one step at a time. Nom nom nom.",
+        "course": c2,
+        "public": True
+    }
+    f1 = feedback_util.create_feedback(s1_token, f1_json)
+
+    f2_json = {
+        "comment": "Sick course. Keep it up homie.",
+        "course": c2,
+        "public": False
+    }
+    f2 = feedback_util.create_feedback(s2_token, f2_json)
+
+    f3_json = {
+        "comment": "I HATE THIS COURSE AND I'M NEVER TAKING IT AGAIN :(",
+        "course": c2,
+        "public": True
+    }
+    f3 = feedback_util.create_feedback(s3_token, f3_json)
+
+    f4_json = {
+        "comment": "I haven't taken this course but I just want to let you know it kinda smells here",
+        "course": c1,
+        "public": False
+    }
+    f4 = feedback_util.create_feedback(s2_token, f4_json)
 
 
 def init_app(app):
