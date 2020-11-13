@@ -16,6 +16,7 @@ import Login from './landing/login/Login/Login.js';
 import TopBar from './utils/Navigation.js';
 import Logout from './landing/login/Logout/Logout.js';
 
+import CourseLanding from './courses/CourseLanding/CourseLanding'
 
 function App() {
 
@@ -54,8 +55,12 @@ function App() {
           <Route path="/create">
             <CourseCreation />
           </Route>
+          {/* <Route path="/courses/:id">
+              <Course accessToken={accessToken}/>
+          </Route> */}
           <Route path="/courses/:id">
-            <Course/>
+              <CourseLanding />
+
           </Route>
           <Route path="/courses">
             <CoursesPage />
