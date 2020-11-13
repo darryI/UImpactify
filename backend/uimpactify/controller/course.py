@@ -350,9 +350,17 @@ class CourseEndorsedByApi(Resource):
 
         :return: JSON object
         """
+        # get the course
         try:
             doc = Courses.objects().get(id=course_id)
         except DoesNotExist:
             return not_found("404 Error: The requested course does not exist")
+
+        # get the names of the organizations endorsing the course
         endorsedBy = getattr(doc, 'endorsedBy')
-        return jsonify(endorsedBy)
+        names = []
+        for org in endorsedBy:
+            name = getattr(org, 'name')
+            names.append(name)
+
+        return jsonify(names)
