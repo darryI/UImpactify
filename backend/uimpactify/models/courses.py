@@ -12,7 +12,7 @@ from mongoengine import (Document,
 
 # project resources
 from uimpactify.models.users import Users
-from uimpactify.models.coursecontent import CourseContent
+# from uimpactify.models.coursecontent import CourseContent
 
 class Courses(Document):
     """
@@ -25,8 +25,8 @@ class Courses(Document):
     :param students: list of students in the course
     :param endorsedBy: list of organizations endorsing the course
     :param trainingFor: list of organizations using the course as training
-    :param published: required string ID of course instructor
-    :param courseContent: required string ID of course instructor
+    :param published: boolean stating whether the course is public
+    # :param courseContent: required string ID of course instructor
     """
 
     name = StringField(required=True, min_length=1)
@@ -37,4 +37,4 @@ class Courses(Document):
     endorsedBy = ListField(ReferenceField('Users', reverse_delete_rule=PULL))
     trainingFor = ListField(ReferenceField('Users', reverse_delete_rule=PULL))
     published = BooleanField(default=False)
-    courseContent = ListField(ReferenceField('CourseContent', reverse_delete_rule=PULL))
+    # courseContent = ListField(ReferenceField('CourseContent', reverse_delete_rule=PULL))
