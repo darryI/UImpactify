@@ -1,5 +1,6 @@
 .list {
   display: flex;
+  padding: 40px 10px 50px 10px;
 }
 
 .card {
@@ -42,6 +43,7 @@
   box-sizing: border-box;
   border-radius: 20px;
   min-width: 160px;
+  margin: auto;
 }
 
 .create-card {
@@ -51,6 +53,7 @@
   background: #ffffff;
   box-shadow: none;
   min-width: 160px;
+  margin: auto;
 }
 
 .create-card:hover {
