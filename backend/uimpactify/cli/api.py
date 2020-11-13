@@ -38,8 +38,8 @@ def course_run_test():
 
     # creating a separate instructor user
     inst_json = {
-        "name": "instructor person",
-        "email": "instructor_person@uimpactify.com",
+        "name": "test instructor",
+        "email": "test_instructor@uimpactify.com",
         "password": "password",
         "roles": {"student": True, "instructor": True},
         }
@@ -48,16 +48,26 @@ def course_run_test():
 
     # creating a test student
     s_json = {
-        "name": "student",
-        "email": "student_person@uimpactify.com",
+        "name": "test student",
+        "email": "test_student@uimpactify.com",
         "password": "password",
         }
     s_id = auth_util.signup(s_json)
     s_token = auth_util.login(s_json)
 
+    # creating a test organization
+    npo_json= {
+        "name": "test organization", 
+        "email": "test_organization@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo = auth_util.signup(npo_json)
+    npo_token = auth_util.login(npo_json)
+
     # creating a bunch of courses
     c1_json = { "name": "testCourseOne", }
-    c2_json = { "name": "testCourseTwo", }
+    c2_json = { "name": "testCourseTwo", "published": True, }
     c3_json = { "name": "testCourseThree", }
 
     c1 = course_util.create_course(access_token, c1_json)
@@ -68,10 +78,15 @@ def course_run_test():
     course_util.enroll_student(s_token, c2)
     course_util.enroll_student(s_token, c3)
 
+    # endorse a course
+    course_util.endorse_course(npo_token, c2)
+
     # getting info on the created courses
     course_util.get_all_courses(access_token)
+    course_util.get_all_published_courses()
     course_util.get_courses_by_instructor(inst_token)
     course_util.get_courses_with_student(s_token)
+    course_util.get_orgs_endorsing_course(c2)
 
     # CLEAN UP
     # disenroll a student
@@ -80,6 +95,7 @@ def course_run_test():
     # removing the new users
     user_util.delete_self(inst_token)
     user_util.delete_self(s_token)
+    user_util.delete_self(npo_token)
 
     # removing new courses
     course_util.delete_course(access_token, c1)
@@ -180,6 +196,9 @@ def init_data():
     course_util.enroll_student(s1_token, c2)
     course_util.enroll_student(s2_token, c2)
     course_util.enroll_student(s3_token, c2)
+
+    # Endorse a course
+    course_util.endorse_course(npo1_token, c2)
 
 
 def init_app(app):
