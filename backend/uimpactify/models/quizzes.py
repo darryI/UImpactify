@@ -13,6 +13,28 @@ from mongoengine import (Document,
 # project resources
 from uimpactify.models.courses import Courses
 
+class Options(EmbeddedDocument):
+    """
+    Custom EmbeddedDocument which represents a answers to a quiz question
+
+    :param option: the actual content of the potential answer
+    :param index: the index of the option
+    """
+    option = StringField(required=True, min_length=1)
+    index = StringField(required=True, min_length=1)
+
+class Questions(EmbeddedDocument):
+    """
+    Custom EmbeddedDocument which represents a quiz question.
+
+    :param question: the actual content of the question
+    :param index: the index of the question
+    :param options: list of Options (possible answers) for the question
+    """
+    question = StringField(required=True, min_length=1)
+    index = StringField(required=True, min_length=1)
+    options = ListField(EmbeddedDocumentField(Options), required=True)
+
 class Quizzes(Document):
     """
     a mongoengine document, which represents a quiz.
@@ -26,25 +48,3 @@ class Quizzes(Document):
     quizQuestions = ListField(EmbeddedDocumentField(Questions), required=True)
     published = BooleanField(default=False)
     course = ReferenceField('Courses', reverse_delete_rule=CASCADE, required=True)
-
-class Questions(EmbeddedDocument):
-    """
-    Custom EmbeddedDocument which represents a quiz question.
-
-    :param question: the actual content of the question
-    :param index: the index of the question
-    :param options: list of Options (possible answers) for the question
-    """
-    question = StringField(required=True, min_length=1)
-    index = StringField(required=True,default="0")
-    options = ListField(EmbeddedDocumentField(Options), required=True)
-
-class Options(EmbeddedDocument):
-    """
-    Custom EmbeddedDocument which represents a answers to a quiz question
-
-    :param option: the actual content of the potential answer
-    :param index: the index of the option
-    """
-    option = StringField(required=True, min_length=1)
-    index = StringField(required=True, default="0")
