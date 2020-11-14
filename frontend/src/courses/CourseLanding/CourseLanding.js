@@ -6,21 +6,30 @@ import {
 function CourseLanding(props) {
     let { id } = useParams();
     const [currCourse, setCurrCourse] = React.useState([])
+    const history = useHistory();
 
     React.useEffect(() => {
-        API.getCourses(props.accessToken, id)
+        var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
+        if (token) {
+            console.log(token)
+            API_course.getCourses(token.access_token, id)
             .then(
-            (result) => {
-                setCurrCourse(result)
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            (error) => {
-                console.log('problem getting the requested course')
-            }
+                (result) => {
+                    console.log(result)
+                    setCurrCourse(result)
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    console.log('problem getting the requested course')
+                }
             )
+        } else {
+            history.push("/login")
+        }
     }, [])
+
 
     return (
         <div>
