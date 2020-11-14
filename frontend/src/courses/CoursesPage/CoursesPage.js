@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from "react-router-dom";
 
 import CourseCard from '../CourseCard/CourseCard.js';
 import './CoursesPage.css';
@@ -8,11 +9,14 @@ function CoursesPage(props) {
 
     const [error, setError] = React.useState(null);
     const [isLoaded, setIsLoaded] = React.useState(false);
+    const history = useHistory();
 
     const [courses, setCourses] = React.useState([]);
 
     React.useEffect(() => {
-        API.getCourses(props.accessToken)
+      var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
+      if (jwtToken) {
+        API.getCourses(jwtToken.access_token)
             .then(
             (result) => {
                 setIsLoaded(true);
@@ -26,6 +30,9 @@ function CoursesPage(props) {
                 setError(error);
             }
             )
+      } else {
+        history.push("./login")
+      }
     }, [])
 
     const courseCards = courses.map(c => <CourseCard key={c.id} course={c}/>);

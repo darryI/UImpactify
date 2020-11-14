@@ -52,18 +52,26 @@ Install dependencies
 ```
 
 ### Additional commands
-Run these commands in a seperate tab while the flask server and MongoDB server are running
+Run these commands in a seperate tab **while the flask server and MongoDB server are running**
 
-To generate test data on the database (currently just creates an admin user)
+To generate test data on the database
 
 ```
+# Create an admin user
 (venv) $ flask init-db
+# Create a bunch of test data (fails if data already exists)
+(venv) $ flask init-data
 ```
 
-To test out logging in through the api and making authorized requests (while the dev server is running...)
+To run various API tests (if tests fail, data may not get deleted so you would have to go in manually to delete it)
 
 ```
-(venv) $ flask login
+# Test signup and login 
+(venv) $ flask auth-test
+# Test course related APIs
+(venv) $ flask course-test
+# Test everything
+(venv) $ flask test
 ```
 
 ### Adding a new python dependency

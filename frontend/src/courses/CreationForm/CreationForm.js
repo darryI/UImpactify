@@ -1,4 +1,5 @@
 import React from "react";
+import {useHistory} from "react-router-dom";
 
 import { ReactComponent as SaveIcon } from 'icons/save.svg';
 
@@ -7,6 +8,7 @@ import './CreationForm.css';
 function CreationForm(props) {
   const values = props.values;
   const setValues = props.setValues;
+  const history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -15,34 +17,43 @@ function CreationForm(props) {
       ...values,
     };
 
-    
+    var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
     if (props.isNewCourse) {
-      API.postCourse(courseJSON, props.accessToken).then(
-        (result) => {
-          courseJSON.id = result.id;
-          props.addCourse(courseJSON);
-          // reset form values
-          setValues(props.initialValues);
-          // navigate away from the creation form after submitting
-          props.setShowForm(false);
-        },
-        (error) => {
-            alert(JSON.stringify(error));
-        }
-      );
+      if ( jwtToken === null) {
+        history.push("/login")
+      } else {
+        API.postCourse(courseJSON, jwtToken.access_token).then(
+          (result) => {
+            courseJSON.id = result.id;
+            props.addCourse(courseJSON);
+            // reset form values
+            setValues(props.initialValues);
+            // navigate away from the creation form after submitting
+            props.setShowForm(false);
+          },
+          (error) => {
+              alert(JSON.stringify(error));
+          }
+        );
+      }
+      // alert('A new course was created');
     } else {
-      API.putCourse(courseJSON, props.accessToken).then(
-        (result) => {
-          props.updateCourse(courseJSON);
-          // reset form values
-          setValues(props.initialValues);
-          // navigate away from the creation form after submitting
-          props.setShowForm(false);
-        },
-        (error) => {
-            alert(JSON.stringify(error));
-        }
-      );
+      if ( jwtToken === null) {
+        history.push("/login")
+      } else {
+        API.putCourse(courseJSON, jwtToken.access_token).then(
+          (result) => {
+            props.updateCourse(courseJSON);
+            // reset form values
+            setValues(props.initialValues);
+            // navigate away from the creation form after submitting
+            props.setShowForm(false);
+          },
+          (error) => {
+              alert(JSON.stringify(error));
+          }
+        );
+      }
     }
   }
 
@@ -125,7 +136,7 @@ export const API = {
   },
 
   putCourse(course, token) {
-    const url = 'http://localhost:5000/course/' + course.id;
+    const url = 'http://localhost:5000/course/' + course.id + '/';
     // Default options are marked with *
     return fetch(url, {
       method: 'PUT', 

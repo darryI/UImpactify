@@ -7,7 +7,7 @@ function LoginForm(props) {
     const loginInfo = props.loginInfo;
     const setLoginValues = props.setLoginValues;
     const setFailedAuthenticate = props.setFailedAuthenticate;
-    const setAccessToken = props.setAccessToken;
+    const setLoggedIn = props.setLoggedIn;
     const history = useHistory();
 
     const handleLogin = (event) => {
@@ -18,7 +18,8 @@ function LoginForm(props) {
             .then(
                 (result) => {
                     setFailedAuthenticate(false);
-                    setAccessToken(result.access_token);
+                    setLoggedIn(true);
+                    localStorage.setItem("jwtAuthToken", JSON.stringify(result))
                     history.push('/about')
                 },
                 // Note: it's important to handle errors here

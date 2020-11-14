@@ -4,22 +4,26 @@ import './About.css';
 
 function About(props) {
 
-  const accessToken = props.accessToken;
-  const setAccessToken = props.setAccessToken;
+  const setLoggedIn = props.setLoggedIn;
+
+  var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
+
+  let delAccButton;
+
+  if (jwtToken) {
+    delAccButton = <DeleteAccountButton setLoggedIn={setLoggedIn} />
+  } else {
+    delAccButton = null
+  }
 
   return (
+
     <div className="AboutPage">
       
       <div className="AboutPageFirstSection">
         <p className="AboutPageText">About U-Impactify</p>
         <div className="AboutPageIMac"></div>
-        { accessToken !== '' ?
-          <DeleteAccountButton
-            accessToken={accessToken}
-            setAccessToken={setAccessToken}
-          />
-          : null 
-        }
+        {delAccButton}
       </div>
 
       <div className="AboutPageSecondSection">
