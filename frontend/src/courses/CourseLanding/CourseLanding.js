@@ -1,13 +1,13 @@
 import React from 'react';
 import {useParams} from 'react-router-dom';
-import CourseLandingAPI from './CourseLandingAPI'
+import CourseLandingInfo from './CourseLandingInfo'
 
 function CourseLanding(){
     let { id } = useParams();
 
     return (
         <div>
-            <CourseLandingAPI id={id}/>
+            <CourseLandingInfo id={id}/>
         </div>
     )
 }
