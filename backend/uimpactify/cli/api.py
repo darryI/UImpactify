@@ -11,6 +11,7 @@ from uimpactify.cli import auth_util
 from uimpactify.cli import course_util
 from uimpactify.cli import user_util
 from uimpactify.cli import feedback_util
+from uimpactify.cli import opportunity_util
 
 from uimpactify.controller import routes
 
@@ -111,6 +112,49 @@ def course_run_test():
     # getting all courses again to show that they are gone
     course_util.get_all_courses(access_token)
 
+@click.command("opportunity-test")
+@with_appcontext
+def opportunity_test():
+    opportunity_run_test()
+
+def opportunity_run_test():
+    # CREATING SAMPLE DATA
+    access_token = auth_util.login()
+
+    # creating a separate instructor user
+    org_json = {
+        "name": "organization person",
+        "email": "organization_person@uimpactify.com",
+        "password": "password",
+        "roles": {"student": True, "organization": True},
+        }
+    org_id = auth_util.signup(org_json)
+    org_token = auth_util.login(org_json)
+
+    # Add opportunities
+    O1_json = {
+        "isPaid": False,
+        "description": "bad job that doesnt pay",
+        "organizationName": "bad",
+        "isPublished": True
+    }
+    O1 = opportunity_util.create_opportunity(org_token, O1_json)
+
+    O2_json = {
+        "isPaid": True,
+        "description": "good job that make me richie",
+        "organizationName": "bad",
+        "isPublished": True
+    }
+    O2 = opportunity_util.create_opportunity(org_token, O2_json)
+
+    opportunity_util.get_opportunities(org_token)
+
+    # CLEAN UP
+
+    # removing the new users
+    user_util.delete_self(org_token)
+
 @click.command("test")
 @with_appcontext
 def test_all():
@@ -127,6 +171,13 @@ def test_all():
         "----------------------------\n"
         )
     course_run_test()
+
+    print(
+        "----------------------------\n" +
+        "RUNNING OPPORTUNITY RELATED TESTS\n" +
+        "----------------------------\n"
+        )
+    opportunity_run_test()
 
 
 @click.command("init-data")
@@ -237,5 +288,6 @@ def init_data():
 def init_app(app):
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
+    app.cli.add_command(opportunity_test)
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)
