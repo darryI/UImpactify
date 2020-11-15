@@ -4,7 +4,6 @@ import json
 from flask import current_app, g, url_for
 
 from uimpactify.cli.db import ADMIN_USER
-from uimpactify.cli import auth_util
 
 from uimpactify.controller import routes
 from uimpactify.models.courses import Courses
