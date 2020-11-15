@@ -3,14 +3,9 @@ import { useHistory } from "react-router-dom";
 
 import './DropButton.css'
 
-// Drop button does not work while the route is correct when clicked the drop button
 export default function DropButton(props) {
-    // const disenrol = `/course/disenroll/${props.course.id}`
-
     const [error, setError] = React.useState(null);
-    const [isLoaded, setIsLoaded] = React.useState(false);
     const history = useHistory();
-    const [courses, setCourses] = React.useState([]);
 
     const handleClick = (event) => {
       event.preventDefault();
@@ -20,15 +15,13 @@ export default function DropButton(props) {
         if (jwtToken) {
           API.dropCourse(props.course.id, jwtToken.access_token)
               .then(
-              (result) => {
-                  setIsLoaded(true);
-                  setCourses(result);
+              () => {
+
               },
               // Note: it's important to handle errors here
               // instead of a catch() block so that we don't swallow
               // exceptions from actual bugs in components.
               (error) => {
-                  setIsLoaded(true);
                   setError(error);
               }
             )
@@ -37,9 +30,13 @@ export default function DropButton(props) {
         }
     }
 
-    return (
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else {
+      return (
         <button id="dropButton" onClick={handleClick}>Drop</button>
-    )
+      )
+    }
 }
 
 export const API = {

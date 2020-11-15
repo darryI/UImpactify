@@ -16,7 +16,7 @@ function CourseCard(props) {
                 <div id="instructor">{props.course.instructor}</div>
                 <div><h2>{props.course.name}</h2></div>
                 <div><blockquote>{props.course.objective}</blockquote></div>
-                <EnrolButton course={props.course}/>
+                <EnrolButton course_id={props.course.id}/>
             </div>
         </Link>
     )

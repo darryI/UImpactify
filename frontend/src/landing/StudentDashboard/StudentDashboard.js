@@ -47,7 +47,6 @@ function StudentDashboard(props) {
     }, [])
 
     const courseCards = courses.map(c => <DashboardCourseCard key={c.id} course={c}/>);
-    // const dropButtons = courses.map(c => <DropButton key={c.id} course={c}/>);
 
     if (error) {
         return <p>courses could not be loaded</p>
@@ -59,7 +58,6 @@ function StudentDashboard(props) {
                 <h2>Hello!</h2>
                 <div className="middle">
                     {courseCards}
-                    {/* {dropButtons} */}
                 </div>
                 <div>
                     {delAccButton}
