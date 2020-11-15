@@ -22,7 +22,7 @@ def auth_test():
 
 def auth_run_test():
     # Create a new user, sign in as the user, and delete the user
-    user = {"email": "test_user@uimpactify.com", "password": "password"}
+    user = {"email": "test_user@uimpactify.com", "password": "password", "name": "Jeffarious", "phone": "1112223333"}
     user_id = auth_util.signup(user)
     user_token = auth_util.login(user)
     user_util.get_self(user_token)
