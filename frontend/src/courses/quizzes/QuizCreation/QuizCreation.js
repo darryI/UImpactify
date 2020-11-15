@@ -72,7 +72,7 @@ function QuizCreation(props) {
 
   let quizBlocks = quizzes.map((q, i) => {
     return (
-      <div className="quiz-block">
+      <div key={q.id} className="quiz-block">
         <div>{q.name}</div>
         <div className="edit-button"><EditIcon onClick={e => handleEdit(e, i)}/></div>
       </div>

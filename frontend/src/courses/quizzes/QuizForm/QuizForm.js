@@ -1,5 +1,4 @@
 import React from 'react';
-import {useHistory} from "react-router-dom";
 
 import { ReactComponent as SaveIcon } from 'icons/save.svg';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
@@ -9,10 +8,6 @@ import './QuizForm.css';
 function QuizForm(props) {
 
   const values = props.values;
-  const history = useHistory();
-
-  
-
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -137,16 +132,16 @@ function QuizForm(props) {
 
     const options = [0, 1, 2, 3].map((j) => {
       return (
-        <div>
+        <div key={j}>
           <label className="option-text"></label>
           <input aria-label="option-text" className="rect-1643 mult-option" type="text" value={values.quizQuestions[i].options[j].option} onChange={e => handleOptionChange(e, i, j)} />
-          <input class="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} checked={values.quizQuestions[i].answer === j} onChange={e => handleAnswerChange(e, i, j)}></input>
+          <input className="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} checked={values.quizQuestions[i].answer === j} onChange={e => handleAnswerChange(e, i, j)}></input>
         </div>
       )
     });
 
     return (
-      <div className="mult-question">
+      <div key={i} className="mult-question">
         
         <label className="question-text"><h2>Question {i+1}</h2></label>
         <input aria-label="question-text" className="rect-1643" type="text" value={values.quizQuestions[i].question} onChange={e => handleQuestionChange(e, i)} />
@@ -167,7 +162,7 @@ function QuizForm(props) {
 
       <h1>Multiple Choice Questions</h1>
       {questions}
-      <button onClick={e => handleNewQuestion(e)} className="create-button">
+      <button aria-label="new-question" onClick={e => handleNewQuestion(e)} className="create-button">
         <AddIcon width="30px" height="30px"/>
         New Question
       </button>
