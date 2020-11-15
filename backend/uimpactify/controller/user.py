@@ -113,6 +113,7 @@ class UserApi(Resource):
         :return: JSON object
         """
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
+        
         if authorized:
             user = Users.objects.get(id=user_id)
             return jsonify(convert_doc(user))
@@ -154,26 +155,6 @@ class UserApi(Resource):
             return jsonify(output)
         else:
             return forbidden()
-
-
-class SelfApi(Resource):
-    """
-    Flask-resftul resource for returning db.user collection.
-
-    """
-
-    @jwt_required
-    @dont_crash
-    @user_exists
-    def delete(self) -> Response:
-        """
-        DELETE response method for deleting currently logged in user.
-        JSON Web Token is required.
-
-        :return: JSON object
-        """
-        output = Users.objects(id=get_jwt_identity()).delete()
-        return jsonify(output)
 
 
 class SignedInUserApi(Resource):
