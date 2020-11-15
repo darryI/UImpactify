@@ -4,6 +4,7 @@ import CourseEndorseButton from '../CourseEndorseButton/CourseEndorseButton'
 
 function CourseLanding(props) {
     let { id } = useParams();
+    const showInfo = false;
     const [currCourse, setCurrCourse] = React.useState([])
     const [isNPO, setisNPO] = React.useState(false)
     const history = useHistory();
@@ -35,7 +36,7 @@ function CourseLanding(props) {
             <h1>{currCourse.name} by {currCourse.instructor}</h1>
             <h2>Objective of this course: {currCourse.objective}</h2>
             <h4>Learning outcomes: {currCourse.learningOutcomes}</h4>
-            <CourseEndorseButton/>
+            <CourseEndorseButton style={{ display: showInfo ? "block" : "none" }}/>
 
             {/* <p>this is :{JSON.stringify(currCourse)}</p>
             <p>seperator</p>

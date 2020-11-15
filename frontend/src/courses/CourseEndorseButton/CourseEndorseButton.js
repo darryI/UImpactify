@@ -2,6 +2,7 @@ import React from 'react';
 import {useHistory, useParams} from 'react-router-dom';
 
 function CourseEndorseButton(props) {
+    const showInfo = false;
     // React.useEffect(() => {
     //     var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
     //     if (token) {
@@ -25,8 +26,8 @@ function CourseEndorseButton(props) {
     // }, [])
 
     return(
-        <button  aria-label="endorse-button" type="button" 
-            onClick={()=>console.log('boooo')} disabled={false}>Endorse meeee!</button>
+        <button style={{ display: showInfo ? "block" : "none" }} aria-label="endorse-button" 
+            type="button" onClick={()=>console.log('boooo')} disabled={false}>Endorse meeee!</button>
     )
 }
 
