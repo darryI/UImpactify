@@ -19,15 +19,16 @@ export default function EnrolButton(props) {
           API.enrolCourse(requestJSON, jwtToken.access_token)
               .then(
               () => {
+                // alert("Successfully enrol in this course!");
               },
               // Note: it's important to handle errors here
               // instead of a catch() block so that we don't swallow
               // exceptions from actual bugs in components.
               (error) => {
-                  // setIsLoaded(true);
-                  setError(error);
+                // setIsLoaded(true);
+                setError(error);
               }
-            )
+            );
         } else {
           history.push("./login")
         }

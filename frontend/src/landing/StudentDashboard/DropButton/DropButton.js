@@ -1,11 +1,16 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
-
+import ConfirmationPopup from '../../ConfirmationPopup/ConfirmationPopup';
 import './DropButton.css'
 
 export default function DropButton(props) {
     const [error, setError] = React.useState(null);
     const history = useHistory();
+    const [showPopup, setShowPopup] = React.useState(false);
+
+    const togglePopup = () => {
+      setShowPopup(!showPopup)
+    }
 
     const handleClick = (event) => {
       event.preventDefault();
@@ -14,17 +19,18 @@ export default function DropButton(props) {
     
         if (jwtToken) {
           API.dropCourse(props.course.id, jwtToken.access_token)
-              .then(
-              () => {
-
-              },
-              // Note: it's important to handle errors here
-              // instead of a catch() block so that we don't swallow
-              // exceptions from actual bugs in components.
-              (error) => {
-                  setError(error);
-              }
-            )
+            .then(
+            () => {
+              history.push("./dashboard")
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+              setError(error);
+            }
+          );
+          togglePopup();
         } else {
           history.push("./login")
         }
@@ -34,7 +40,18 @@ export default function DropButton(props) {
       return <div>Error: {error.message}</div>;
     } else {
       return (
-        <button id="dropButton" onClick={handleClick}>Drop</button>
+        <div>
+          <button id="dropButton" onClick={togglePopup}>Drop</button>
+          {showPopup ? 
+            <ConfirmationPopup
+              text='Are you sure you want to drop this course?'
+              description='This action will remove you from this course.'
+              yesOption={handleClick}
+              noOption={togglePopup}
+            />
+            : null
+          }
+        </div>
       )
     }
 }

@@ -47,8 +47,6 @@ function StudentDashboard(props) {
     }, [])
 
     const dashboardCourseCards = courses.map(c => <DashboardCourseCard key={c.id} course={c}/>);
-    
-
 
     if (error) {
         return <p>courses could not be loaded</p>
@@ -72,17 +70,26 @@ function StudentDashboard(props) {
 }
 
 function DashboardCourseCard(props) {
-    const link = `/courses/${props.course.id}`
     return (
-        <Link to={link}>
+        // <Link to={link}>
             <div className="dashboard-course-card">
                 <div id="student">{props.course.id}</div>
                 <div><h2>{props.course.name}</h2></div>
                 <div className="float-right">
                     <DropButton course={props.course}/>
+                    <LearnMoreButton course={props.course} />
                 </div>
                 
             </div>
+        // {/* </Link> */}
+    )
+}
+
+function LearnMoreButton(props) {
+    const link = `/courses/${props.course.id}`
+    return (
+        <Link to={link}>
+            <button id="learnMoreButton">Learn More</button>
         </Link>
     )
 }

@@ -25,10 +25,10 @@
     background-image: url("./DashboardCourseCardBG.svg");
 }
 
-.dashboard-course-card:hover {
+/* .dashboard-course-card:hover {
     border: 2px solid #d4b8f5;
     background-color: #d4b8f5;
-}
+} */
 
 #student { 
     align-self: flex-end;
@@ -48,4 +48,13 @@ blockquote {
 
 .float-right {
     float: right;
+}
+
+#learnMoreButton {
+    float: right;
+    padding: 8px 0;
+    font-size: 20px;
+    text-transform: uppercase;
+    width: 170px;
+    margin-right: 20px;
 }

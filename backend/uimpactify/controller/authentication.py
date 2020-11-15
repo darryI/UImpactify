@@ -93,8 +93,7 @@ class LoginApi(Resource):
                 refresh_token = create_refresh_token(identity=str(user.id))
                 return jsonify({'access_token': access_token,
                                         'refresh_token': refresh_token,
-                                        'logged_in_as': f"{user.email}",
-                                        'user_id':f"{user.id}"})
+                                        'logged_in_as': f"{user.email}"})
         except DoesNotExist as e:
             # user does not exist (email incorrect)
             return unauthorized()
