@@ -1,7 +1,7 @@
 import React from 'react';
 import jsonCourses from '../courses.json';
 import { render, waitForElement } from '@testing-library/react';
-import CourseLandingAPI, {API} from './CourseLandingAPI.js';
+import CourseLandingInfo, {API} from './CourseLandingInfo.js';
 
 const setup = () =>{
 
@@ -9,7 +9,7 @@ const setup = () =>{
     jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
    
     const utils = render(
-        <CourseLandingAPI id={id}/>
+        <CourseLandingInfo id={id}/>
     );
 
     return {

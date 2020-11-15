@@ -57,8 +57,6 @@ function App() {
           </Route>
           <Route path="/courses/:id">
               <CourseLanding />
-          {/* <Route path="/courses/:id">
-            <Course/> */}
           </Route>
           <Route path="/courses">
             <CoursesPage />
