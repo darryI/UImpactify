@@ -1,15 +1,15 @@
 import React from 'react';
+import './StudentInfo.css'
 
 export default function StudentInfo(props) {
   const [error, setError] = React.useState(null);
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [user, setUser] = React.useState([]);
-
-  const userId = props.userId;
     
   React.useEffect(() => {
     var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
-    API.getUser(userId, jwtToken)
+    var userId = jwtToken.user_id;
+    API.getUser(userId, jwtToken.access_token)
       .then(
         (result) => {
           setIsLoaded(true);
@@ -32,8 +32,26 @@ export default function StudentInfo(props) {
   } else {
     return (
       <div>
-        {user.name}
-        {user.email}
+        <div className="student-info-text">
+          <strong>Welcome back!</strong>
+          &nbsp;&nbsp;&nbsp;
+          {user.name}
+        </div>
+        <div className="student-info-text">
+          <strong>Email:</strong>
+          &nbsp;
+          {user.email}
+        </div>
+        <div className="student-info-text">
+          <strong>Phone:</strong>
+          &nbsp;
+          {user.phone}
+        </div>
+        {/* <div className="student-info-text">
+          <strong>User Id:</strong>
+          &nbsp;
+          {user.id}
+        </div> */}
       </div>
     );
   

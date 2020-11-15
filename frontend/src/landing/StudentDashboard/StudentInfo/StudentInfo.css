@@ -1,0 +1,10 @@
+.student-info-text {
+  font-family: OpenSans;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 40px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.87);
+  padding: 10px 0 10px;
+}

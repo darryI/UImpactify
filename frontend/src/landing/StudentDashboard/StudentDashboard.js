@@ -57,9 +57,8 @@ function StudentDashboard(props) {
     } else {
         return (
             <div className="student-dashboard">  
-                <h2>Hello!</h2>
                 <div>
-                    {/* <StudentInfo userId={userId}/> */}
+                    <StudentInfo />
                 </div>
                 <div className="middle">
                     {dashboardCourseCards}
