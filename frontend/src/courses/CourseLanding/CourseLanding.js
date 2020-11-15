@@ -7,7 +7,6 @@ function CourseLanding(){
 
     return (
         <div>
-            {console.log("id getter")}
             <CourseLandingAPI id={id}/>
         </div>
     )
