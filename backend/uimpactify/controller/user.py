@@ -113,7 +113,7 @@ class UserApi(Resource):
         :return: JSON object
         """
         authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
-        
+
         if authorized:
             user = Users.objects.get(id=user_id)
             return jsonify(convert_doc(user))
