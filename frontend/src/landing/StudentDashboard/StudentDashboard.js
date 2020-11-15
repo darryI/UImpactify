@@ -9,6 +9,7 @@ import DeleteAccountButton from '../DeleteAccount/DeleteAccountButton';
 import DropButton from './DropButton/DropButton'
 
 import './StudentDashboard.css';
+import StudentInfo from './StudentInfo/StudentInfo';
 
 function StudentDashboard(props) {
     const [error, setError] = React.useState(null);
@@ -24,7 +25,6 @@ function StudentDashboard(props) {
 
     React.useEffect(() => {
       var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
-      
       if (jwtToken) {
         API.getCourses(jwtToken.access_token)
             .then(
@@ -46,7 +46,9 @@ function StudentDashboard(props) {
       }
     }, [])
 
-    const courseCards = courses.map(c => <DashboardCourseCard key={c.id} course={c}/>);
+    const dashboardCourseCards = courses.map(c => <DashboardCourseCard key={c.id} course={c}/>);
+    
+
 
     if (error) {
         return <p>courses could not be loaded</p>
@@ -56,8 +58,11 @@ function StudentDashboard(props) {
         return (
             <div className="student-dashboard">  
                 <h2>Hello!</h2>
+                <div>
+                    {/* <StudentInfo userId={userId}/> */}
+                </div>
                 <div className="middle">
-                    {courseCards}
+                    {dashboardCourseCards}
                 </div>
                 <div>
                     {delAccButton}

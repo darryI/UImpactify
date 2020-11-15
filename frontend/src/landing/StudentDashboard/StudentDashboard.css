@@ -2,6 +2,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #f3fafa;
+    width: 100%;
+    height: 1200px;
 }
 
 .dashboard-course-card {
@@ -16,12 +19,13 @@
     flex-direction: column;
     /* keep a transparent border always so that the content
      doesn't shift when border is added on hover */
-    border: 1.5px solid transparent;
+    border: 2px solid #ffffff;
     font-family: OpenSans;
+    background-image: url("./DashboardCourseCardBG.svg");
 }
 
 .dashboard-course-card:hover {
-    border: 1.5px solid #d4b8f5;
+    border: 2px solid #d4b8f5;
     background-color: #d4b8f5;
 }
 
