@@ -25,6 +25,7 @@ def auth_run_test():
     user = {"email": "test_user@uimpactify.com", "password": "password"}
     user_id = auth_util.signup(user)
     user_token = auth_util.login(user)
+    user_util.get_self(user_token)
     user_util.delete_self(user_token)
 
 

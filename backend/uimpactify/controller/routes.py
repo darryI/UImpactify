@@ -26,6 +26,7 @@ def create_routes(api: Api):
     api.add_resource(UsersApi, '/user/')
     api.add_resource(UserApi, '/user/<user_id>/')
     api.add_resource(SelfDeleteApi, '/user/delete-self/')
+    api.add_resource(SignedInUserApi, '/user/self/')
 
     api.add_resource(CoursesApi, '/course/')
     api.add_resource(CourseApi, '/course/<course_id>/')
