@@ -167,7 +167,9 @@ def course_run_test():
     q5_update = { "published": True, }
     quiz_util.update_quiz(inst_token, q5, q5_update)
     quiz_util.get_quizzes_by_course(inst_token, c3)
-    # quizzes wil be deleted with courses according to cascade delete
+    quiz_util.delete_quiz(inst_token, q5)
+    quiz_util.get_quiz(access_token, q5)
+    # other quizzes wil be deleted with courses according to cascade delete
 
     # CLEAN UP
     # disenroll a student
