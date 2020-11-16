@@ -7,29 +7,6 @@
     padding: 20px 0 60px 0;
 }
 
-.dashboard-course-card {
-    /* padding: 10px; */
-    padding: 20px 20px 30px 20px;
-    margin-bottom: 25px;
-    margin-top: 10px;
-    border-radius: 6px;
-    background-color: #e6d8f7;
-    min-width: 500px;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    /* keep a transparent border always so that the content
-     doesn't shift when border is added on hover */
-    border: 2px solid #ffffff;
-    font-family: OpenSans;
-    background-image: url("./DashboardCourseCardBG.svg");
-}
-
-/* .dashboard-course-card:hover {
-    border: 2px solid #d4b8f5;
-    background-color: #d4b8f5;
-} */
-
 #student { 
     align-self: flex-end;
     font-weight: bold;
@@ -48,13 +25,4 @@ blockquote {
 
 .float-right {
     float: right;
-}
-
-#learnMoreButton {
-    float: right;
-    padding: 8px 0;
-    font-size: 20px;
-    text-transform: uppercase;
-    width: 170px;
-    margin-right: 20px;
 }

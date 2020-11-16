@@ -1,13 +1,7 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
-import {
-    Link
-} from "react-router-dom";
-
+import DashboardCourseCard from './DashboardCourseCard/DashboardCourseCard'
 import DeleteAccountButton from '../DeleteAccount/DeleteAccountButton';
-
-import DropButton from './DropButton/DropButton'
-
 import './StudentDashboard.css';
 import StudentInfo from './StudentInfo/StudentInfo';
 
@@ -68,29 +62,6 @@ function StudentDashboard(props) {
         ); 
     }
 }
-
-function DashboardCourseCard(props) {
-    return (
-        <div className="dashboard-course-card">
-            <div id="student">{props.course.id}</div>
-            <div><h2>{props.course.name}</h2></div>
-            <div className="float-right">
-                <DropButton course={props.course}/>
-                <LearnMoreButton course={props.course} />
-            </div>
-        </div>
-    )
-}
-
-function LearnMoreButton(props) {
-    const link = `/courses/${props.course.id}`
-    return (
-        <Link to={link}>
-            <button id="learnMoreButton">Learn More</button>
-        </Link>
-    )
-}
-
 
 export const API = {
     getCourses: async (token) => {
