@@ -8,8 +8,7 @@ export default function StudentInfo(props) {
     
   React.useEffect(() => {
     var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
-    var userId = jwtToken.user_id;
-    API.getUser(userId, jwtToken.access_token)
+    API.getUser(jwtToken.access_token)
       .then(
         (result) => {
           setIsLoaded(true);
@@ -34,7 +33,7 @@ export default function StudentInfo(props) {
       <div>
         <div className="student-info-text">
           <strong>Welcome back!</strong>
-          &nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;
           {user.name}
         </div>
         <div className="student-info-text">
@@ -47,11 +46,6 @@ export default function StudentInfo(props) {
           &nbsp;
           {user.phone}
         </div>
-        {/* <div className="student-info-text">
-          <strong>User Id:</strong>
-          &nbsp;
-          {user.id}
-        </div> */}
       </div>
     );
   
@@ -59,8 +53,8 @@ export default function StudentInfo(props) {
 }
 
 export const API = {
-    getUser: async (user_id, token) => {
-      const url = 'http://localhost:5000/user/' + user_id + '/';
+    getUser: async (token) => {
+      const url = 'http://localhost:5000/user/self/';
   
       return fetch(url, {
         headers: {
