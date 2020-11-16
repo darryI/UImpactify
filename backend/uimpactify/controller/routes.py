@@ -47,3 +47,5 @@ def create_routes(api: Api):
 
     api.add_resource(QuizzesApi, '/quiz/')
     api.add_resource(QuizApi, '/quiz/<quiz_id>/')
+
+    api.add_resource(QuizzesByCourseApi, '/quiz/course/<course_id>/')
