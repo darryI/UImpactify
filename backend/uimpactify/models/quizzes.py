@@ -33,7 +33,7 @@ class Questions(EmbeddedDocument):
     """
     question = StringField(required=True, min_length=1)
     index = StringField(required=True, min_length=1)
-    options = ListField(EmbeddedDocumentField(Options), required=True)
+    options = ListField(EmbeddedDocumentField(Options))
 
 class Quizzes(Document):
     """
@@ -45,6 +45,6 @@ class Quizzes(Document):
     :param course: course that the quiz is for
     """
     name = StringField(required=True, min_length=1)
-    quizQuestions = ListField(EmbeddedDocumentField(Questions), required=True)
+    quizQuestions = ListField(EmbeddedDocumentField(Questions))
     published = BooleanField(default=False)
     course = ReferenceField('Courses', reverse_delete_rule=CASCADE, required=True)
