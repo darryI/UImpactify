@@ -4,6 +4,7 @@ from mongoengine import (Document,
                          EmbeddedDocumentField,
                          ListField,
                          StringField,
+                         IntField,
                          EmailField,
                          BooleanField,
                          ReferenceField,
@@ -21,7 +22,7 @@ class Options(EmbeddedDocument):
     :param index: the index of the option
     """
     option = StringField(required=True, min_length=1)
-    index = StringField(required=True, min_length=1)
+    index = IntField(required=True, default=-1)
 
 class Questions(EmbeddedDocument):
     """
@@ -33,9 +34,9 @@ class Questions(EmbeddedDocument):
     :param answer: index of the correct answer
     """
     question = StringField(required=True, min_length=1)
-    index = StringField(required=True, min_length=1)
+    index = IntField(required=True, default=-1)
     options = ListField(EmbeddedDocumentField(Options))
-    answer = StringField(default="-1")
+    answer = IntField(default=-1)
 
 class Quizzes(Document):
     """
