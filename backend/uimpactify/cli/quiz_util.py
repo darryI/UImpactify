@@ -36,26 +36,30 @@ def delete_quiz(access_token, quiz_id):
         ).json()
 
 
-# def get_quiz(access_token, quiz_id):
-#     api_url = url_for("quizapi", quiz_id=quiz_id)
+def get_quiz(access_token, quiz_id):
+    api_url = url_for("quizapi", quiz_id=quiz_id)
 
-#     print(f"*** GET QUIZ WITH ID: {quiz_id} ***\n")
-#     res = requests.get(
-#         api_url,
-#         headers={'Authorization': f'Bearer {access_token}'}
-#         ).json()
-#     print(res)
+    print(f"*** GET QUIZ WITH ID: {quiz_id} ***\n")
+    res = requests.get(
+        api_url,
+        headers={'Authorization': f'Bearer {access_token}'}
+        ).json()
+    print(res)
+    print("\n")
 
 
-# def update_quiz(access_token, quiz_id, body):
-#     api_url = url_for("quizapi", quiz_id=quiz_id)
-#     print(f"*** UPDATE QUIZ WITH ID: {quiz_id} ***\n")
-#     res = requests.put(
-#         api_url,
-#         json=body,
-#         headers={'Authorization': f'Bearer {access_token}'}
-#         ).json()
-#     print(res)
+def update_quiz(access_token, quiz_id, body):
+    api_url = url_for("quizapi", quiz_id=quiz_id)
+    print(f"*** UPDATE QUIZ WITH ID: {quiz_id} ***\n" +
+        "USING TOKEN: " + access_token + "\n"
+        )
+    res = requests.put(
+        api_url,
+        json=body,
+        headers={'Authorization': f'Bearer {access_token}'}
+        ).json()
+    print(res)
+    print("\n")
 
 
 def get_quizzes(access_token):

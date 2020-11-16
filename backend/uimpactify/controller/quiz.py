@@ -88,12 +88,12 @@ class QuizApi(Resource):
         quiz = Quizzes.objects.get(id=quiz_id)
         fields = {
             'name',
-            'quizQuestions'
+            'quizQuestions',
             'published',
         }
 
         embedded = {'course': {'id': 'courseId'}}
-        converted = convert_embedded_query(quiz, fields, embedded)
+        converted = convert_embedded_doc(quiz, fields, embedded)
         return jsonify(converted)
 
     @jwt_required
@@ -104,6 +104,16 @@ class QuizApi(Resource):
         PUT response method for updating a quiz.
         JSON Web Token is required.
         """
+        query = Quizzes.objects.get(id=quiz_id)
+
+        user = get_jwt_identity()
+        # only the course instructor can delete their quizzes
+        authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
+        # or an admin
+        authorized = authorized or Users.objects.get(id=user).roles.admin
+        if not authorized:
+            return forbidden()
+
         data = request.get_json()
         try:
             res = Quizzes.objects.get(id=quiz_id).update(**data)

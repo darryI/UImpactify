@@ -144,6 +144,27 @@ def course_run_test():
     quiz_util.get_quizzes_by_course(access_token, c2)
     quiz_util.get_quizzes_by_course(inst_token, c2)
 
+    # anyone can get quizzes atm
+    quiz_util.get_quiz(s_token, q2)
+    quiz_util.get_quiz(inst_token, q2)
+    quiz_util.get_quiz(access_token, q2)
+    quiz_util.get_quiz(s_token, q3)
+
+    q3_update = { "published": True, }
+
+    # fails because inst is not the inst of the course q3 is originally in
+    quiz_util.update_quiz(inst_token, q3, q3_update)
+    # runs because admin privilege
+    quiz_util.update_quiz(access_token, q3, q3_update)
+    # q3 is published now
+    quiz_util.get_quiz(access_token, q3)    
+
+    q5_json = { "name": "testQuizFive", "course": c3, }
+    q5 = quiz_util.create_quiz(inst_token, q5_json)
+    quiz_util.get_quiz(access_token, q5)
+    q5_update = { "published": True, }
+    quiz_util.update_quiz(inst_token, q5, q5_update)
+    quiz_util.get_quizzes_by_course(inst_token, c3)
     # quizzes wil be deleted with courses according to cascade delete
 
     # CLEAN UP
@@ -282,6 +303,39 @@ def init_data():
         "public": False
     }
     f4 = feedback_util.create_feedback(s2_token, f4_json)
+
+    # Add quizzes to different courses
+    q1_json = { "name": "testQuizOne", "course": c1, }
+    q2_json = {
+        "name": "testQuizTwo",
+        "course": c3,
+        "quizQuestions": [
+            { "question": "What is real?", "index": "1", },
+            { "question": "What is truth?", "index": "2", },
+            { "question": "What is beauty?", "index": "3", }
+            ],
+        }
+    q3_json = {
+        "name": "testQuizThree",
+        "course": c2,
+        "quizQuestions": [
+                {
+                    "question": "The answer to this question is (c)",
+                    "index": "1",
+                    "options": [
+                        {"option": "(a)", "index": "1", },
+                        {"option": "(b)", "index": "1", },
+                        {"option": "(c)", "index": "1", }
+                    ],
+                }
+            ],
+        }
+    q4_json = { "name": "testQuizFour", "course": c2, }
+
+    q1 = quiz_util.create_quiz(inst1_token, q1_json)
+    q2 = quiz_util.create_quiz(inst2_token, q2_json)
+    q3 = quiz_util.create_quiz(inst1_token, q3_json)
+    q4 = quiz_util.create_quiz(inst1_token, q4_json)
 
 
 def init_app(app):
