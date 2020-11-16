@@ -18,7 +18,7 @@ from uimpactify.utils.mongo_utils import convert_query, convert_doc, convert_emb
 from uimpactify.controller.errors import unauthorized, bad_request, conflict, not_found, forbidden
 from uimpactify.controller.dont_crash import dont_crash, user_exists
 
-class QuizzesApi (Resource):
+class QuizzesApi(Resource):
     """
     Flask-resftul resource for returning db.quiz collection.
 
@@ -32,12 +32,12 @@ class QuizzesApi (Resource):
         JSON Web Token is required.
         Authorization is required: role must be instructor
         """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).roles.instructor
+        user = get_jwt_identity()
+        data = request.get_json()
+
+        oid = ObjectId(user)
+        authorized: bool = Courses.objects.get(id=data['course'])['instructor']['id'] == oid
         if authorized:
-            data = request.get_json()
-            # make sure the course instructor can only add to his own courses
-            # course_id = data['courseId']
-            #  = Courses.objects.get(id=course_id)
             try:
                 quiz = Quizzes(**data).save()
             except ValidationError as e:
@@ -63,7 +63,7 @@ class QuizzesApi (Resource):
                 'name',
                 'published',
             }
-            # course id?
+
             response = convert_query(query, include=fields)
             return jsonify(response)
         else:
@@ -117,10 +117,59 @@ class QuizApi(Resource):
         Authorization is required: Access(admin=true)
 
         """
-        authorized: bool = Users.objects.get(id=get_jwt_identity()).roles.admin
+        query = Quizzes.objects.get(id=quiz_id)
+
+        user = get_jwt_identity()
+        # only the course instructor can get quizzes
+        authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
+        # or an admin
+        authorized = authorized or Users.objects.get(id=user).roles.admin
 
         if authorized:
-            output = Courses.objects(id=quiz_id).delete()
-            return jsonify(output)
+            output = Quizzes.objects(id=quiz_id).delete()
+            if output == 0:
+                return not_found()
+            else:
+                return jsonify(output)
         else:
             return forbidden()
+
+class QuizzesByCourseApi(Resource):
+    """
+    Flask-resftul resource for returning quizzes with the same course id.
+
+    """
+    @jwt_required
+    @user_exists
+    @dont_crash
+    def get(self, course_id: str) -> Response:
+        """
+        GET response method for single documents in course collection.
+
+        :return: JSON object
+        """
+        queryCourse = Courses.objects.get(id=course_id)
+        user = get_jwt_identity()
+        # only the course instructor can get quizzes
+        authorized: bool = queryCourse['instructor']['id'] == ObjectId(user)
+        # or an admin
+        authorized = authorized or Users.objects.get(id=user).roles.admin
+        if authorized:
+            query = Quizzes.objects(course=queryCourse)
+
+            fields = {
+                'name',
+                'quizQuestions',
+                'published',
+            }
+
+            # response = convert_query(query, fields)
+            # return jsonify(response)
+
+            embedded = {'course': {'id': 'courseId'}}
+            # embedded = {'course': {'name': 'course'}}
+            converted = convert_embedded_query(query, fields, embedded)
+            return jsonify(converted)
+        else:
+            return forbidden()
+
