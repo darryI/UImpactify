@@ -71,17 +71,14 @@ function StudentDashboard(props) {
 
 function DashboardCourseCard(props) {
     return (
-        // <Link to={link}>
-            <div className="dashboard-course-card">
-                <div id="student">{props.course.id}</div>
-                <div><h2>{props.course.name}</h2></div>
-                <div className="float-right">
-                    <DropButton course={props.course}/>
-                    <LearnMoreButton course={props.course} />
-                </div>
-                
+        <div className="dashboard-course-card">
+            <div id="student">{props.course.id}</div>
+            <div><h2>{props.course.name}</h2></div>
+            <div className="float-right">
+                <DropButton course={props.course}/>
+                <LearnMoreButton course={props.course} />
             </div>
-        // {/* </Link> */}
+        </div>
     )
 }
 

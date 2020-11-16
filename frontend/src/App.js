@@ -65,7 +65,9 @@ function App() {
             <SignUp />
           </Route>
           <Route path="/dashboard">
-            <StudentDashboard />
+            <StudentDashboard 
+              setLoggedIn={setLoggedIn}
+            />
           </Route>
           <Route path="/">
             <Home />

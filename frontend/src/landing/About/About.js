@@ -1,35 +1,18 @@
 import React from 'react';
-// import DeleteAccountButton from 'landing/DeleteAccount/DeleteAccountButton';
 import './About.css';
 
 function About(props) {
-
-  // const setLoggedIn = props.setLoggedIn;
-
-  // var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
-
-  // let delAccButton;
-
-  // if (jwtToken) {
-  //   delAccButton = <DeleteAccountButton setLoggedIn={setLoggedIn} />
-  // } else {
-  //   delAccButton = null
-  // }
-
   return (
-
     <div className="AboutPage">
       
       <div className="AboutPageFirstSection">
         <p className="AboutPageText">About U-Impactify</p>
         <div className="AboutPageIMac"></div>
-        {/* {delAccButton} */}
       </div>
 
       <div className="AboutPageSecondSection">
         <div className="AboutPageText1"></div>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-        {/* <p className="AboutPageText">What are we aiming for?</p> */}
         <div className="textBG"></div>
         <div className="AboutPageImg1"></div>
         <div className="AboutPageImg2"></div>
@@ -83,8 +66,8 @@ function About(props) {
             <br></br>
             <a href="/">LinkedIn</a>
             <p>Language&nbsp;&nbsp;🌏</p>
-            <select className="languageSelect">
-              <option selected="selected" value="0">English (CA)</option>
+            <select defaultValue={0} className="languageSelect">
+              <option value="0">English (CA)</option>
               <option value="1">English (US)</option>
               <option value="2">اَلْعَرَبِيَّةُ‎</option>
               <option value="3">Türkçe</option>
