@@ -2,6 +2,7 @@ import React from 'react';
 
 import { ReactComponent as SaveIcon } from 'icons/save.svg';
 import { ReactComponent as AddIcon } from 'icons/add.svg';
+import { ReactComponent as DeleteIcon } from 'icons/42.svg';
 import './QuizForm.css';
 
 
@@ -127,6 +128,26 @@ function QuizForm(props) {
     });
   };
 
+  const handleDeleteQuestion = (event, i) => {
+    event.preventDefault();
+    const updatedQuestions = [...values.quizQuestions];
+
+    // removing selected question
+    updatedQuestions.splice(i, 1);
+
+    // updating indexs of each question -- I don't think this design :(
+    updatedQuestions.forEach((qu) => {
+      if (qu.index > i) {
+        qu.index -= 1;
+      }
+    });
+    props.setValues({
+      ...values,
+      quizQuestions: updatedQuestions
+    });
+  }
+
+
   // create input element for the multiple choice questions
   const questions = values.quizQuestions.map((qu, i) => {
 
@@ -142,8 +163,11 @@ function QuizForm(props) {
 
     return (
       <div key={i} className="mult-question">
-        
-        <label className="question-text"><h2>Question {i+1}</h2></label>
+        <div className="question-bar">
+          <label className="question-text"><h2>Question {i+1}</h2></label>
+          <DeleteIcon className="clickable" onClick={e => handleDeleteQuestion(e, i)}/>
+        </div>
+
         <input aria-label="question-text" className="rect-1643" type="text" value={values.quizQuestions[i].question} onChange={e => handleQuestionChange(e, i)} />
 
         <h2>Options</h2>
@@ -154,7 +178,7 @@ function QuizForm(props) {
 
 
   return (
-    <form aria-label="creation-form" className="creationForm" onSubmit={handleSubmit}>
+    <form aria-label="creation-form" className="quiz-form " onSubmit={handleSubmit}>
       <div className="labelRectCombo">
         <label className="label-text quizName">Quiz Name:</label>  
         <input aria-label="name-input" className="rect-1643"   type="text" value={values.name} onChange={e => handleNameChange(e)} />

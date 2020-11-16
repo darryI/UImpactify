@@ -1,4 +1,4 @@
-.quizForm {
+.quiz-form {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
@@ -25,5 +25,18 @@ input[type=radio] {
   border: 0px;
   width: 1em;
   height: 1em;
+  cursor: pointer;
+}
+
+.question-bar {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+
+  justify-content: space-around;
+}
+
+.clickable {
   cursor: pointer;
 }
