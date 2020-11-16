@@ -37,6 +37,7 @@ class QuizzesApi(Resource):
 
         oid = ObjectId(user)
         authorized: bool = Courses.objects.get(id=data['course'])['instructor']['id'] == oid
+        authorized = authorized or Users.objects.get(id=user).roles.admin
         if authorized:
             try:
                 quiz = Quizzes(**data).save()
@@ -86,11 +87,14 @@ class QuizApi(Resource):
         """
         quiz = Quizzes.objects.get(id=quiz_id)
         fields = {
-            'id',
             'name',
+            'quizQuestions'
             'published',
         }
-        return jsonify(convert_doc(quiz, include=fields))
+
+        embedded = {'course': {'id': 'courseId'}}
+        converted = convert_embedded_query(quiz, fields, embedded)
+        return jsonify(converted)
 
     @jwt_required
     @user_exists
@@ -120,7 +124,7 @@ class QuizApi(Resource):
         query = Quizzes.objects.get(id=quiz_id)
 
         user = get_jwt_identity()
-        # only the course instructor can get quizzes
+        # only the course instructor can delete their quizzes
         authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
@@ -133,6 +137,7 @@ class QuizApi(Resource):
                 return jsonify(output)
         else:
             return forbidden()
+
 
 class QuizzesByCourseApi(Resource):
     """
@@ -163,11 +168,7 @@ class QuizzesByCourseApi(Resource):
                 'published',
             }
 
-            # response = convert_query(query, fields)
-            # return jsonify(response)
-
             embedded = {'course': {'id': 'courseId'}}
-            # embedded = {'course': {'name': 'course'}}
             converted = convert_embedded_query(query, fields, embedded)
             return jsonify(converted)
         else:
