@@ -11,6 +11,7 @@ from uimpactify.cli import auth_util
 from uimpactify.cli import course_util
 from uimpactify.cli import user_util
 from uimpactify.cli import feedback_util
+from uimpactify.cli import quiz_util
 
 from uimpactify.controller import routes
 
@@ -74,27 +75,76 @@ def course_run_test():
     course_util.get_courses_by_instructor(inst_token)
     course_util.get_courses_with_student(s_token)
 
-    # create feedback for some courses
-    f1_json = {
-        "comment": "Hello readers of this public feedback",
-        "course": c2,
-        "public": True
-    }
-    f1 = feedback_util.create_feedback(s_token, f1_json)
+    # # create feedback for some courses
+    # f1_json = {
+    #     "comment": "Hello readers of this public feedback",
+    #     "course": c2,
+    #     "public": True
+    # }
+    # f1 = feedback_util.create_feedback(s_token, f1_json)
 
-    f2_json = {
-        "comment": "Hello instructor! Moo!",
+    # f2_json = {
+    #     "comment": "Hello instructor! Moo!",
+    #     "course": c3,
+    #     "public": False
+    # }
+    # f2 = feedback_util.create_feedback(s_token, f2_json)
+
+    # # getting the public feedback
+    # feedback_util.get_feedback(s_token, c2)
+    # # getting private feedback (empty)
+    # feedback_util.get_feedback(s_token, c3)
+    # # getting private feedback as instructor (not empty)
+    # feedback_util.get_feedback(inst_token, c3)
+
+    # create test quizzes
+    q1_json = { "name": "testQuizOne", "course": c1, }
+    q2_json = {
+        "name": "testQuizTwo",
         "course": c3,
-        "public": False
-    }
-    f2 = feedback_util.create_feedback(s_token, f2_json)
+        "quizQuestions": [
+            { "question": "What is real?", "index": "1", },
+            { "question": "What is truth?", "index": "2", },
+            { "question": "What is beauty?", "index": "3", }
+            ],
+        }
+    q3_json = {
+        "name": "testQuizThree",
+        "course": c2,
+        "quizQuestions": [
+                {
+                    "question": "The answer to this question is (c)",
+                    "index": "1",
+                    "options": [
+                        {"option": "(a)", "index": "1", },
+                        {"option": "(b)", "index": "1", },
+                        {"option": "(c)", "index": "1", }
+                    ],
+                }
+            ],
+        }
+    q4_json = { "name": "testQuizFour", "course": c2, }
 
-    # getting the public feedback
-    feedback_util.get_feedback(s_token, c2)
-    # getting private feedback (empty)
-    feedback_util.get_feedback(s_token, c3)
-    # getting private feedback as instructor (not empty)
-    feedback_util.get_feedback(inst_token, c3)
+    # q1 should fail because students can't make courses
+    # q4 should fail because you can only add quizzes to your own courses
+    q1 = quiz_util.create_quiz(s_token, q1_json)
+    q2 = quiz_util.create_quiz(inst_token, q2_json)
+    q3 = quiz_util.create_quiz(access_token, q3_json)
+    q4 = quiz_util.create_quiz(inst_token, q4_json)
+
+    # should only return q2 for valid case and q3 for admin override
+    quiz_util.get_quizzes(access_token)
+
+    # last call fails
+    quiz_util.get_quizzes_by_course(access_token, c3)
+    quiz_util.get_quizzes_by_course(inst_token, c3)
+    quiz_util.get_quizzes_by_course(s_token, c3)
+    
+    # last call fails
+    quiz_util.get_quizzes_by_course(access_token, c2)
+    quiz_util.get_quizzes_by_course(inst_token, c2)
+
+    # quizzes wil be deleted with courses according to cascade delete
 
     # CLEAN UP
     # disenroll a student
