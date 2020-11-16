@@ -75,27 +75,27 @@ def course_run_test():
     course_util.get_courses_by_instructor(inst_token)
     course_util.get_courses_with_student(s_token)
 
-    # # create feedback for some courses
-    # f1_json = {
-    #     "comment": "Hello readers of this public feedback",
-    #     "course": c2,
-    #     "public": True
-    # }
-    # f1 = feedback_util.create_feedback(s_token, f1_json)
+    # create feedback for some courses
+    f1_json = {
+        "comment": "Hello readers of this public feedback",
+        "course": c2,
+        "public": True
+    }
+    f1 = feedback_util.create_feedback(s_token, f1_json)
 
-    # f2_json = {
-    #     "comment": "Hello instructor! Moo!",
-    #     "course": c3,
-    #     "public": False
-    # }
-    # f2 = feedback_util.create_feedback(s_token, f2_json)
+    f2_json = {
+        "comment": "Hello instructor! Moo!",
+        "course": c3,
+        "public": False
+    }
+    f2 = feedback_util.create_feedback(s_token, f2_json)
 
-    # # getting the public feedback
-    # feedback_util.get_feedback(s_token, c2)
-    # # getting private feedback (empty)
-    # feedback_util.get_feedback(s_token, c3)
-    # # getting private feedback as instructor (not empty)
-    # feedback_util.get_feedback(inst_token, c3)
+    # getting the public feedback
+    feedback_util.get_feedback(s_token, c2)
+    # getting private feedback (empty)
+    feedback_util.get_feedback(s_token, c3)
+    # getting private feedback as instructor (not empty)
+    feedback_util.get_feedback(inst_token, c3)
 
     # create test quizzes
     q1_json = { "name": "testQuizOne", "course": c1, }
