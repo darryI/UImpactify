@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 export default function EnrolButton(props) {
     const [error, setError] = React.useState(null);
     const history = useHistory();
+    const [enrolled, setEnrolled] = React.useState(false);
 
     const requestJSON = {
       courseId: props.course_id
@@ -19,13 +20,12 @@ export default function EnrolButton(props) {
           API.enrolCourse(requestJSON, jwtToken.access_token)
               .then(
               () => {
-                // alert("Successfully enrol in this course!");
+                setEnrolled(true);
               },
               // Note: it's important to handle errors here
               // instead of a catch() block so that we don't swallow
               // exceptions from actual bugs in components.
               (error) => {
-                // setIsLoaded(true);
                 setError(error);
               }
             );
@@ -34,8 +34,10 @@ export default function EnrolButton(props) {
         }
     }
 
-    if (error) {
-      return <div>Error: {error.message}</div>;
+    if (enrolled) {
+      return <div id="enrolledMessage">Successfully Enrolled in this course!</div>;
+    } else if (error) {
+      return <div id="errorMessage">You have already enrolled in this course.</div>;
     } else {
       return (
         <div className="float-right">
