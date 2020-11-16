@@ -157,6 +157,27 @@ class UserApi(Resource):
             return forbidden()
 
 
+class SignedInUserApi(Resource):
+    """
+    Flask-resftul resource for returning the signed in user information.
+
+    """
+
+    @jwt_required
+    @dont_crash
+    @user_exists
+    def get(self) -> Response:
+        """
+        GET response method for getting information on currently logged in user.
+        JSON Web Token is required.
+
+        :return: JSON object
+        """
+        user = Users.objects().get(id=get_jwt_identity())
+        output = convert_doc(user, {'name', 'email', 'phone', 'roles'})
+        return jsonify(output)
+
+
 class SelfDeleteApi(Resource):
     """
     Flask-resftul resource for returning db.user collection.

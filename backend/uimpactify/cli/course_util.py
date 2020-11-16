@@ -44,6 +44,16 @@ def get_all_courses(access_token):
     print(json.dumps(r.json(), indent=4, sort_keys=True), "\n")
 
 
+def get_all_published_courses():
+    courses_url = url_for("publishedcoursesapi")
+
+    print("*** GET ALL PUBLISHED COURSES ***\n")
+    r = requests.get(
+        courses_url,
+        )
+    print(json.dumps(r.json(), indent=4, sort_keys=True), "\n")
+
+
 def get_courses_by_instructor(access_token):
     api_url = url_for("coursebyinstructorapi")
 
@@ -84,3 +94,23 @@ def disenroll_student(access_token, course_id):
         api_url,
         headers={'Authorization': f'Bearer {access_token}'}
     )
+
+def endorse_course(access_token, course_id):
+    api_url = url_for("courseendorsementapi")
+
+    print(f"*** ENDORSE COURSE {course_id} ***\n")
+    r = requests.post(
+        api_url,
+        json={"courseId": course_id},
+        headers={'Authorization': f'Bearer {access_token}'}
+    )
+
+
+def get_orgs_endorsing_course(course_id):
+    api_url = url_for("courseendorsedbyapi", course_id=course_id)
+
+    print(f"*** GET ALL ORGANIZATIONS ENDORSING COURSE {course_id} ***\n")
+    r = requests.get(
+            api_url
+        )
+    print(json.dumps(r.json(), indent=4, sort_keys=True), "\n")
