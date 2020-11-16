@@ -26,7 +26,6 @@ class Courses(Document):
     :param endorsedBy: list of organizations endorsing the course
     :param trainingFor: list of organizations using the course as training
     :param published: boolean stating whether the course is public
-    :param courseContent: required string ID of course instructor
     """
 
     name = StringField(required=True, min_length=1)
@@ -37,4 +36,3 @@ class Courses(Document):
     endorsedBy = ListField(ReferenceField('Users', reverse_delete_rule=PULL))
     trainingFor = ListField(ReferenceField('Users', reverse_delete_rule=PULL))
     published = BooleanField(default=False)
-    courseContent = ListField(ReferenceField('CourseContent', reverse_delete_rule=PULL))

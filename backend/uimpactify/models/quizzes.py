@@ -30,10 +30,12 @@ class Questions(EmbeddedDocument):
     :param question: the actual content of the question
     :param index: the index of the question
     :param options: list of Options (possible answers) for the question
+    :param answer: index of the correct answer
     """
     question = StringField(required=True, min_length=1)
     index = StringField(required=True, min_length=1)
     options = ListField(EmbeddedDocumentField(Options))
+    answer = StringField(default="-1")
 
 class Quizzes(Document):
     """

@@ -98,9 +98,9 @@ def course_run_test():
     feedback_util.get_feedback(inst_token, c3)
 
     # create test quizzes
-    q1_json = { "name": "testQuizOne", "course": c1, }
+    q1_json = { "name": "Empty Quiz (by Student)", "course": c1, }
     q2_json = {
-        "name": "testQuizTwo",
+        "name": "My Instructor Quiz",
         "course": c3,
         "quizQuestions": [
             { "question": "What is real?", "index": "1", },
@@ -109,7 +109,7 @@ def course_run_test():
             ],
         }
     q3_json = {
-        "name": "testQuizThree",
+        "name": "Help, Admin, I had a problem adding a quiz!",
         "course": c2,
         "quizQuestions": [
                 {
@@ -123,7 +123,7 @@ def course_run_test():
                 }
             ],
         }
-    q4_json = { "name": "testQuizFour", "course": c2, }
+    q4_json = { "name": "Empty Quiz Made By Wrong Instructor", "course": c2, }
 
     # q1 should fail because students can't make courses
     # q4 should fail because you can only add quizzes to your own courses
@@ -157,8 +157,10 @@ def course_run_test():
     # runs because admin privilege
     quiz_util.update_quiz(access_token, q3, q3_update)
     # q3 is published now
-    quiz_util.get_quiz(access_token, q3)    
+    quiz_util.get_quiz(access_token, q3)
 
+    # mass method test +
+    # show instrucotrs can update their own quizzes
     q5_json = { "name": "testQuizFive", "course": c3, }
     q5 = quiz_util.create_quiz(inst_token, q5_json)
     quiz_util.get_quiz(access_token, q5)
@@ -305,9 +307,9 @@ def init_data():
     f4 = feedback_util.create_feedback(s2_token, f4_json)
 
     # Add quizzes to different courses
-    q1_json = { "name": "testQuizOne", "course": c1, }
+    q1_json = { "name": "Empty Quiz for Course 1", "course": c1, }
     q2_json = {
-        "name": "testQuizTwo",
+        "name": "Quiz 1 for Course 3",
         "course": c3,
         "quizQuestions": [
             { "question": "What is real?", "index": "1", },
@@ -316,7 +318,7 @@ def init_data():
             ],
         }
     q3_json = {
-        "name": "testQuizThree",
+        "name": "Quiz 1 for Course 2",
         "course": c2,
         "quizQuestions": [
                 {
@@ -330,7 +332,7 @@ def init_data():
                 }
             ],
         }
-    q4_json = { "name": "testQuizFour", "course": c2, }
+    q4_json = { "name": "Empty Quiz for Course 2", "course": c2, }
 
     q1 = quiz_util.create_quiz(inst1_token, q1_json)
     q2 = quiz_util.create_quiz(inst2_token, q2_json)
