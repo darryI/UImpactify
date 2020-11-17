@@ -87,12 +87,13 @@ class QuizApi(Resource):
         """
         quiz = Quizzes.objects.get(id=quiz_id)
         fields = {
+            'id',
             'name',
             'quizQuestions',
             'published',
         }
 
-        embedded = {'course': {'id': 'courseId'}}
+        embedded = {'course': {'id': 'course'}}
         converted = convert_embedded_doc(quiz, fields, embedded)
         return jsonify(converted)
 
@@ -115,6 +116,8 @@ class QuizApi(Resource):
             return forbidden()
 
         data = request.get_json()
+        if (data['course']):
+            data['course'] = ObjectId(data['course'])
         try:
             res = Quizzes.objects.get(id=quiz_id).update(**data)
         except ValidationError as e:
@@ -173,12 +176,13 @@ class QuizzesByCourseApi(Resource):
             query = Quizzes.objects(course=queryCourse)
 
             fields = {
+                'id',
                 'name',
                 'quizQuestions',
                 'published',
             }
 
-            embedded = {'course': {'id': 'courseId'}}
+            embedded = {'course': {'id': 'course'}}
             converted = convert_embedded_query(query, fields, embedded)
             return jsonify(converted)
         else:
