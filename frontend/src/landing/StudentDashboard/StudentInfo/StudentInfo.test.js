@@ -15,7 +15,7 @@ const setup = () => {
 };
 
 test('on startup, api call is made to get published courses', async () => {
-    // moock user
+    // mock user
     const mockUser = {
         "name": "ymart1n",
         "email": "1231293@ww.com",
@@ -36,6 +36,5 @@ test('on startup, api call is made to get published courses', async () => {
     expect(email).toBeInTheDocument();
     const phone = getByText(mockUser.phone);
     expect(phone).toBeInTheDocument();
-
 
 });
