@@ -5,12 +5,8 @@ import CourseEndorseButton from '../CourseEndorseButton/CourseEndorseButton'
 function CourseLandingAPI(props) {
     let id = props.id;
     const [currCourse, setCurrCourse] = React.useState([])
-    const [user, setUser] = React.useState([]);
     const [error, setError] = React.useState(null);
     const [isLoaded, setIsLoaded] = React.useState(false);
-
-    const [isNPO, setisNPO] = React.useState(false)
-    const [endorsed, setEndorsed] = React.useState(false)
 
     const history = useHistory();
 
@@ -34,28 +30,12 @@ function CourseLandingAPI(props) {
                     alert("Couldn't retrieve course information!")
                 }
             )
-
-            // API.getUser(token.access_token)
-            // .then(
-            //   (result) => {
-            //     setIsLoaded(true);
-            //     setUser(result);
-            //   },
-            //   // Note: it's important to handle errors here
-            //   // instead of a catch() block so that we don't swallow
-            //   // exceptions from actual bugs in components.
-            //   (error) => {
-            //     setIsLoaded(true);
-            //     setError(error);
-            //   }
-            // )
         }
     }, [])
 
 
     return (
         <div>
-            {/* <p>{console.log(user)}</p> */}
             <h1 className="courseLanding">{currCourse.name} by {currCourse.instructor}</h1>
             <h2 className="courseLanding">Objective of this course: {currCourse.objective}</h2>
             <h4 className="courseLanding">Learning outcomes: {currCourse.learningOutcomes}</h4>
