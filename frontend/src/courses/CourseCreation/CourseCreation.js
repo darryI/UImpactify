@@ -78,6 +78,7 @@ function CourseCreation(props) {
   const handleSelection = (index) => {
     setShowForm(false);
     setSelected(index);
+    setShowQuizzes(false);
   }
 
   if (error) {
@@ -119,7 +120,6 @@ function CourseCreation(props) {
           <button onClick={() => setShowQuizzes(true)}>Quizzes</button>
         </div>
       quizContent = <QuizCreation course={courses[selected]} />
-      
     }
 
 

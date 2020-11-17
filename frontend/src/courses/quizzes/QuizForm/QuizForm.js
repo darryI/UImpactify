@@ -19,9 +19,7 @@ function QuizForm(props) {
 
     let jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
 
-
     if (props.isNewQuiz) {
-      console.log("posting!");
       API.postQuiz(quizJSON, jwtToken.access_token).then(
         (result) => {
           quizJSON.id = result.id;
@@ -34,7 +32,6 @@ function QuizForm(props) {
         }
       );
     } else {
-      console.log("putting!");
       API.putQuiz(quizJSON, jwtToken.access_token).then(
         (result) => {
           props.updateQuiz(quizJSON);
@@ -46,6 +43,8 @@ function QuizForm(props) {
         }
       );
     }
+
+    
   }
 
   const handleNameChange = (event) => {
@@ -147,8 +146,6 @@ function QuizForm(props) {
     });
   }
 
-
-  // create input element for the multiple choice questions
   const questions = values.quizQuestions.map((qu, i) => {
 
     const options = [0, 1, 2, 3].map((j) => {
@@ -203,58 +200,50 @@ function QuizForm(props) {
 }
 
 export const API = {
-  postQuiz(quiz, token) {
-    return Promise.resolve({id: "L33tHack3r"});
-  },
-
-  putQuiz(quiz, token) {
-    return Promise.resolve({id: "L33tHack3r"});
-  }
-
-
   // postQuiz(quiz, token) {
-  //   const url = 'http://localhost:5000/quiz/';
-  //   // Default options are marked with *
-  //   return fetch(url, {
-  //     method: 'POST', 
-  //     mode: 'cors', 
-  //     cache: 'no-cache', 
-  //     credentials: 'same-origin', 
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify(quiz) // body data type must match "Content-Type" header
-  //   }).then( res => {
-  //     // check to see if the server responded with a 200 request (ok)
-  //     // if not, then reject the promise so that proper error handling can take place
-  //     return res.json().then(json => {
-  //         return res.ok ? json : Promise.reject(json);
-  //     });
-  // });
+  //   return Promise.resolve({id: "L33tHack3r"});
   // },
 
   // putQuiz(quiz, token) {
-  //   const url = 'http://localhost:5000/quiz/' + quiz.id + '/';
-  //   // Default options are marked with *
-  //   return fetch(url, {
-  //     method: 'PUT', 
-  //     mode: 'cors', 
-  //     cache: 'no-cache', 
-  //     credentials: 'same-origin', 
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify(quiz) // body data type must match "Content-Type" header
-  //   }).then( res => {
-  //       // check to see if the server responded with a 200 request (ok)
-  //       // if not, then reject the promise so that proper error handling can take place
-  //       return res.json().then(json => {
-  //           return res.ok ? json : Promise.reject(json);
-  //       });
-  //   });
-  // },
+  //   return Promise.resolve({id: "L33tHack3r"});
+  // }
+
+
+  async postQuiz(quiz, token) {
+    const url = 'http://localhost:5000/quiz/';
+    // Default options are marked with *
+    const res = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(quiz) // body data type must match "Content-Type" header
+    });
+    const json = await res.json();
+    return res.ok ? json : Promise.reject(json);
+  },
+
+  async putQuiz(quiz, token) {
+    const url = 'http://localhost:5000/quiz/' + quiz.id + '/';
+    // Default options are marked with *
+    const res = await fetch(url, {
+      method: 'PUT',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(quiz) // body data type must match "Content-Type" header
+    });
+    const json = await res.json();
+    return res.ok ? json : Promise.reject(json);
+  },
 
 }
 

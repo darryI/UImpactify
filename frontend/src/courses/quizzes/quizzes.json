@@ -51,20 +51,20 @@
         }
       ],
       "published": true,
-      "courseId": 1
+      "course": 1
     },
     {
         "id": 1,
         "name": "Quiz 2",
         "quizQuestions": [],
         "published": true,
-        "courseId": 1
+        "course": 1
       },
     {
       "id": 2,
       "name": "Quiz 3",
       "quizQuestions": [],
       "published": true,
-      "courseId": 1
+      "course": 1
     }
   ]

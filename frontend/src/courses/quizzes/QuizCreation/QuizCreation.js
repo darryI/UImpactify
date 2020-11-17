@@ -24,7 +24,7 @@ function QuizCreation(props) {
     name: '',
     quizQuestions: [],
     published: false,
-    courseId: props.course.id
+    course: props.course.id
   };
 
   const [formValues, setValues] = React.useState(initialValues);
@@ -113,18 +113,19 @@ function QuizCreation(props) {
 
 
 export const API = {
-    getQuizzes: (token, course_id) => {
-        return Promise.resolve(jsonQuizzes);
-    }
+    getQuizzes: async (token, course_id) => {
+      const url = `http://localhost:5000/quiz/course/${course_id}/`;
+      return fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then(res => res.json());
+    },
 
-    // getQuizzes: async (token, course_id) => {
-    //   const url = `http://localhost:5000/quiz/course/${course_id}/`;
-    //   return fetch(url, {
-    //     headers: {
-    //       'Authorization': `Bearer ${token}`,
-    //     }
-    //   }).then(res => res.json());
-    // },
+    // getQuizzes: (token, course_id) => {
+    //     return Promise.resolve(jsonQuizzes);
+    // }
+
   }
 
 export default QuizCreation
