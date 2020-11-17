@@ -12,7 +12,6 @@ from mongoengine import (Document,
 
 # project resources
 from uimpactify.models.users import Users
-from uimpactify.models.coursecontent import CourseContent
 
 class Courses(Document):
     """
@@ -27,7 +26,6 @@ class Courses(Document):
     :param trainingFor: list of organizations using the course as training
     :param published: boolean stating whether the course is public
     """
-
     name = StringField(required=True, min_length=1)
     objective = StringField()
     learningOutcomes = StringField()

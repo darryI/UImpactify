@@ -100,12 +100,31 @@ def course_run_test():
     # create test quizzes
     q1_json = { "name": "Empty Quiz (by Student)", "course": c1, }
     q2_json = {
-        "name": "My Instructor Quiz",
+        "name": "Quiz 1 for Course 3",
         "course": c3,
         "quizQuestions": [
-            { "question": "What is real?", "index": "1", },
-            { "question": "What is truth?", "index": "2", },
-            { "question": "What is beauty?", "index": "3", }
+                {
+                    "question": "What is real?",
+                    "index": 1,
+                    "options":
+                        [
+                            { "option": "everything", "index": 1, },
+                            { "option": "nothing", "index": 2, }
+                        ],
+                    "answer": 2,
+                },
+                {
+                    "question": "What is truth?",
+                    "index": 2,
+                    "options": [ { "option": "subjective", "index": 1 } ],
+                    "answer": 1,
+                },
+                {
+                    "question": "What is beauty?",
+                    "index": 3,
+                    "options": [ { "option": "fleeting", "index": 1 } ],
+                    "answer": 1,
+                }
             ],
         }
     q3_json = {
@@ -115,11 +134,13 @@ def course_run_test():
                 {
                     "question": "The answer to this question is (c)",
                     "index": "1",
-                    "options": [
-                        {"option": "(a)", "index": "1", },
-                        {"option": "(b)", "index": "1", },
-                        {"option": "(c)", "index": "1", }
-                    ],
+                    "options":
+                        [
+                            {"option": "(a)", "index": 3, },
+                            {"option": "(b)", "index": 1, },
+                            {"option": "(c)", "index": 2, }
+                        ],
+                    "answer": 2,
                 }
             ],
         }
@@ -309,14 +330,33 @@ def init_data():
     f4 = feedback_util.create_feedback(s2_token, f4_json)
 
     # Add quizzes to different courses
-    q1_json = { "name": "Empty Quiz for Course 1", "course": c1, }
+    q1_json = { "name": "Empty Quiz 1 for Course 2", "course": c2, }
     q2_json = {
         "name": "Quiz 1 for Course 3",
         "course": c3,
         "quizQuestions": [
-            { "question": "What is real?", "index": "1", },
-            { "question": "What is truth?", "index": "2", },
-            { "question": "What is beauty?", "index": "3", }
+            {
+                "question": "What is real?",
+                "index": 1,
+                "options":
+                    [
+                        { "option": "everything", "index": 1, },
+                        { "option": "nothing", "index": 2, }
+                    ],
+                "answer": 2,
+            },
+            {
+                "question": "What is truth?",
+                "index": 2,
+                "options": [ { "option": "subjective", "index": 1 } ],
+                "answer": 1,
+            },
+            {
+                "question": "What is beauty?",
+                "index": 3,
+                "options": [ { "option": "fleeting", "index": 1 } ],
+                "answer": 1,
+            }
             ],
         }
     q3_json = {
@@ -326,15 +366,17 @@ def init_data():
                 {
                     "question": "The answer to this question is (c)",
                     "index": "1",
-                    "options": [
-                        {"option": "(a)", "index": "1", },
-                        {"option": "(b)", "index": "1", },
-                        {"option": "(c)", "index": "1", }
-                    ],
+                    "options":
+                        [
+                            {"option": "(a)", "index": 3, },
+                            {"option": "(b)", "index": 1, },
+                            {"option": "(c)", "index": 2, }
+                        ],
+                    "answer": 2,
                 }
             ],
         }
-    q4_json = { "name": "Empty Quiz for Course 2", "course": c2, }
+    q4_json = { "name": "Empty Quiz 2 for Course 2", "course": c2, "published": True }
 
     q1 = quiz_util.create_quiz(inst1_token, q1_json)
     q2 = quiz_util.create_quiz(inst2_token, q2_json)

@@ -22,7 +22,7 @@ class Options(EmbeddedDocument):
     :param index: the index of the option
     """
     option = StringField(required=True, min_length=1)
-    index = IntField(required=True, default=-1)
+    index = IntField(required=True)
 
 class Questions(EmbeddedDocument):
     """
@@ -34,9 +34,9 @@ class Questions(EmbeddedDocument):
     :param answer: index of the correct answer
     """
     question = StringField(required=True, min_length=1)
-    index = IntField(required=True, default=-1)
-    options = ListField(EmbeddedDocumentField(Options))
-    answer = IntField(default=-1)
+    index = IntField(required=True)
+    options = ListField(EmbeddedDocumentField(Options), required=True)
+    answer = IntField(required=True)
 
 class Quizzes(Document):
     """
