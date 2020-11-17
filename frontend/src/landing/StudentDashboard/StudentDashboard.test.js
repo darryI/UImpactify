@@ -6,6 +6,7 @@ import jsonCourses from 'courses/courses.json';
 import { StaticRouter } from 'react-router-dom'
 
 const setup = () => {
+  jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
   const utils = render(
     // need to wrap the StudentDashboard component with a static router to 
     // simulate the Router information for the real app
