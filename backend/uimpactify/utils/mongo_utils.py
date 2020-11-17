@@ -11,6 +11,8 @@ def convert_doc(doc, include=None, save_as=None):
     # rename fields as requested
     if save_as:
         fields = {save_as[field]: getattr(doc, str(field)) for field in doc if ((include is None) or (str(field) in include))}
+        if 'id' in save_as:
+            fields[save_as['id']] = str(fields[save_as['id']])
     else:
         fields = {field: getattr(doc, str(field)) for field in doc if ((include is None) or (str(field) in include))}
     
