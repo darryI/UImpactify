@@ -31,14 +31,17 @@ function CourseEndorseButton(props) {
             }
           )
       }, [])
-
+      const requestJSON = {
+        courseId: id
+      };
     const handleClick = (event) => {
         var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
-        API.endorseCourse(jwtToken.access_token, id)
+        API.endorseCourse(jwtToken.access_token, requestJSON)
         .then(
             (result) => {
                 setShowButton(false)
                 setIsDisabled(true)
+                console.log(result)
                 setText("You have endorsed this course!")
             },
             // Note: it's important to handle errors here
@@ -69,10 +72,17 @@ function CourseEndorseButton(props) {
 export const API = {
     endorseCourse: async (token, id) => {
       const url = `http://localhost:5000/course/endorse/`;
+      
       return fetch(url, {
+        method: 'POST',
+        mode: 'cors', 
+        cache: 'no-cache', 
+        credentials: 'same-origin', 
         headers: {
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
-        }
+        },
+        body: JSON.stringify(id) // body data type must match "Content-Type" header
       }).then( async res => {
         // check to see if the server responded with a 200 request (ok)
         // if not, then reject the promise so that proper error handling can take place
@@ -80,6 +90,7 @@ export const API = {
         return res.ok ? json : Promise.reject(json);
       });
     },
+    
     getUser: async (token) => {
         const url = 'http://localhost:5000/user/self/';
     
