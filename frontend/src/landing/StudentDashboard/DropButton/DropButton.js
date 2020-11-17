@@ -21,7 +21,7 @@ export default function DropButton(props) {
           API.dropCourse(props.course.id, jwtToken.access_token)
             .then(
             () => {
-              history.push("./dashboard")
+              
             },
             // Note: it's important to handle errors here
             // instead of a catch() block so that we don't swallow
