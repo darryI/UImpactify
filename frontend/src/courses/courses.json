@@ -1,29 +1,34 @@
 [
-  {
-    "id": 0,
-    "name": "Advanced Fortnite Building II",
-    "objective": "To build dank houses in fortnite and to learn the powers of friendship, love, and deception hahahahhahahahahahahahahhahhhhhhhh",
-    "learningOutcomes": "git gud",
-    "instructor": "Mr Beast",
-    "published": true,
-    "students": [1, 2, 3, 4]
-  },
-  {
-    "id": 1,
-    "name": "Dynamic Animal Rescue",
-    "objective": "save the beens",
-    "learningOutcomes": "git gud",
-    "instructor": "Ninja",
-    "published": true,
-    "students": []
-  },
-  {
-    "id": 2,
-    "name": "Intro to Tree Cutting",
-    "objective": "build a nice wood cabin",
-    "learningOutcomes": "git gud",
-    "instructor": "Tyler1",
-    "published": true,
-    "students": []
-  }
+    {
+        "id": 0,
+        "name": "Advanced Fortnite Building II",
+        "objective": "To build dank houses in fortnite and to learn the powers of friendship, love, and deception hahahahhahahahahahahahahhahhhhhhhh",
+        "learningOutcomes": "git gud",
+        "instructor": "Mr Beast",
+        "published": true,
+        "students": [
+            1,
+            2,
+            3,
+            4
+        ]
+    },
+    {
+        "id": 1,
+        "name": "Dynamic Animal Rescue",
+        "objective": "save the beens",
+        "learningOutcomes": "git gud",
+        "instructor": "Ninja",
+        "published": true,
+        "students": []
+    },
+    {
+        "id": 2,
+        "name": "Intro to Tree Cutting",
+        "objective": "build a nice wood cabin",
+        "learningOutcomes": "git gud",
+        "instructor": "Tyler1",
+        "published": true,
+        "students": []
+    }
 ]
