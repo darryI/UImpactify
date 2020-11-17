@@ -360,8 +360,10 @@ def init_data():
                 "index": 1,
                 "options":
                     [
+                        { "option": "something", "index": 0, },
                         { "option": "everything", "index": 1, },
-                        { "option": "nothing", "index": 2, }
+                        { "option": "nothing", "index": 2, },
+                        { "option": "nothing", "index": 3, }
                     ],
                 "answer": 2,
             },
@@ -374,7 +376,13 @@ def init_data():
             {
                 "question": "What is beauty?",
                 "index": 3,
-                "options": [ { "option": "fleeting", "index": 1 } ],
+                "options": 
+                    [
+                        { "option": "fleeting", "index": 0 },
+                        { "option": "fleeting", "index": 1 },
+                        { "option": "fleeting", "index": 2 },
+                        { "option": "fleeting", "index": 3 },
+                    ],
                 "answer": 1,
             }
             ],
@@ -388,9 +396,10 @@ def init_data():
                     "index": "1",
                     "options":
                         [
+                            {"option": "(b)", "index": 0, },
+                            {"option": "(c)", "index": 1, },
+                            {"option": "(a)", "index": 2, },
                             {"option": "(a)", "index": 3, },
-                            {"option": "(b)", "index": 1, },
-                            {"option": "(c)", "index": 2, }
                         ],
                     "answer": 2,
                 }
