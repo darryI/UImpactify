@@ -19,7 +19,7 @@ from uimpactify.utils.mongo_utils import convert_query, convert_doc, convert_emb
 from uimpactify.controller.errors import unauthorized, bad_request, conflict, not_found
 from uimpactify.controller.dont_crash import dont_crash, user_exists
 
-class GetByOrgApi(Resource):
+class GetOpportunitiesByOrgApi(Resource):
     """
     Flask-resftul resource for returning db.opportunity collection.
 
@@ -36,14 +36,20 @@ class GetByOrgApi(Resource):
         """
 
         query = Opportunity.objects(organization=get_jwt_identity())
-        fields = {
-            'isPaid',
-            'description',
-            'organizationName',
-            'isPublished'
-        }
-        values = convert_query(query, fields)
-        return jsonify(values)
+
+        authorized: bool = Users.objects.get(id=get_jwt_identity()).roles.organization or \
+        Users.objects.get(id=get_jwt_identity()).roles.admin
+
+        if authorized:
+            fields = {
+                'isPaid',
+                'description',
+                'isPublished'
+            }
+            values = convert_query(query, fields)
+            return jsonify(values)
+        else:
+            return forbidden()
 
 class CreateOpportunityApi(Resource):
     """
@@ -61,14 +67,21 @@ class CreateOpportunityApi(Resource):
         """
 
         data = request.get_json()
-        data['organization'] = get_jwt_identity()
-        try:
-            opportunity = Opportunity(**data).save()
-        except ValidationError as e:
-            return bad_request(e.to_dict())
 
-        output = {'id': str(opportunity.id)}
-        return jsonify(output)
+        authorized: bool = Users.objects.get(id=get_jwt_identity()).roles.organization or \
+        Users.objects.get(id=get_jwt_identity()).roles.admin
+
+        if authorized:
+            data['organization'] = get_jwt_identity()
+            try:
+                opportunity = Opportunity(**data).save()
+            except ValidationError as e:
+                return bad_request(e.to_dict())
+
+            output = {'id': str(opportunity.id)}
+            return jsonify(output)
+        else:
+            return forbidden()
 
 
 class OpportunityApi(Resource):
@@ -86,11 +99,18 @@ class OpportunityApi(Resource):
         JSON Web Token is required.
 
         """
-        try:
-            output = Opportunity.objects(id=op_id).delete()
-        except ValidationError as e:
-            return bad_request(e.message)
-        return jsonify(output)
+
+        authorized: bool = Users.objects.get(id=get_jwt_identity()).roles.organization or \
+        Users.objects.get(id=get_jwt_identity()).roles.admin
+
+        if authorized:
+            try:
+                output = Opportunity.objects(id=op_id).delete()
+            except ValidationError as e:
+                return bad_request(e.message)
+            return jsonify(output)
+        else:
+            return forbidden()
 
     @jwt_required
     @user_exists
@@ -101,8 +121,15 @@ class OpportunityApi(Resource):
         JSON Web Token is required.
         """
         data = request.get_json()
-        try:
-            res = Opportunity.objects.get(id=op_id).update(**data)
-        except ValidationError as e:
-            return bad_request(e.message)
-        return jsonify(res)
+
+        authorized: bool = Users.objects.get(id=get_jwt_identity()).roles.organization or \
+        Users.objects.get(id=get_jwt_identity()).roles.admin
+
+        if authorized:
+            try:
+                res = Opportunity.objects.get(id=op_id).update(**data)
+            except ValidationError as e:
+                return bad_request(e.message)
+            return jsonify(res)
+        else:
+            return forbidden()

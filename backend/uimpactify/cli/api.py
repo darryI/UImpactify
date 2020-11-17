@@ -284,6 +284,21 @@ def init_data():
     }
     f4 = feedback_util.create_feedback(s2_token, f4_json)
 
+    # Add opportunities
+    O1_json = {
+        "isPaid": False,
+        "description": "happy job that makes me happy",
+        "isPublished": True
+    }
+    O1 = opportunity_util.create_opportunity(npo1_token, O1_json)
+
+    O2_json = {
+        "isPaid": True,
+        "description": "happier job that makes me happier",
+        "isPublished": True
+    }
+    O2 = opportunity_util.create_opportunity(npo1_token, O2_json)
+
 
 def init_app(app):
     app.cli.add_command(auth_test)

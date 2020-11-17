@@ -45,6 +45,6 @@ def create_routes(api: Api):
     api.add_resource(FeedbackByCourseApi, '/feedback/<course_id>/')
     api.add_resource(FeedbackForCourseApi, '/feedback/')
 
-    api.add_resource(GetByOrgApi, '/opportunities/org/')
+    api.add_resource(GetOpportunitiesByOrgApi, '/opportunities/org/')
     api.add_resource(OpportunityApi, '/opportunities/<op_id>/')
     api.add_resource(CreateOpportunityApi, '/opportunities/')
