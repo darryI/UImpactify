@@ -15,7 +15,6 @@ import Login from './landing/login/Login/Login.js';
 import TopBar from './utils/Navigation.js';
 import Logout from './landing/login/Logout/Logout.js';
 import StudentDashboard from 'landing/StudentDashboard/StudentDashboard';
-
 import CourseLanding from './courses/CourseLanding/CourseLanding'
 
 function App() {
