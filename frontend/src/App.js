@@ -15,6 +15,7 @@ import Course from './courses/Course/Course.js';
 import Login from './landing/login/Login/Login.js';
 import TopBar from './utils/Navigation.js';
 import Logout from './landing/login/Logout/Logout.js';
+import StudentDashboard from 'landing/StudentDashboard/StudentDashboard';
 
 
 function App() {
@@ -62,6 +63,11 @@ function App() {
           </Route>
           <Route path="/SignUp">
             <SignUp />
+          </Route>
+          <Route path="/dashboard">
+            <StudentDashboard 
+              setLoggedIn={setLoggedIn}
+            />
           </Route>
           <Route path="/">
             <Home />
