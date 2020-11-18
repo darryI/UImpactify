@@ -3,19 +3,20 @@ import { fireEvent, render, wait } from '@testing-library/react';
 import DropButton, {API} from './DropButton';
 
 const setup = () => {
-  // mocking all the objects that are given as props to the button
-  const accessToken = 'fake-token';
-  const setAccessToken = jest.fn((values) => {});
+  jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
 
+  // mock course id
+  const courseID = {
+    "id": "5f9f89d2c6370973b4f32222"
+  };
+  
   const utils = render(
     <DropButton
-      accessToken={accessToken}
-      setAccessToken={setAccessToken}
+      course={courseID}
     />
   );
   
   return {
-    setAccessToken,
     ...utils
   }
 }
@@ -44,12 +45,11 @@ test('clicking yes on popup makes disenroll course API call', async () => {
     return Promise.resolve();
   })
 
-  const { getByText, setAccessToken } = setup();
+  const { getByText } = setup();
   const dropButton = getByText("Drop");
   fireEvent.click(dropButton);
   const yesButton = getByText("Yes");
   fireEvent.click(yesButton);
 
   await wait (() => expect(getFunc).toHaveBeenCalled());
-  expect(setAccessToken).toHaveBeenCalled();
 });
