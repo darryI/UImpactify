@@ -7,7 +7,7 @@
     - remark requests must be received within **2 weeks** of receiving your mark
 	- rubric: https://cmsweb.utsc.utoronto.ca/cscc01f20/project/Sprint1_marking.txt
 
-**total mark for sprint 1**: 70/75
+**total mark for sprint 1**: 68/75
 
 ---
 
@@ -27,16 +27,15 @@
 
 ## daily stand-ups
 
-**total mark**: 10/10
+**total mark**: 8/10
 
 |category|mark|total|
 |---|---|---|
-|RPM.md is well documented|3|3|
-|sprint1.md is well documented|2|2|
+|daily standups duh|8|10|
 
 **additional comments**:
 
-- N/A
+- some members missed 1 or more standups, e.g Nov 6
 ---
 
 ## user stories
