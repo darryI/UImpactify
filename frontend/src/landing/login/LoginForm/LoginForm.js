@@ -7,7 +7,7 @@ function LoginForm(props) {
     const loginInfo = props.loginInfo;
     const setLoginValues = props.setLoginValues;
     const setFailedAuthenticate = props.setFailedAuthenticate;
-    const setAccessToken = props.setAccessToken;
+    const setLoggedIn = props.setLoggedIn;
     const history = useHistory();
 
     const handleLogin = (event) => {
@@ -18,7 +18,8 @@ function LoginForm(props) {
             .then(
                 (result) => {
                     setFailedAuthenticate(false);
-                    setAccessToken(result.access_token);
+                    setLoggedIn(true);
+                    localStorage.setItem("jwtAuthToken", JSON.stringify(result))
                     history.push('/about')
                 },
                 // Note: it's important to handle errors here
@@ -83,8 +84,14 @@ export const API = {
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
             body: JSON.stringify(data)
-            })
-          .then(res => res.json())
+        })
+        .then(res => {
+            // check to see if the server responded with a 200 request (ok)
+            // if not, then reject the promise so that proper error handling can take place
+            return res.json().then(json => {
+                return res.ok ? json : Promise.reject(json);
+            });
+        });
     }
 }
 

@@ -30,7 +30,7 @@ function CourseInfo(props) {
   }
 
   let students = null;
-  if (course.students.length != 0) {
+  if (course.students && course.students.length != 0) {
     students = course.students.map((s) => <div key={s}>{s}</div>);
   } else {
     students = <p>No one has enrolled in this course yet!</p>
@@ -41,8 +41,8 @@ function CourseInfo(props) {
       <h1>{course.name}</h1>
       <h2>Objective:</h2>
       <p>{course.objective}</p>
-      <h2>Learning Outcomes</h2>
-      <p>{course.lrnOutcomes}</p>
+      <h2>Learning Outcomes:</h2>
+      <p>{course.learningOutcomes}</p>
 
       <h2>Student Ids:</h2>
       {students}

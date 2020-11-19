@@ -7,6 +7,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from uimpactify.models.users import Users
 from uimpactify.controller.errors import forbidden
 from uimpactify.utils.mongo_utils import convert_query, convert_doc
+from uimpactify.controller.dont_crash import dont_crash, user_exists
 
 class UsersApi(Resource):
     """
@@ -154,3 +155,23 @@ class UserApi(Resource):
             return jsonify(output)
         else:
             return forbidden()
+
+
+class SelfDeleteApi(Resource):
+    """
+    Flask-resftul resource for returning db.user collection.
+
+    """
+
+    @jwt_required
+    @dont_crash
+    @user_exists
+    def delete(self) -> Response:
+        """
+        DELETE response method for deleting currently logged in user.
+        JSON Web Token is required.
+
+        :return: JSON object
+        """
+        output = Users.objects(id=get_jwt_identity()).delete()
+        return jsonify(output)
