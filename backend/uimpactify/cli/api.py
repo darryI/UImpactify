@@ -133,22 +133,27 @@ def opportunity_run_test():
 
     # Add opportunities
     O1_json = {
-        "isPaid": False,
+        "paid": False,
         "description": "bad job that doesnt pay",
-        "organizationName": "bad",
-        "isPublished": True
+        "published": True
     }
     O1 = opportunity_util.create_opportunity(org_token, O1_json)
 
     O2_json = {
-        "isPaid": True,
+        "paid": True,
         "description": "good job that make me richie",
-        "organizationName": "bad",
-        "isPublished": True
+        "published": True
     }
     O2 = opportunity_util.create_opportunity(org_token, O2_json)
 
-    opportunity_util.get_opportunities(org_token)
+    O3_json = {
+        "paid": True,
+        "description": "happier job that makes me happier but isnt published yet :(",
+        "published": False
+    }
+    O3 = opportunity_util.create_opportunity(org_token, O3_json)
+
+    opportunity_util.get_opportunities_by_org(org_token)
 
     # CLEAN UP
 
@@ -286,18 +291,25 @@ def init_data():
 
     # Add opportunities
     O1_json = {
-        "isPaid": False,
+        "paid": False,
         "description": "happy job that makes me happy",
-        "isPublished": True
+        "published": True
     }
     O1 = opportunity_util.create_opportunity(npo1_token, O1_json)
 
     O2_json = {
-        "isPaid": True,
+        "paid": True,
         "description": "happier job that makes me happier",
-        "isPublished": True
+        "published": True
     }
     O2 = opportunity_util.create_opportunity(npo1_token, O2_json)
+
+    O3_json = {
+        "paid": True,
+        "description": "happier job that makes me happier but isnt published yet :(",
+        "published": False
+    }
+    O3 = opportunity_util.create_opportunity(npo1_token, O3_json)
 
 
 def init_app(app):

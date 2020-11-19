@@ -24,8 +24,8 @@ class Opportunity(Document):
     :param applicants: The current applicants for the job
     :param organization: The id of the organization account that created the job
     """
-    isPaid = BooleanField(required=True)
+    paid = BooleanField(required=True)
     description = StringField(required=True)
-    isPublished = BooleanField(required=True)
-    applicants: ListField()
+    published = BooleanField(required=True)
+    applicants: ListField(ReferenceField('Users', reverse_delete_rule=PULL))
     organization = ReferenceField('Users', reverse_delete_rule=CASCADE, required=True)

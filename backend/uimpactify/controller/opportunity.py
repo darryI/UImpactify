@@ -42,14 +42,17 @@ class GetOpportunitiesByOrgApi(Resource):
 
         if authorized:
             fields = {
-                'isPaid',
+                'paid',
                 'description',
-                'isPublished'
+                'published'
             }
-            values = convert_query(query, fields)
-            return jsonify(values)
+            embedded = {'organization': {'name': 'organization'}}
+            converted = convert_embedded_query(query, fields, embedded)
+            return jsonify(converted)
         else:
             return forbidden()
+
+
 
 class CreateOpportunityApi(Resource):
     """
@@ -105,7 +108,7 @@ class OpportunityApi(Resource):
 
         if authorized:
             try:
-                output = Opportunity.objects(id=op_id).delete()
+                output = Opportunity.objects.get(id=op_id).delete()
             except ValidationError as e:
                 return bad_request(e.message)
             return jsonify(output)

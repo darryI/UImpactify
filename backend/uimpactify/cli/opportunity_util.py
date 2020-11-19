@@ -23,8 +23,8 @@ def create_opportunity(access_token, opportunity_json):
     return opportunity_id
 
 
-def get_opportunities(access_token):
-    api_url = url_for("getbyorgapi")
+def get_opportunities_by_org(access_token):
+    api_url = url_for("getopportunitiesbyorgapi")
 
     print(f"*** GET OPPORTUNITIES ***\n")
     r = requests.get(
