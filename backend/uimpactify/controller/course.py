@@ -129,11 +129,19 @@ class CourseApi(Resource):
         Authorization is required: Access(admin=true)
 
         """
-        authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
+        queryCourse = Courses.objects.get(id=course_id)
+        user = get_jwt_identity()
+        # only the course instructor can delete courses
+        authorized: bool = queryCourse['instructor']['id'] == ObjectId(user)
+        # or an admin
+        authorized = authorized or Users.objects.get(id=user).roles.admin
 
         if authorized:
             output = Courses.objects(id=course_id).delete()
-            return jsonify(output)
+            if output == 0:
+                return not_found()
+            else:
+                return jsonify(output)
         else:
             return forbidden()
 
@@ -180,8 +188,13 @@ class CourseEnrollmentApi(Resource):
         data = request.get_json()
         user_id=get_jwt_identity()
 
+        if Courses.objects(id=data["courseId"], students=ObjectId(user_id)):
+            return conflict("You cannot enrol in the same course twice!")
+
         try:
-            post_enroll = Courses.objects(id=data["courseId"]).update(push__students=ObjectId(user_id))
+            enroll = Courses.objects(id=data["courseId"]).update(push__students=ObjectId(user_id))
+            if enroll == 0:
+                return not_found("404 Error: The requested course does not exist")
         except InvalidId as e:
             print(e.__class__.__name__)
             print(dir(e))
@@ -204,7 +217,9 @@ class CourseDisenrollmentApi(Resource):
         """
         user_id=get_jwt_identity()
         try:
-            post_disenroll = Courses.objects(id=course_id).update(pull__students=ObjectId(user_id))
+            disenroll = Courses.objects(id=course_id).update(pull__students=ObjectId(user_id))
+            if disenroll == 0:
+                return not_found("404 Error: The requested course does not exist")
         except InvalidId as e:
             print(e.__class__.__name__)
             print(dir(e))
@@ -286,3 +301,73 @@ class PublishedCourseApi(Resource):
         embedded = {'instructor': {'name': 'instructor'}}
         converted = convert_embedded_doc(output, fields, embedded)
         return jsonify(converted)
+
+
+class CourseEndorsementApi(Resource):
+    """
+    Flask-resftul resource for endorsing courses.
+
+    """
+    @jwt_required
+    @user_exists
+    @dont_crash
+    def post(self) -> Response:
+        """
+        POST response method for endorsing a course.
+
+        :return: JSON object
+        """
+        data = request.get_json()
+        user_id=get_jwt_identity()
+        course_id = data["courseId"]
+
+        authorized: bool = Users.objects.get(id=user_id).roles.organization
+        if authorized:
+            # don't let an organization endorse the same course twice
+            if Courses.objects(id=course_id, endorsedBy=ObjectId(user_id)):
+                return conflict("You already endorsed this course!")
+
+            # add the organization the course's endorsedBy list
+            try:
+                endorse = Courses.objects(id=course_id).update(push__endorsedBy=ObjectId(user_id))
+                if endorse == 0:
+                    return not_found("404 Error: The requested course does not exist")
+            except InvalidId as e:
+                print(e.__class__.__name__)
+                print(dir(e))
+                return bad_request(str(e))
+            except ValidationError as e:
+                return bad_request(e.message)
+            
+            output = {'id': user_id}
+            return jsonify(output)
+        else:
+            return forbidden()
+
+
+class CourseEndorsedByApi(Resource):
+    """
+    Flask-resftul resource for returning a list of organizations endorsing a course.
+
+    """
+    @dont_crash
+    def get(self, course_id: str) -> Response:
+        """
+        GET response method a list of organizations endorsing a course.
+
+        :return: JSON object
+        """
+        # get the course
+        try:
+            doc = Courses.objects().get(id=course_id)
+        except DoesNotExist:
+            return not_found("404 Error: The requested course does not exist")
+
+        # get the names of the organizations endorsing the course
+        endorsedBy = getattr(doc, 'endorsedBy')
+        names = []
+        for org in endorsedBy:
+            name = getattr(org, 'name')
+            names.append(name)
+
+        return jsonify(names)

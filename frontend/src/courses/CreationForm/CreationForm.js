@@ -17,7 +17,7 @@ function CreationForm(props) {
       ...values,
     };
 
-    var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
+    var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
     if (props.isNewCourse) {
       if ( jwtToken === null) {
         history.push("/login")
@@ -86,7 +86,7 @@ function CreationForm(props) {
   }
 
   return (
-    <form aria-label="creation-form" className="creationForm" onSubmit={handleSubmit}>
+    <form aria-label="creation-form" className="creation-form" onSubmit={handleSubmit}>
       <div className="labelRectCombo">
         <label className="label-text courseName">Course Name:</label>  
         <input aria-label="name-input" className="rect-1643"   type="text" value={values.name} onChange={e => handleNameChange(e)} />
