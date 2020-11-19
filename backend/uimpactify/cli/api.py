@@ -11,6 +11,7 @@ from uimpactify.cli import auth_util
 from uimpactify.cli import course_util
 from uimpactify.cli import user_util
 from uimpactify.cli import feedback_util
+from uimpactify.cli import opportunity_util
 from uimpactify.cli import quiz_util
 
 from uimpactify.controller import routes
@@ -224,6 +225,54 @@ def course_run_test():
     # getting all courses again to show that they are gone
     course_util.get_all_courses(access_token)
 
+@click.command("opportunity-test")
+@with_appcontext
+def opportunity_test():
+    opportunity_run_test()
+
+def opportunity_run_test():
+    # CREATING SAMPLE DATA
+    access_token = auth_util.login()
+
+    # creating a separate instructor user
+    org_json = {
+        "name": "organization person",
+        "email": "organization_person@uimpactify.com",
+        "password": "password",
+        "roles": {"student": True, "organization": True},
+        }
+    org_id = auth_util.signup(org_json)
+    org_token = auth_util.login(org_json)
+
+    # Add opportunities
+    O1_json = {
+        "paid": False,
+        "description": "bad job that doesnt pay",
+        "published": True
+    }
+    O1 = opportunity_util.create_opportunity(org_token, O1_json)
+
+    O2_json = {
+        "paid": True,
+        "description": "good job that make me richie",
+        "published": True
+    }
+    O2 = opportunity_util.create_opportunity(org_token, O2_json)
+
+    O3_json = {
+        "paid": True,
+        "description": "happier job that makes me happier but isnt published yet :(",
+        "published": False
+    }
+    O3 = opportunity_util.create_opportunity(org_token, O3_json)
+
+    opportunity_util.get_opportunities_by_org(org_token)
+
+    # CLEAN UP
+
+    # removing the new users
+    user_util.delete_self(org_token)
+
 @click.command("test")
 @with_appcontext
 def test_all():
@@ -240,6 +289,13 @@ def test_all():
         "----------------------------\n"
         )
     course_run_test()
+
+    print(
+        "----------------------------\n" +
+        "RUNNING OPPORTUNITY RELATED TESTS\n" +
+        "----------------------------\n"
+        )
+    opportunity_run_test()
 
 
 @click.command("init-data")
@@ -349,6 +405,28 @@ def init_data():
     }
     f4 = feedback_util.create_feedback(s2_token, f4_json)
 
+    # Add opportunities
+    O1_json = {
+        "paid": False,
+        "description": "happy job that makes me happy",
+        "published": True
+    }
+    O1 = opportunity_util.create_opportunity(npo1_token, O1_json)
+
+    O2_json = {
+        "paid": True,
+        "description": "happier job that makes me happier",
+        "published": True
+    }
+    O2 = opportunity_util.create_opportunity(npo1_token, O2_json)
+
+    O3_json = {
+        "paid": True,
+        "description": "happier job that makes me happier but isnt published yet :(",
+        "published": False
+    }
+    O3 = opportunity_util.create_opportunity(npo1_token, O3_json)
+    
     # Add quizzes to different courses
     q1_json = { "name": "Empty Quiz 1 for Course 2", "course": c2, }
     q2_json = {
@@ -416,5 +494,6 @@ def init_data():
 def init_app(app):
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
+    app.cli.add_command(opportunity_test)
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)
