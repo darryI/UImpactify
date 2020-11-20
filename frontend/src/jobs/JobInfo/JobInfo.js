@@ -23,7 +23,7 @@ function JobInfo(props) {
   }
 
   let paid = null;
-  if (job.isPaid) {
+  if (job.paid) {
     paid = <p>Paid Oppurtunity</p>;
   } else {
     paid = <p>Volunteer Oppurtunity</p>;

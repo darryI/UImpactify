@@ -73,12 +73,12 @@ function CreationForm(props) {
   const handlePaidChange = (event) => {
     setValues({
       ...values,
-      isPaid: event.target.checked
+      paid: event.target.checked
     });
   }
 
   return (
-    <form aria-label="creation-form" className="creationForm" onSubmit={handleSubmit}>
+    <form aria-label="creation-form" className="creation-form" onSubmit={handleSubmit}>
 
 
       <label className="label-text">Description:</label>  
@@ -91,7 +91,7 @@ function CreationForm(props) {
         </div>
         <div className="labelRectCombo">
           <label className="label-text">Paid?</label>
-          <input aria-label="paid-input" type="checkbox" className="checkbox" checked={values.isPaid} onChange={e => handlePaidChange(e)}></input>
+          <input aria-label="paid-input" type="checkbox" className="checkbox" checked={values.paid} onChange={e => handlePaidChange(e)}></input>
         </div>
         <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/>Save</button>
         
@@ -101,60 +101,41 @@ function CreationForm(props) {
 }
 
 export const API = {
-  // TODO: replace urls with actual api endpoint & implement authentication logic
-  postJob(job, token) {
-    return Promise.resolve({id: "5"});
+  async postJob(job, token) {
+    const url = 'http://localhost:5000/opportunities/';
+    // Default options are marked with *
+    const res = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(job) // body data type must match "Content-Type" header
+    });
+    const json = await res.json();
+    return res.ok ? json : Promise.reject(json);
   },
 
-  putJob(job, token) {
-    return Promise.resolve();
-  }
-
-
-
-  // postJob(job, token) {
-  //   const url = 'http://localhost:5000/opportunities/';
-  //   // Default options are marked with *
-  //   return fetch(url, {
-  //     method: 'POST', 
-  //     mode: 'cors', 
-  //     cache: 'no-cache', 
-  //     credentials: 'same-origin', 
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify(job) // body data type must match "Content-Type" header
-  //   }).then( res => {
-  //     // check to see if the server responded with a 200 request (ok)
-  //     // if not, then reject the promise so that proper error handling can take place
-  //     return res.json().then(json => {
-  //         return res.ok ? json : Promise.reject(json);
-  //     });
-  // });
-  // },
-
-  // putJob(job, token) {
-  //   const url = 'http://localhost:5000/opportunities/' + job.id + '/';
-  //   // Default options are marked with *
-  //   return fetch(url, {
-  //     method: 'PUT', 
-  //     mode: 'cors', 
-  //     cache: 'no-cache', 
-  //     credentials: 'same-origin', 
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Bearer ${token}`,
-  //     },
-  //     body: JSON.stringify(job) // body data type must match "Content-Type" header
-  //   }).then( res => {
-  //       // check to see if the server responded with a 200 request (ok)
-  //       // if not, then reject the promise so that proper error handling can take place
-  //       return res.json().then(json => {
-  //           return res.ok ? json : Promise.reject(json);
-  //       });
-  //   });
-  // },
+  async putJob(job, token) {
+    const url = 'http://localhost:5000/opportunities/' + job.id + '/';
+    // Default options are marked with *
+    const res = await fetch(url, {
+      method: 'PUT',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(job) // body data type must match "Content-Type" header
+    });
+    const json = await res.json();
+    return res.ok ? json : Promise.reject(json);
+  },
 
 }
 

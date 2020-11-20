@@ -18,9 +18,8 @@ function JobCreation(props) {
   const history = useHistory();
 
   const initialValues = {
-    isPaid: false,
+    paid: false,
     description: '',
-    organizationName: '',
     published: false,
   };
 
@@ -107,20 +106,14 @@ function JobCreation(props) {
 }
 
 export const API = {
-  getJobs: (token) => {
-    return Promise.resolve(json_jobs);
-  }
-
-
-
-  // getJobs: async (token) => {
-  //   const url = "http://localhost:5000/opportunities/org/";
-  //   return fetch(url, {
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`,
-  //     }
-  //   }).then(res => res.json());
-  // },
+  getJobs: async (token) => {
+    const url = "http://localhost:5000/opportunities/org/";
+    return fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    }).then(res => res.json());
+  },
 }
 
 export default JobCreation;

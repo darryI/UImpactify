@@ -9,9 +9,8 @@ const setup = (isNewJob) => {
   // mock course
   const newJob = {
     "id": 0,
-    "isPaid": false,
+    "paid": false,
     "description": "We want YOU to eat OUR chocolate bars",
-    "organizationName": "Wonka Chocolate",
     "published": true
   };
 
