@@ -1,8 +1,8 @@
 .SignUpPage {
-    padding: 0px 0 100px 30px;
+    padding: 0px 0 100px 55px;
     background: #F8FDFD;
     font-family: OpenSans;
-    width: 1170px;
+    width: 100%;
 }
 
 .SignUp-colour {
@@ -76,13 +76,13 @@
 /* ============== Sign Up Section 1 ================== */
 .SignUpSection1 {
     height: 530px;
-    width: 1200px;
+    width: 100%;
     display: inline-block;
 }
 
 .SignUpImg1 {
-    height: 480px;
-    width: 700px;
+    height: 90%;
+    width: 60%;
     float: right;
     display: inline-block;
     background-image: url("./SignUpImg1.svg");
@@ -103,14 +103,14 @@
 
 /* ============== Sign Up Section 2 ================= */
 .SignUpSection2 {
-    height: 530px;
-    width: 1200px;
+    height: 550px;
+    width: 100%;
     display: inline-block;
 }
 
 .SignUpImg2 {
-    height: 480px;
-    width: 700px;
+    height: 90%;
+    width: 60%;
     float: right;
     display: inline-block;
     background-image: url("./SignUpImg2.svg");

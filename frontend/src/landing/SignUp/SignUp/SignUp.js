@@ -4,8 +4,8 @@ import GenericQuestions from '../GenericQuesitons/GenericQuestions'
 import UserTypeDeclaration from '../TypeDeclaration/TypeDeclaration'
 import SocialInitiativesQuestions from '../SInitiativesQuestions/SInitiativesQuestions'
 import InstructorQuesitons from '../InstructorQuestions/InstructorQuestions'
+import SignUpButton from "../SignUpButton/SignUpButton";
 import './SignUp.css';
-import { prettyDOM } from "@testing-library/react";
 
 function SignUp() {
     const [email, setEmail] = useState('')
@@ -16,10 +16,8 @@ function SignUp() {
     const [studentChecked, setStudentChecked] = useState(true)
     const [identify, setIdentify] = useState([])
     const [category, setCategory] = useState('')
-    //const [other, setOther] = useState('')
     const [choice, setChoice] = useState('')
 
-    const history = useHistory()
     const handleSelectIdentify = (event) => {
         setIdentify(identify.concat(event.target.name))
     } 
@@ -54,39 +52,6 @@ function SignUp() {
     const handlePhoneChange = (event) => {
         setPhone(event.target.value)
     }
-
-    const handleSignUp = () => {
-        if(email && username && password){
-            const newUser = {
-                name: username,
-                email: email,
-                password: password,
-                roles: {
-                    admin: type.includes("admin"),
-                    instructor: type.includes("Instructor"),
-                    organization: type.includes("Social Initiative"),
-                    student: type.includes("Student")
-                },
-                phone: phone
-            }
-            // wait for API call then route somewhere and do something with access token
-            API.postSignUp(newUser)
-            .then(
-                (response) => {
-                    history.push('/login')
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    alert(JSON.stringify(error, null, 2));
-                }
-            )
-        }else{
-            alert("one or more of the required fields arent filled!")
-        }
-    }
-
     
     const handleCategory = (event) =>{
         if(category === ''){
@@ -98,7 +63,6 @@ function SignUp() {
 
     return (
         <div className="SignUpPage">
-            {/* <p className="SignUp-colour">Sign Up</p> */}
             <br/><h1>Welcome to U-Impactify!</h1>
             <div className="SignUpSection1">
                 <GenericQuestions 
@@ -121,37 +85,15 @@ function SignUp() {
             </div>
             
             <SocialInitiativesQuestions
-            handleCategory={handleCategory}/>
-            <button id="signInButton" type="submit" onClick={handleSignUp}>CONFIRM</button>
+                handleCategory={handleCategory}/>
+            <SignUpButton 
+                username={username}
+                email={email}
+                password={password}
+                phone={phone}
+                type={type}/>
         </div>
     );
-}
-
-export const API = {
-
-    postSignUp(data) {
-        const url = 'http://localhost:5000/authentication/signup/';
-        return fetch(url, {
-            method: 'POST',
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',// 'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify(data)
-        })
-        .then(res => {
-            // check to see if the server responded with a 200 request (ok)
-            // if not, then reject the promise so that proper error handling can take place
-            return res.json().then(json => {
-                return res.ok ? json : Promise.reject(json);
-            });
-        });
-    }
-
 }
 
 export default SignUp;

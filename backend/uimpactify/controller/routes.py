@@ -4,9 +4,10 @@ from flask_restful import Api
 # project resources
 from uimpactify.controller.authentication import *
 from uimpactify.controller.user import *
+from uimpactify.controller.quiz import *
 from uimpactify.controller.course import *
-
-
+from uimpactify.controller.feedback import *
+from uimpactify.controller.opportunity import *
 
 def create_routes(api: Api):
     """Adds resources to the api.
@@ -26,6 +27,7 @@ def create_routes(api: Api):
     api.add_resource(UsersApi, '/user/')
     api.add_resource(UserApi, '/user/<user_id>/')
     api.add_resource(SelfDeleteApi, '/user/delete-self/')
+    api.add_resource(SignedInUserApi, '/user/self/')
 
     api.add_resource(CoursesApi, '/course/')
     api.add_resource(CourseApi, '/course/<course_id>/')
@@ -39,4 +41,20 @@ def create_routes(api: Api):
     api.add_resource(CoursesWithStudentApi, '/course/student/')
 
     api.add_resource(PublishedCoursesApi, '/course/published/')
-    api.add_resource(PublishedCourseApi, '/course/published/<course_id>')
+    api.add_resource(PublishedCourseApi, '/course/published/<course_id>/')
+
+    api.add_resource(CourseEndorsementApi, '/course/endorse/')
+    api.add_resource(CourseEndorsedByApi, '/course/endorsedBy/<course_id>/')
+
+    api.add_resource(FeedbackByCourseApi, '/feedback/<course_id>/')
+    api.add_resource(FeedbackForCourseApi, '/feedback/')
+    
+    api.add_resource(GetOpportunitiesByOrgApi, '/opportunities/org/')
+    api.add_resource(OpportunityApi, '/opportunities/<op_id>/')
+    api.add_resource(CreateOpportunityApi, '/opportunities/')
+    
+    api.add_resource(QuizzesApi, '/quiz/')
+    api.add_resource(QuizApi, '/quiz/<quiz_id>/')
+
+    api.add_resource(QuizzesByCourseApi, '/quiz/course/<course_id>/')
+    

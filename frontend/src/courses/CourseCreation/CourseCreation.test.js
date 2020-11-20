@@ -33,3 +33,35 @@ test('on startup, api call is made to get courses', async () => {
   expect(getFunc).toHaveBeenCalled();
 });
 
+test('course creation starts by showing course info when there are pre-existing courses', async () => {
+  const getFunc = jest.spyOn(API, 'getCourses').mockImplementationOnce(() => {
+    return Promise.resolve(jsonCourses);
+  })
+
+  const { container } = setup();
+
+  await waitForElement(() => container.querySelectorAll('.course-list-card'));
+
+  const info = container.querySelector(".info-card");
+  const form = container.querySelector(".creation-form");
+  
+  expect(info).not.toBeNull();
+  expect(form).toBeNull();
+});
+
+test('course creation starts by showing the creation form when there are no courses', async () => {
+  const getFunc = jest.spyOn(API, 'getCourses').mockImplementationOnce(() => {
+    // return an empty array of courses
+    return Promise.resolve([]);
+  })
+
+  const { container } = setup();
+
+  await waitForElement(() => container.querySelectorAll('.course-list-card'));
+
+  const info = container.querySelector(".info-card");
+  const form = container.querySelector(".creation-form");
+
+  expect(info).toBeNull();
+  expect(form).not.toBeNull();
+});
