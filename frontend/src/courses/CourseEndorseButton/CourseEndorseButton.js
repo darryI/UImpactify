@@ -41,13 +41,13 @@ function CourseEndorseButton(props) {
             (result) => {
                 setShowButton(false)
                 setIsDisabled(true)
-                console.log(result)
                 setText("You have endorsed this course!")
             },
             // Note: it's important to handle errors here
             // instead of a catch() block so that we don't swallow
             // exceptions from actual bugs in components.
             (error) => {
+                setError(error);
                 alert("Couldn't endorse course properly!")
             }
         )
@@ -58,11 +58,10 @@ function CourseEndorseButton(props) {
     return <div>Loading...</div>;
   } else {
         return(
-            <div>
-                <div >{text}</div>
-                <button style={{ display: showButton ? "block" : "none" }} 
-                    aria-label="endorse-button" type="button" onClick={handleClick} 
-                    disabled={isDisabled}>Endorse meeee!
+            <div style={{ display: showButton ? "block" : "none" }}>
+                <div className="buttonText" >{text}</div>
+                <button aria-label="endorse-button" type="button" onClick={handleClick} 
+                    disabled={isDisabled}>Endorse
                 </button>
             </div>
         )
