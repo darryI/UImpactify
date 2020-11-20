@@ -10,6 +10,8 @@ import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
 import SignUp from './landing/SignUp/SignUp/SignUp.js'
 import CourseCreation from './courses/CourseCreation/CourseCreation.js';
+import JobCreation from './jobs/JobCreation/JobCreation.js';
+
 import CoursesPage from './courses/CoursesPage/CoursesPage.js';
 import Login from './landing/login/Login/Login.js';
 import TopBar from './utils/Navigation.js';
@@ -50,6 +52,9 @@ function App() {
             <Login
                 setLoggedIn={setLoggedIn}
             />
+          </Route>
+          <Route path="/jobs">
+            <JobCreation />
           </Route>
           <Route path="/create">
             <CourseCreation />
