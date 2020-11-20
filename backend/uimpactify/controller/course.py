@@ -129,11 +129,19 @@ class CourseApi(Resource):
         Authorization is required: Access(admin=true)
 
         """
-        authorized: bool = True #Users.objects.get(id=get_jwt_identity()).access.admin
+        queryCourse = Courses.objects.get(id=course_id)
+        user = get_jwt_identity()
+        # only the course instructor can delete courses
+        authorized: bool = queryCourse['instructor']['id'] == ObjectId(user)
+        # or an admin
+        authorized = authorized or Users.objects.get(id=user).roles.admin
 
         if authorized:
             output = Courses.objects(id=course_id).delete()
-            return jsonify(output)
+            if output == 0:
+                return not_found()
+            else:
+                return jsonify(output)
         else:
             return forbidden()
 

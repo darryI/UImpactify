@@ -11,6 +11,8 @@ from uimpactify.cli import auth_util
 from uimpactify.cli import course_util
 from uimpactify.cli import user_util
 from uimpactify.cli import feedback_util
+from uimpactify.cli import opportunity_util
+from uimpactify.cli import quiz_util
 
 from uimpactify.controller import routes
 
@@ -112,6 +114,101 @@ def course_run_test():
     # getting private feedback as instructor (not empty)
     feedback_util.get_feedback(inst_token, c3)
 
+    # create test quizzes
+    q1_json = { "name": "Empty Quiz (by Student)", "course": c1, }
+    q2_json = {
+        "name": "Quiz 1 for Course 3",
+        "course": c3,
+        "quizQuestions": [
+                {
+                    "question": "What is real?",
+                    "index": 1,
+                    "options":
+                        [
+                            { "option": "everything", "index": 1, },
+                            { "option": "nothing", "index": 2, }
+                        ],
+                    "answer": 2,
+                },
+                {
+                    "question": "What is truth?",
+                    "index": 2,
+                    "options": [ { "option": "subjective", "index": 1 } ],
+                    "answer": 1,
+                },
+                {
+                    "question": "What is beauty?",
+                    "index": 3,
+                    "options": [ { "option": "fleeting", "index": 1 } ],
+                    "answer": 1,
+                }
+            ],
+        }
+    q3_json = {
+        "name": "Help, Admin, I had a problem adding a quiz!",
+        "course": c2,
+        "quizQuestions": [
+                {
+                    "question": "The answer to this question is (c)",
+                    "index": "1",
+                    "options":
+                        [
+                            {"option": "(a)", "index": 3, },
+                            {"option": "(b)", "index": 1, },
+                            {"option": "(c)", "index": 2, }
+                        ],
+                    "answer": 2,
+                }
+            ],
+        }
+    q4_json = { "name": "Empty Quiz Made By Wrong Instructor", "course": c2, }
+
+    # q1 should fail because students can't make courses
+    # q4 should fail because you can only add quizzes to your own courses
+    q1 = quiz_util.create_quiz(s_token, q1_json)
+    q2 = quiz_util.create_quiz(inst_token, q2_json)
+    q3 = quiz_util.create_quiz(access_token, q3_json)
+    q4 = quiz_util.create_quiz(inst_token, q4_json)
+
+    # should only return q2 for valid case and q3 for admin override
+    quiz_util.get_quizzes(access_token)
+
+    # last call fails
+    quiz_util.get_quizzes_by_course(access_token, c3)
+    quiz_util.get_quizzes_by_course(inst_token, c3)
+    quiz_util.get_quizzes_by_course(s_token, c3)
+    
+    # last call fails
+    quiz_util.get_quizzes_by_course(access_token, c2)
+    quiz_util.get_quizzes_by_course(inst_token, c2)
+
+    # anyone can get quizzes atm
+    quiz_util.get_quiz(s_token, q2)
+    quiz_util.get_quiz(inst_token, q2)
+    quiz_util.get_quiz(access_token, q2)
+    quiz_util.get_quiz(s_token, q3)
+
+    q3_update = { "published": True, }
+
+    # fails because inst is not the inst of the course q3 is originally in
+    quiz_util.update_quiz(inst_token, q3, q3_update)
+    # runs because admin privilege
+    quiz_util.update_quiz(access_token, q3, q3_update)
+    # q3 is published now
+    quiz_util.get_quiz(access_token, q3)
+
+    # mass method test +
+    # show instrucotrs can update their own quizzes
+    q5_json = { "name": "testQuizFive", "course": c3, }
+    q5 = quiz_util.create_quiz(inst_token, q5_json)
+    quiz_util.get_quiz(access_token, q5)
+    q5_update = { "published": True, }
+    quiz_util.update_quiz(inst_token, q5, q5_update)
+    quiz_util.get_quizzes_by_course(inst_token, c3)
+    quiz_util.delete_quiz(inst_token, q5)
+    quiz_util.get_quiz(access_token, q5)
+    # other quizzes wil be deleted with courses according to cascade delete
+
     # CLEAN UP
     # disenroll a student
     course_util.disenroll_student(s_token, c2)
@@ -127,6 +224,54 @@ def course_run_test():
 
     # getting all courses again to show that they are gone
     course_util.get_all_courses(access_token)
+
+@click.command("opportunity-test")
+@with_appcontext
+def opportunity_test():
+    opportunity_run_test()
+
+def opportunity_run_test():
+    # CREATING SAMPLE DATA
+    access_token = auth_util.login()
+
+    # creating a separate instructor user
+    org_json = {
+        "name": "organization person",
+        "email": "organization_person@uimpactify.com",
+        "password": "password",
+        "roles": {"student": True, "organization": True},
+        }
+    org_id = auth_util.signup(org_json)
+    org_token = auth_util.login(org_json)
+
+    # Add opportunities
+    O1_json = {
+        "paid": False,
+        "description": "bad job that doesnt pay",
+        "published": True
+    }
+    O1 = opportunity_util.create_opportunity(org_token, O1_json)
+
+    O2_json = {
+        "paid": True,
+        "description": "good job that make me richie",
+        "published": True
+    }
+    O2 = opportunity_util.create_opportunity(org_token, O2_json)
+
+    O3_json = {
+        "paid": True,
+        "description": "happier job that makes me happier but isnt published yet :(",
+        "published": False
+    }
+    O3 = opportunity_util.create_opportunity(org_token, O3_json)
+
+    opportunity_util.get_opportunities_by_org(org_token)
+
+    # CLEAN UP
+
+    # removing the new users
+    user_util.delete_self(org_token)
 
 @click.command("test")
 @with_appcontext
@@ -144,6 +289,13 @@ def test_all():
         "----------------------------\n"
         )
     course_run_test()
+
+    print(
+        "----------------------------\n" +
+        "RUNNING OPPORTUNITY RELATED TESTS\n" +
+        "----------------------------\n"
+        )
+    opportunity_run_test()
 
 
 @click.command("init-data")
@@ -253,9 +405,95 @@ def init_data():
     }
     f4 = feedback_util.create_feedback(s2_token, f4_json)
 
+    # Add opportunities
+    O1_json = {
+        "paid": False,
+        "description": "happy job that makes me happy",
+        "published": True
+    }
+    O1 = opportunity_util.create_opportunity(npo1_token, O1_json)
+
+    O2_json = {
+        "paid": True,
+        "description": "happier job that makes me happier",
+        "published": True
+    }
+    O2 = opportunity_util.create_opportunity(npo1_token, O2_json)
+
+    O3_json = {
+        "paid": True,
+        "description": "happier job that makes me happier but isnt published yet :(",
+        "published": False
+    }
+    O3 = opportunity_util.create_opportunity(npo1_token, O3_json)
+    
+    # Add quizzes to different courses
+    q1_json = { "name": "Empty Quiz 1 for Course 2", "course": c2, }
+    q2_json = {
+        "name": "Quiz 1 for Course 3",
+        "course": c3,
+        "quizQuestions": [
+            {
+                "question": "What is real?",
+                "index": 1,
+                "options":
+                    [
+                        { "option": "something", "index": 0, },
+                        { "option": "everything", "index": 1, },
+                        { "option": "nothing", "index": 2, },
+                        { "option": "nothing", "index": 3, }
+                    ],
+                "answer": 2,
+            },
+            {
+                "question": "What is truth?",
+                "index": 2,
+                "options": [ { "option": "subjective", "index": 1 } ],
+                "answer": 1,
+            },
+            {
+                "question": "What is beauty?",
+                "index": 3,
+                "options": 
+                    [
+                        { "option": "fleeting", "index": 0 },
+                        { "option": "fleeting", "index": 1 },
+                        { "option": "fleeting", "index": 2 },
+                        { "option": "fleeting", "index": 3 },
+                    ],
+                "answer": 1,
+            }
+            ],
+        }
+    q3_json = {
+        "name": "Quiz 1 for Course 2",
+        "course": c2,
+        "quizQuestions": [
+                {
+                    "question": "The answer to this question is (c)",
+                    "index": "1",
+                    "options":
+                        [
+                            {"option": "(b)", "index": 0, },
+                            {"option": "(c)", "index": 1, },
+                            {"option": "(a)", "index": 2, },
+                            {"option": "(a)", "index": 3, },
+                        ],
+                    "answer": 2,
+                }
+            ],
+        }
+    q4_json = { "name": "Empty Quiz 2 for Course 2", "course": c2, "published": True }
+
+    q1 = quiz_util.create_quiz(inst1_token, q1_json)
+    q2 = quiz_util.create_quiz(inst2_token, q2_json)
+    q3 = quiz_util.create_quiz(inst1_token, q3_json)
+    q4 = quiz_util.create_quiz(inst1_token, q4_json)
+
 
 def init_app(app):
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
+    app.cli.add_command(opportunity_test)
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)
