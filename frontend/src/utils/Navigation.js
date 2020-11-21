@@ -24,7 +24,13 @@ function TopBar(props) {
                   <Link to="/create">Create</Link>
                 </li>
                 <li className="navItem">
+                  <Link to="/jobs">Jobs</Link>
+                </li>
+                <li className="navItem">
                   <Link to="/courses">Courses</Link>
+                </li>
+                <li className="navItem">
+                  <Link to="/dashboard">Dashboard</Link>
                 </li>
               </ul>
             </nav>

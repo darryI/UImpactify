@@ -4,6 +4,8 @@ import {useHistory} from 'react-router-dom';
 import CourseList from '../CourseList/CourseList.js';
 import CreationForm from '../CreationForm/CreationForm.js';
 import CourseInfo from '../CourseInfo/CourseInfo.js';
+
+import QuizCreation from '../quizzes/QuizCreation/QuizCreation.js';
 import './CourseCreation.css';
 
 
@@ -14,6 +16,9 @@ function CourseCreation(props) {
   const [courses, setCourses] = React.useState([]);
   const [selected, setSelected] = React.useState(0);
   const [showForm, setShowForm] = React.useState(false);
+
+
+  const [showQuizzes, setShowQuizzes] = React.useState(false);
 
   const history = useHistory();
 
@@ -66,12 +71,14 @@ function CourseCreation(props) {
   const handleCreate = () => {
     setValues(initialValues);
     setSelected(courses.length);
+    setShowQuizzes(false);
     setShowForm(true);
   }
 
   const handleSelection = (index) => {
     setShowForm(false);
     setSelected(index);
+    setShowQuizzes(false);
   }
 
   if (error) {
@@ -98,11 +105,36 @@ function CourseCreation(props) {
       />
     }
 
+    let quizContent;
+    let quizButton;
+
+    let tabs;
+
+    if (selected === courses.length) {
+      tabs = null;
+      quizContent = null;
+    } else {
+      tabs = 
+        <div className="tabs">
+          <button onClick={() => setShowQuizzes(false)}>Course</button>
+          <button onClick={() => setShowQuizzes(true)}>Quizzes</button>
+        </div>
+      quizContent = <QuizCreation course={courses[selected]} />
+    }
+
+
+
+
     return (
       <div className="CreateCoursePage">
         {/* <h1>{`Courses ${props.user.name} is currently teaching:`} </h1> */}
         <CourseList courses={courses} selected={selected} handleCreate={handleCreate} handleSelection={handleSelection}/>
-        {content}
+
+        <div className="forms">
+          {tabs}
+          {showQuizzes ? quizContent : content}
+        </div>
+
       </div>
     );
   }

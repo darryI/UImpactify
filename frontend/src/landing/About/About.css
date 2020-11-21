@@ -3,13 +3,13 @@
 }
 
 .AboutPage {
-  width: 1200px;
+  width: 100%;
   /* height: 1600px; */
   height: auto;
   background-color: #fafafa;  
   background-image: url('./AboutPageBG.svg');
   background-repeat: no-repeat;
-  background-size: 100% 1500px;
+  background-size: 100% 92%;
 }
 
 .AboutPageText {

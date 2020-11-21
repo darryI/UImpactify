@@ -29,3 +29,14 @@ def delete_self(access_token):
         api_url,
         headers={'Authorization': f'Bearer {access_token}'}
         ).json()
+
+def get_self(access_token):
+    api_url = url_for("signedinuserapi")
+
+    print("*** GETTING SIGNED IN USER ***\n")
+    # use the token as authorization in the request headers to create a course with post call
+    res = requests.get(
+        api_url,
+        headers={'Authorization': f'Bearer {access_token}'}
+        )
+    print(json.dumps(res.json(), indent=4, sort_keys=True), "\n")
