@@ -22,6 +22,7 @@ import CourseLanding from './courses/CourseLanding/CourseLanding'
 function App() {
 
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [user, setUser] = React.useState([]);
 
   React.useEffect(() => {
       var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
@@ -29,13 +30,19 @@ function App() {
         setLoggedIn(false);
       } else {
         setLoggedIn(true);
+        API.getUser(token.access_token)
+        .then(
+          (result) => {
+            setUser(result);
+          }
+        )
       }
     }, [loggedIn])
 
   return (
     <Router>
       <div className="header">
-        <TopBar loggedIn={loggedIn} />
+        <TopBar loggedIn={loggedIn} user={user}/>
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -80,6 +87,23 @@ function App() {
       </div>
     </Router>
   );
+}
+
+export const API = {
+  getUser: async (token) => {
+      const url = 'http://localhost:5000/user/self/';
+
+      return fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then( async res => {
+        // check to see if the server responded with a 200 request (ok)
+        // if not, then reject the promise so that proper error handling can take place
+        const json = await res.json();
+        return res.ok ? json : Promise.reject(json);
+      });
+  }
 }
 
 export default App;
