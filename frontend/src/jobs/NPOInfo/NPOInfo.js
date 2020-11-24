@@ -1,5 +1,4 @@
 import React from 'react';
-import './StudentInfo.css'
 
 export default function StudentInfo(props) {
   const [error, setError] = React.useState(null);
@@ -35,7 +34,7 @@ export default function StudentInfo(props) {
           <strong>Welcome back!</strong>
         </div>
         <div className="info-text">
-          <strong>Student:</strong>
+          <strong>Social Initiative:</strong>
           &nbsp;
           <i>{user.name}</i>
         </div>
@@ -50,9 +49,9 @@ export default function StudentInfo(props) {
           {user.phone}
         </div>
         <div className="info-text">
-          <strong>Courses</strong>
+          <strong>Jobs oppurtunities</strong>
           &nbsp;<i>{user.name}</i>&nbsp;
-          <strong>is currently enrolled in:</strong>
+          <strong>posted:</strong>
         </div>
       </div>
     );

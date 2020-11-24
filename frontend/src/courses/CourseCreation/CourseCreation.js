@@ -7,6 +7,7 @@ import CourseInfo from '../CourseInfo/CourseInfo.js';
 
 import QuizCreation from '../quizzes/QuizCreation/QuizCreation.js';
 import './CourseCreation.css';
+import InstructorInfo from './InstructorInfo/InstructorInfo'
 
 
 function CourseCreation(props) {
@@ -128,6 +129,7 @@ function CourseCreation(props) {
     return (
       <div className="CreateCoursePage">
         {/* <h1>{`Courses ${props.user.name} is currently teaching:`} </h1> */}
+        <InstructorInfo />
         <CourseList courses={courses} selected={selected} handleCreate={handleCreate} handleSelection={handleSelection}/>
 
         <div className="forms">

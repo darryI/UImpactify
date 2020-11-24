@@ -4,6 +4,8 @@ import json_jobs  from '../jobs.json';
 import JobList from '../JobList/JobList.js';
 import CreationForm from '../CreationForm/CreationForm.js';
 import JobInfo from '../JobInfo/JobInfo.js';
+import './JobCreation.css'
+import NPOInfo from '../NPOInfo/NPOInfo'
 
 
 
@@ -98,6 +100,7 @@ function JobCreation(props) {
     return (
       <div className="JobCoursePage">
         {/* <h1>Organization Name here ~~</h1> */}
+        <NPOInfo />
         <JobList jobs={jobs} selected={selected} handleCreate={handleCreate} handleSelection={handleSelection}/>
         {content}
       </div>
