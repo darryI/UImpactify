@@ -12,10 +12,7 @@ const setup = () =>{
     const utils = render(
         <CourseEndorseButton id={id}/>
     );
-
-    //const submit = utils.getByLabelText('endorse-button');
-
-
+    
     return {
         ...utils,
         id
@@ -40,13 +37,18 @@ test('when course landing page opens API call needs to be made to get user and w
         "courseId" : "5f9f89d2c6370973b4f32222"
       };
 
-      const endorserIDs = {
-        "ids" : ["org1", "org2", "org3", "ymart1n"]
-
-      };
+      const endorserIDs = ["org1", "org2", "org3"]
 
     const getFunc = jest.spyOn(API, 'getUser').mockImplementationOnce(() => {
       return Promise.resolve(mockUser);
+    })
+
+    const getFunc2 = jest.spyOn(API, 'getCourseEndorsers').mockImplementationOnce(() => {
+        return Promise.resolve(endorserIDs);
+    })
+
+    const getFunc3 = jest.spyOn(API, 'endorseCourse').mockImplementationOnce(() => {
+        return Promise.resolve(course);
     })
     const { getByText, container } = setup();
     await wait(() => expect(getFunc).toHaveBeenCalled());
@@ -55,51 +57,15 @@ test('when course landing page opens API call needs to be made to get user and w
     const button = getByText("Endorse");
     expect(button).toBeInTheDocument();
 
-    // const getFunc2 = jest.spyOn(API, 'getCourseEndorsers').mockImplementationOnce(() => {
-    //     return Promise.resolve(course);
-    // })
-    // await wait (() => expect(getFunc2).toHaveBeenCalled());
+    await wait (() => expect(getFunc2).toHaveBeenCalled());
 
+    await waitForElement(() => container.querySelectorAll('.courseEndorsers'))
+    const courseEndorsers = container.querySelectorAll('.courseEndorsers');
+    expect(courseEndorsers.length).toBe(1);
 
-    const getFunc3 = jest.spyOn(API, 'endorseCourse').mockImplementationOnce(() => {
-        return Promise.resolve(course);
-    })
     const endorseButton = getByText("Endorse");
     fireEvent.click(endorseButton);
-    // await waitForElement(() => container.querySelectorAll('.courseEndorsers'))
-    // const courseEndorsers = container.querySelectorAll('.courseEndorsers');
-    // expect(courseEndorsers.length).toBe(1);
-
 
     await wait (() => expect(getFunc3).toHaveBeenCalled());
-
-});
-
-test('when course landing page opens API call needs to be made to get user and when button clicked endorse API should work',
- async () => {
-    const mockUser = {
-        "name": "ymart1n",
-        "email": "1231293@ww.com",
-        "phone": "1234567980",
-        "roles": {
-            "admin": false,
-            "instructor": false,
-            "organization": true,
-            "student": true
-        }
-    };
-
-    const course = {
-        "courseId" : "5f9f89d2c6370973b4f32222"
-      };
-
-      const endorserIDs = {
-        "ids" : ["org1", "org2", "org3", "ymart1n"]
-      };
-
-    const getFunc2 = jest.spyOn(API, 'getCourseEndorsers').mockImplementationOnce(() => {
-        return Promise.resolve(course);
-    })
-
     await wait (() => expect(getFunc2).toHaveBeenCalled());
 });

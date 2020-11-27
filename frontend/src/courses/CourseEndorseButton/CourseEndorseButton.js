@@ -22,13 +22,11 @@ function CourseEndorseButton(props) {
     
       let userName = "none"
 
-    // setShowButton(props.userRoles)
     React.useEffect(() => {
         var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
         API.getUser(jwtToken.access_token)
           .then(
             (result) => {
-                console.log("1")
                 userName = result.name
                 setIsLoaded(true);
                 setUser(result);
@@ -43,20 +41,14 @@ function CourseEndorseButton(props) {
               setError(error);
             }
           )
-            console.log("here")
         API.getCourseEndorsers(jwtToken.access_token, requestJSON)
             .then(
                 (result) => {
-                    console.log("are we in")
-                    console.log(result)
-
                     setEndorsers(result);
                     if(result[0] !== undefined){
-                        console.log("are we in1")
                         setEndorsed(true)
                     }
                     if(result.includes(userName)){
-                        console.log("we r in")
                         setShowButton(false)
                         setIsDisabled(false)
                     }
@@ -65,8 +57,6 @@ function CourseEndorseButton(props) {
                 // instead of a catch() block so that we don't swallow
                 // exceptions from actual bugs in components.
                 (error) => {
-                    console.log("2")
-                    console.log(error)
                   setIsLoaded(true);
                   setError(error);
                 }
@@ -78,7 +68,6 @@ function CourseEndorseButton(props) {
         API.endorseCourse(jwtToken.access_token, requestJSON)
         .then(
             (result) => {
-                console.log(result)
                 setShowButton(false)
                 setIsDisabled(true)
                 setEndorsers(endorsers.concat(user.name))
