@@ -17,5 +17,6 @@ setup(
         'flask-restful',
         'flask-jwt-extended',
         'flask-cors',
+        'pillow',
     ]
 )
