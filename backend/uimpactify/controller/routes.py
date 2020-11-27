@@ -28,7 +28,7 @@ def create_routes(api: Api):
     api.add_resource(PageApi, '/page/<page_name>/')
     api.add_resource(EnrollmentCountApi, '/analytics/enrolled/<course_id>/')
     api.add_resource(ViewCountApi, '/analytics/views/<course_id>/')
-    api.add_resource(QuizCountApi, '/analytics/quizs/<course_id>/')
+    api.add_resource(QuizCountApi, '/analytics/quizzes/<course_id>/')
 
     api.add_resource(SignUpApi, '/authentication/signup/')
     api.add_resource(LoginApi, '/authentication/login/')

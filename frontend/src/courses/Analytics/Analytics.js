@@ -18,9 +18,9 @@ function Analytics(props) {
 
 
   // quiz states
-  const [quizsError, setQuizsError] = React.useState(null);
-  const [quizsLoaded, setQuizsLoaded] = React.useState(false);
-  const [quizs, setQuizs] = React.useState(0);
+  const [quizzesError, setQuizzesError] = React.useState(null);
+  const [quizzesLoaded, setQuizzesLoaded] = React.useState(false);
+  const [quizzes, setQuizzes] = React.useState(0);
 
   React.useEffect(() => {
     var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
@@ -29,7 +29,6 @@ function Analytics(props) {
         (result) => {
           setViewsLoaded(true);
           setViews(result.views);
-          console.log(result);
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow
@@ -45,7 +44,6 @@ function Analytics(props) {
       (result) => {
         setEnrolledLoaded(true);
         setEnrolled(result.students);
-        console.log(result);
       },
       // Note: it's important to handle errors here
       // instead of a catch() block so that we don't swallow
@@ -56,19 +54,18 @@ function Analytics(props) {
       }
     );
 
-    API.getQuizs(token.access_token, props.course)
+    API.getQuizzes(token.access_token, props.course)
     .then(
       (result) => {
-        setQuizsLoaded(true);
-        setQuizs(result.quizzes);
-        console.log(result);
+        setQuizzesLoaded(true);
+        setQuizzes(result.quizzes);
       },
       // Note: it's important to handle errors here
       // instead of a catch() block so that we don't swallow
       // exceptions from actual bugs in components.
       (error) => {
-        setQuizsLoaded(true);
-        setQuizsError(error);
+        setQuizzesLoaded(true);
+        setQuizzesError(error);
       }
     );
 
@@ -97,13 +94,11 @@ function Analytics(props) {
 
   if (enrolledLoaded) {
     if (enrolledError == null && enrolled > 0) {
-      console.log("success!", enrolled);
       enrolledContent = 
       <div>
         <p>There { enrolled > 1 ? 'are' : 'is'} currently <strong>{enrolled}</strong> { enrolled > 1 ? 'students' : 'student'} enrolled in this course.</p>
       </div>
     } else {
-      console.log("fail!", enrolledError);
       enrolledContent = 
       <div>
         <p>Nobody has enrolled in your course yet!</p>
@@ -111,18 +106,16 @@ function Analytics(props) {
     }  
   }
 
-  let quizsContent;
+  let quizzesContent;
 
-  if (quizsLoaded) {
-    if (quizsError == null && quizs > 0) {
-      console.log("success!", quizs);
-      quizsContent = 
+  if (quizzesLoaded) {
+    if (quizzesError == null && quizzes > 0) {
+      quizzesContent = 
       <div>
-        <p>There { quizs > 1 ? 'are' : 'is'} currently <strong>{quizs}</strong> { quizs > 1 ? 'quizzes' : 'quiz'} published for this course. Your students are busy studying!</p>
+        <p>There { quizzes > 1 ? 'are' : 'is'} currently <strong>{quizzes}</strong> { quizzes > 1 ? 'quizzes' : 'quiz'} published for this course. Your students are busy studying!</p>
       </div>
     } else {
-      console.log("fail!", quizsError);
-      quizsContent = 
+      quizzesContent = 
       <div>
         <p>You haven't published a quiz yet! Your students are waiting!</p>
       </div>
@@ -132,9 +125,9 @@ function Analytics(props) {
   let analyticContent;
   // wait for all requests to complete before showing anything
   // the render time might be too slow for some people so might want to change this later
-  if (enrolledLoaded && viewsLoaded && quizsLoaded) {
+  if (enrolledLoaded && viewsLoaded && quizzesLoaded) {
     analyticContent =
-      <div>
+      <div id="analyticContent">
         <h3>👀 How many people have seen my course?</h3>
         <blockquote>
           {viewsContent}
@@ -147,7 +140,7 @@ function Analytics(props) {
 
         <h3>🎓 How many quizzes have been published for this course?</h3>
         <blockquote>
-          {quizsContent}
+          {quizzesContent}
         </blockquote>
         
       </div>
@@ -192,8 +185,8 @@ export const API = {
       return res.ok ? json : Promise.reject(json);
     },
 
-    getQuizs: async (token, course) => {
-      const url = "http://localhost:5000/analytics/quizs/" + course.id + "/";
+    getQuizzes: async (token, course) => {
+      const url = "http://localhost:5000/analytics/quizzes/" + course.id + "/";
       const res = await fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,
