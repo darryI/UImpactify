@@ -14,6 +14,7 @@ function CourseEndorseButton(props) {
 
     const [user, setUser] = React.useState([]);
     const [endorsers, setEndorsers] = React.useState([]);
+    const [endorsed, setEndorsed] = React.useState(false)
 
     const requestJSON = {
         courseId: id
@@ -27,7 +28,7 @@ function CourseEndorseButton(props) {
         API.getUser(jwtToken.access_token)
           .then(
             (result) => {
-                console.log(result)
+                console.log("1")
                 userName = result.name
                 setIsLoaded(true);
                 setUser(result);
@@ -42,18 +43,32 @@ function CourseEndorseButton(props) {
               setError(error);
             }
           )
-
+            console.log("here")
         API.getCourseEndorsers(jwtToken.access_token, requestJSON)
             .then(
                 (result) => {
                     console.log("are we in")
-                    setEndorsers(result);
                     console.log(result)
+
+                    setEndorsers(result);
+                    if(result[0] !== undefined){
+                        console.log("are we in1")
+                        setEndorsed(true)
+                    }
                     if(result.includes(userName)){
                         console.log("we r in")
                         setShowButton(false)
                         setIsDisabled(false)
                     }
+                },
+                // Note: it's important to handle errors here
+                // instead of a catch() block so that we don't swallow
+                // exceptions from actual bugs in components.
+                (error) => {
+                    console.log("2")
+                    console.log(error)
+                  setIsLoaded(true);
+                  setError(error);
                 }
             )
       }, [])
@@ -67,6 +82,7 @@ function CourseEndorseButton(props) {
                 setShowButton(false)
                 setIsDisabled(true)
                 setEndorsers(endorsers.concat(user.name))
+                setEndorsed(true)
                 setText("You have endorsed this course!")
             },
             // Note: it's important to handle errors here
@@ -79,7 +95,11 @@ function CourseEndorseButton(props) {
         )
     }
 
-    const listEndorsers = endorsers.map((org, index) => <li key={index}>{org}</li>)
+    const listEndorsers = (endorsers) =>{
+        if(endorsers){
+            return endorsers.map((org, index) => <li key={index}>{org}</li>)
+        }
+    }
 
   if (error) {
     return <div>Error: {error.message}</div>;
@@ -88,9 +108,9 @@ function CourseEndorseButton(props) {
   } else {
         return(
             <div>
-                <div>
+                <div className="courseEndorsers" style={{ display: endorsed ? "block" : "none" }}>
                     <p>This course is Endorsed by:</p>
-                    <ul>{listEndorsers}</ul>
+                    <ul aria-label="endorsers-list">{listEndorsers(endorsers)}</ul>
                 </div>
 
                 <div  style={{ display: showButton ? "block" : "none" }}>
@@ -144,16 +164,20 @@ export const API = {
       getCourseEndorsers: async (token, course) => {
         const url = 'http://localhost:5000/course/endorsedBy/' + course.courseId + '/';
         // Default options are marked with *
-        return fetch(url, {
+        const res = await fetch(url, {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
             headers: {
+              'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
-            }
-          }).then( async res => {
-            // check to see if the server responded with a 200 request (ok)
-            // if not, then reject the promise so that proper error handling can take place
-            const json = await res.json();
-            return res.ok ? json : Promise.reject(json);
-          });      },
+            },
+            // body: JSON.stringify(course) // body data type must match "Content-Type" header
+          });
+          const json = await res.json();
+          return res.ok ? json : Promise.reject(json);
+        },
 }
 
 export default CourseEndorseButton;
