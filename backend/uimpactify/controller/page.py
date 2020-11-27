@@ -31,7 +31,7 @@ class PageApi(Resource):
         except DoesNotExist:
             page = {
                 'name': page_name,
-                'views': 0
+                'views': 1
             }
             page = Pages(**page).save()
         

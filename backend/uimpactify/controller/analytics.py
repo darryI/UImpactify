@@ -33,7 +33,7 @@ class ViewCountApi(Resource):
         try:
             inst = Courses.objects.get(id=course_id).instructor
         except DoesNotExist:
-            return not_found()
+            return not_found("could not find the specified course")
 
         authorized = (str(inst.id) == get_jwt_identity())
 
@@ -46,7 +46,7 @@ class ViewCountApi(Resource):
             output = {'views': page.views}
             return jsonify(output)
         except DoesNotExist:
-            return not_found()
+            return not_found("this page has no views yet")
         
         
 
@@ -62,17 +62,15 @@ class EnrollmentCountApi(Resource):
             course = Courses.objects.get(id=course_id)
             inst = course.instructor
         except DoesNotExist:
-            return not_found()
+            return not_found("could not find the specified course")
 
         authorized = (str(inst.id) == get_jwt_identity())
         if not authorized:
             return forbidden()
         
-        try:
-            output = {'students': len(course.students)}
-            return jsonify(output)
-        except DoesNotExist:
-            return not_found()
+        output = {'students': len(course.students)}
+        return jsonify(output)
+        
 
 
 class QuizCountApi(Resource):
@@ -80,28 +78,25 @@ class QuizCountApi(Resource):
     @user_exists
     @dont_crash
     def get(self, course_id) -> Response:
-        # get the number of people enrolled in a course
+        # get the number of *published* quizzes in a course
 
         # get the instructor for the course
         try:
             course = Courses.objects.get(id=course_id)
             inst = course.instructor
         except DoesNotExist:
-            return not_found()
+            return not_found("could not find the specified course")
 
         authorized = (str(inst.id) == get_jwt_identity())
         if not authorized:
             return forbidden()
         
-        try:
-            quizzes = Quizzes.objects(course=course)
-            # count the number of published quizzes for this course
-            count = 0
-            for q in quizzes:
-                if q.published:
-                    count += 1 
-            output = {'quizzes': count}
-            return jsonify(output)
-        except DoesNotExist:
-            return not_found()
     
+        quizzes = Quizzes.objects(course=course)
+        # count the number of published quizzes for this course
+        count = 0
+        for q in quizzes:
+            if q.published:
+                count += 1 
+        output = {'quizzes': count}
+        return jsonify(output)
