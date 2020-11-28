@@ -10,7 +10,8 @@ function CourseEndorseButton(props) {
     const [isDisabled, setIsDisabled] = React.useState(false);
 
     const [error, setError] = React.useState(null);
-    const [isLoaded, setIsLoaded] = React.useState(false);
+    const [isUserLoaded, setIsUserLoaded] = React.useState(false);
+    const [isEndorsedLoaded, setIsEndorsedLoaded] = React.useState(false);
 
     const [user, setUser] = React.useState([]);
     const [endorsers, setEndorsers] = React.useState([]);
@@ -28,7 +29,8 @@ function CourseEndorseButton(props) {
           .then(
             (result) => {
                 userName = result.name
-                setIsLoaded(true);
+                setIsEndorsedLoaded(true);
+                setIsUserLoaded(true);
                 setUser(result);
                 setShowButton(result.roles.organization)
                 setText("Would you like to endorse this course?")
@@ -37,8 +39,8 @@ function CourseEndorseButton(props) {
             // instead of a catch() block so that we don't swallow
             // exceptions from actual bugs in components.
             (error) => {
-              setIsLoaded(true);
-              setError(error);
+                setIsEndorsedLoaded(true);
+                setError(error);
             }
           )
         API.getCourseEndorsers(jwtToken.access_token, requestJSON)
@@ -57,8 +59,8 @@ function CourseEndorseButton(props) {
                 // instead of a catch() block so that we don't swallow
                 // exceptions from actual bugs in components.
                 (error) => {
-                  setIsLoaded(true);
-                  setError(error);
+                    setIsUserLoaded(true);
+                    setError(error);
                 }
             )
       }, [])
@@ -92,7 +94,7 @@ function CourseEndorseButton(props) {
 
   if (error) {
     return <div>Error: {error.message}</div>;
-  } else if (!isLoaded) {
+  } else if (!isUserLoaded || !isEndorsedLoaded) {
     return <div>Loading...</div>;
   } else {
         return(
