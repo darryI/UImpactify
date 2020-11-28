@@ -24,7 +24,12 @@ def auth_test():
 
 def auth_run_test():
     # Create a new user, sign in as the user, and delete the user
-    user = {"email": "test_user@uimpactify.com", "password": "password", "name": "Jeffarious", "phone": "1112223333"}
+    user = {
+        "email": "test_user@uimpactify.com",
+        "password": "password",
+        "name": "Jeffarious",
+        "phone": "1112223333"
+        }
     user_id = auth_util.signup(user)
     user_token = auth_util.login(user)
     user_util.get_self(user_token)
@@ -225,6 +230,7 @@ def course_run_test():
     # getting all courses again to show that they are gone
     course_util.get_all_courses(access_token)
 
+
 @click.command("opportunity-test")
 @with_appcontext
 def opportunity_test():
@@ -272,6 +278,36 @@ def opportunity_run_test():
 
     # removing the new users
     user_util.delete_self(org_token)
+
+
+@click.command("picture-test")
+@with_appcontext
+def profile_picture_test():
+    profile_picture_run_test()
+
+def profile_picture_run_test():
+    # create a test user
+    user = {
+        "email": "pic_test_user@uimpactify.com",
+        "password": "password",
+        "name": "Picture Guy",
+        "phone": "1112223333",
+        }
+    user_id = auth_util.signup(user)
+    user_token = auth_util.login(user)
+
+    # show the default profile picture
+    user_util.display_picture(user_token)
+
+    # update the user's profile picture
+    user_util.update_picture(user_token, 'uimpactify/resources/alternate-picture.png')
+
+    # show the updated profile picture
+    user_util.display_picture(user_token)
+
+    # delete the test user
+    user_util.delete_self(user_token)
+
 
 @click.command("test")
 @with_appcontext
@@ -495,5 +531,6 @@ def init_app(app):
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
     app.cli.add_command(opportunity_test)
+    app.cli.add_command(profile_picture_test)
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)

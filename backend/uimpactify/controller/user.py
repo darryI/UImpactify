@@ -1,3 +1,6 @@
+# packages
+import base64
+
 # flask packages
 from flask import Response, request, jsonify
 from flask_restful import Resource
@@ -6,7 +9,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 # project resources
 from uimpactify.models.users import Users
 from uimpactify.controller.errors import forbidden
-from uimpactify.utils.mongo_utils import convert_query, convert_doc
+from uimpactify.utils.mongo_utils import convert_query, convert_doc, update_user_image
 from uimpactify.controller.dont_crash import dont_crash, user_exists
 
 class UsersApi(Resource):
@@ -39,7 +42,8 @@ class UsersApi(Resource):
 
         if authorized:
             query = Users.objects()
-            return jsonify(convert_query(query))
+            fields = {'email', 'password', 'name', 'phone', 'roles'}
+            return jsonify(convert_query(query, fields))
         else:
             return forbidden()
 
@@ -116,7 +120,8 @@ class UserApi(Resource):
 
         if authorized:
             user = Users.objects.get(id=user_id)
-            return jsonify(convert_doc(user))
+            fields = {'email', 'password', 'name', 'phone', 'roles'}
+            return jsonify(convert_doc(user, fields))
         else:
             return forbidden()
 
@@ -175,7 +180,34 @@ class SignedInUserApi(Resource):
         """
         user = Users.objects().get(id=get_jwt_identity())
         output = convert_doc(user, {'name', 'email', 'phone', 'roles'})
+        # get the image
+        img_binary = user.image.read()
+        img_b64 = base64.b64encode(img_binary)
+        output['image'] = img_b64.decode('utf-8')
         return jsonify(output)
+
+    @jwt_required
+    @dont_crash
+    @user_exists
+    def put(self) -> Response:
+        """
+        PUT response method for updating information on currently logged in user.
+        JSON Web Token is required.
+
+        :return: JSON object
+        """
+        data = request.get_json()
+        try:
+            user = Users.objects.get(id=get_jwt_identity())
+
+            # update image manually
+            if 'image' in data:
+                update_user_image(user, data.pop('image'))
+            # update remaining fields as necessary
+            if len(data) > 0:
+                res = user.update(**data)
+        except ValidationError as e:
+            return bad_request(e.message)
 
 
 class SelfDeleteApi(Resource):
