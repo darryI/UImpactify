@@ -14,6 +14,9 @@ function QuizViewStudent(props) {
     const [user, setUser] = React.useState([]);
     const [enrolledIn, setEnrolledIn] = React.useState(false);
 
+    const [quizPublished, setQuizPublished] = React.useState(false);
+    const [quiz, setQuiz] = React.useState([])
+
     const requestJSON = {
         courseId: id
       };
@@ -46,6 +49,7 @@ function QuizViewStudent(props) {
             (result) => {
                 console.log("2")
                 console.log(result)
+                console.log(id)
                 setIsLoaded(true);
 
                 for(var i = 0; i < result.length; i++){
@@ -62,6 +66,31 @@ function QuizViewStudent(props) {
                 setError(error);
             }
           )
+
+          API.getQuizInfo(jwtToken.access_token, id)
+          .then(
+            (result) => {
+                //returns 
+                console.log("3")
+                console.log(result)
+                setIsLoaded(true);
+
+                for(var i = 0; i < result.length; i++){
+                    if(result[i].published){
+                        setQuizPublished(true);
+                        setQuiz(quiz.concat(result[i]))
+                    }
+                } 
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+                setIsLoaded(true);
+                setError(error);
+            }
+          )
+
       }, [])
 
     const handleClick = (event) => {
@@ -96,7 +125,7 @@ function QuizViewStudent(props) {
   } else {
         return(
             <div>
-                <div  style={{ display: enrolledIn ? "block" : "none" }}>
+                <div  style={{ display: enrolledIn && quizPublished ? "block" : "none" }}>
                     <div className="buttonText" >{text}</div>
                     <button aria-label="endorse-button" type="button" onClick={handleClick} 
                         disabled={isDisabled}>Quizzes
@@ -139,6 +168,21 @@ export const API = {
           return res.ok ? json : Promise.reject(json);
         });
       },
+
+      getQuizInfo: async (token, id) => {
+        const url = `http://localhost:5000/quiz/course/${id}/`;
+    
+        return fetch(url, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          }
+        }).then( async res => {
+          // check to see if the server responded with a 200 request (ok)
+          // if not, then reject the promise so that proper error handling can take place
+          const json = await res.json();
+          return res.ok ? json : Promise.reject(json);
+        });
+      }
 }
 
 
