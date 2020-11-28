@@ -38,7 +38,28 @@ def page_test():
     page_run_test()
 
 def page_run_test():
+    # this should fail because course with id "fakeid" does not exist
     page_util.update_count('~courses~fakeid')
+
+    # create some courses for testing
+    c1_json = { "name": "testCourseOne", }
+    c2_json = { "name": "testCourseTwo", "published": True, }
+
+    access_token = auth_util.login()
+    c1 = course_util.create_course(access_token, c1_json)
+    c2 = course_util.create_course(access_token, c2_json)
+
+    # this should fail, id is real but course is not published
+    page_util.update_count(f'~courses~{c1}')
+
+    # this should pass, id is real and course is published
+    # update the count 3 times
+    for i in range(3):
+        page_util.update_count(f'~courses~{c2}')
+    
+    # removing courses
+    course_util.delete_course(access_token, c1)
+    course_util.delete_course(access_token, c2)
 
 @click.command("course-test")
 @with_appcontext

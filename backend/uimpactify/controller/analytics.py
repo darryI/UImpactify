@@ -92,11 +92,7 @@ class QuizCountApi(Resource):
             return forbidden()
         
     
-        quizzes = Quizzes.objects(course=course)
-        # count the number of published quizzes for this course
-        count = 0
-        for q in quizzes:
-            if q.published:
-                count += 1 
-        output = {'quizzes': count}
+        # get all the quizzes for this course that are published
+        quizzes = Quizzes.objects(course=course, published=True)
+        output = {'quizzes': len(quizzes)}
         return jsonify(output)
