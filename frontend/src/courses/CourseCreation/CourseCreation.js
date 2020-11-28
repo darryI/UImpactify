@@ -9,6 +9,7 @@ import QuizCreation from '../quizzes/QuizCreation/QuizCreation.js';
 import './CourseCreation.css';
 import InstructorInfo from './InstructorInfo/InstructorInfo'
 
+import Analytics from '../Analytics/Analytics.js';
 
 function CourseCreation(props) {
   const [error, setError] = React.useState(null);
@@ -19,7 +20,22 @@ function CourseCreation(props) {
   const [showForm, setShowForm] = React.useState(false);
 
 
-  const [showQuizzes, setShowQuizzes] = React.useState(false);
+  // const [showQuizzes, setShowQuizzes] = React.useState(false);
+
+  // const string values for tabs
+  const INFO_TAB = "INFO";
+  const QUIZ_TAB = "QUIZ";
+  const ANALYTICS = "ANALYTICS";
+
+  const [tab, setTab] = React.useState(INFO_TAB);
+  const setShowQuizzes = (show) => {
+    if (show === true) {
+      setTab(QUIZ_TAB);
+    } else {
+      setTab(INFO_TAB);
+    }
+  }
+
 
   const history = useHistory();
 
@@ -107,23 +123,33 @@ function CourseCreation(props) {
     }
 
     let quizContent;
-    let quizButton;
-
+    let analyticsContent;
     let tabs;
 
     if (selected === courses.length) {
       tabs = null;
       quizContent = null;
+      analyticsContent = null;
     } else {
       tabs = 
         <div className="tabs">
-          <button onClick={() => setShowQuizzes(false)}>Course</button>
-          <button onClick={() => setShowQuizzes(true)}>Quizzes</button>
+          <button onClick={() => setTab(INFO_TAB)}>Course</button>
+          <button onClick={() => setTab(QUIZ_TAB)}>Quizzes</button>
+          <button onClick={() => setTab(ANALYTICS)}>Analytics</button>
         </div>
       quizContent = <QuizCreation course={courses[selected]} />
+      analyticsContent = <Analytics course={courses[selected]} />
     }
 
 
+    let displayContent = null;
+    if (tab == INFO_TAB) {
+      displayContent = content;
+    } else if (tab == QUIZ_TAB) {
+      displayContent = quizContent;
+    } else if (tab == ANALYTICS) {
+      displayContent = analyticsContent;
+    }
 
 
     return (
@@ -134,7 +160,7 @@ function CourseCreation(props) {
 
         <div className="forms">
           {tabs}
-          {showQuizzes ? quizContent : content}
+          {displayContent}
         </div>
 
       </div>

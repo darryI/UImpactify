@@ -13,6 +13,8 @@ from uimpactify.cli import user_util
 from uimpactify.cli import feedback_util
 from uimpactify.cli import opportunity_util
 from uimpactify.cli import quiz_util
+from uimpactify.cli import page_util
+from uimpactify.cli import analytics_util
 
 from uimpactify.controller import routes
 
@@ -30,6 +32,34 @@ def auth_run_test():
     user_util.get_self(user_token)
     user_util.delete_self(user_token)
 
+@click.command("page-test")
+@with_appcontext
+def page_test():
+    page_run_test()
+
+def page_run_test():
+    # this should fail because course with id "fakeid" does not exist
+    page_util.update_count('~courses~fakeid')
+
+    # create some courses for testing
+    c1_json = { "name": "testCourseOne", }
+    c2_json = { "name": "testCourseTwo", "published": True, }
+
+    access_token = auth_util.login()
+    c1 = course_util.create_course(access_token, c1_json)
+    c2 = course_util.create_course(access_token, c2_json)
+
+    # this should fail, id is real but course is not published
+    page_util.update_count(f'~courses~{c1}')
+
+    # this should pass, id is real and course is published
+    # update the count 3 times
+    for i in range(3):
+        page_util.update_count(f'~courses~{c2}')
+    
+    # removing courses
+    course_util.delete_course(access_token, c1)
+    course_util.delete_course(access_token, c2)
 
 @click.command("course-test")
 @with_appcontext
@@ -169,6 +199,20 @@ def course_run_test():
     q2 = quiz_util.create_quiz(inst_token, q2_json)
     q3 = quiz_util.create_quiz(access_token, q3_json)
     q4 = quiz_util.create_quiz(inst_token, q4_json)
+
+
+    ## ANALYTICS
+
+    analytics_util.get_quizzes(access_token, c2)
+    analytics_util.get_enrolled(access_token, c2)
+    safe_course_page = '~courses~' + c2
+    page_util.update_count(safe_course_page)
+    page_util.update_count(safe_course_page)
+    page_util.update_count(safe_course_page)
+    analytics_util.get_views(access_token, c2)
+
+    ## END OF ANALYTICS
+
 
     # should only return q2 for valid case and q3 for admin override
     quiz_util.get_quizzes(access_token)
@@ -492,6 +536,7 @@ def init_data():
 
 
 def init_app(app):
+    app.cli.add_command(page_test)
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
     app.cli.add_command(opportunity_test)

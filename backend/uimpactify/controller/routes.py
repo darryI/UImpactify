@@ -8,6 +8,9 @@ from uimpactify.controller.quiz import *
 from uimpactify.controller.course import *
 from uimpactify.controller.feedback import *
 from uimpactify.controller.opportunity import *
+from uimpactify.controller.page import *
+from uimpactify.controller.analytics import *
+
 
 def create_routes(api: Api):
     """Adds resources to the api.
@@ -21,6 +24,12 @@ def create_routes(api: Api):
         api.add_resource(FooSpecial, '/special/foo', endpoint="foo")
 
     """
+
+    api.add_resource(PageApi, '/page/<page_name>/')
+    api.add_resource(EnrollmentCountApi, '/analytics/enrolled/<course_id>/')
+    api.add_resource(ViewCountApi, '/analytics/views/<course_id>/')
+    api.add_resource(QuizCountApi, '/analytics/quizzes/<course_id>/')
+
     api.add_resource(SignUpApi, '/authentication/signup/')
     api.add_resource(LoginApi, '/authentication/login/')
 
@@ -57,4 +66,5 @@ def create_routes(api: Api):
     api.add_resource(QuizApi, '/quiz/<quiz_id>/')
 
     api.add_resource(QuizzesByCourseApi, '/quiz/course/<course_id>/')
+    
     
