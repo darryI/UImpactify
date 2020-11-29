@@ -62,55 +62,55 @@ class QuizSubmissionsApi(Resource):
             return forbidden()
 
 
-# class UserSubmissionsApi(Resource):
-#     """
-#     Flask-resftul resource for returning all a user's submissions.
+class UserSubmissionsApi(Resource):
+    """
+    Flask-resftul resource for returning all a user's submissions.
 
-#     """
-#     @jwt_required
-#     @user_exists
-#     @dont_crash
-#     def get(self) -> Response:
-#         """
-#         GET response method for all quiz submissions by the user.
-#         JSON Web Token is required.
-#         """
-#         user = get_jwt_identity()
-#         query = Submissions.objects(user=user)
-#         fields = {
-#             'id',
-#             'quiz',
-#             'answers',
-#             'grade',
-#         }
-#         response = convert_query(query, include=fields)
-#         return jsonify(response)
+    """
+    @jwt_required
+    @user_exists
+    @dont_crash
+    def get(self) -> Response:
+        """
+        GET response method for all quiz submissions by the user.
+        JSON Web Token is required.
+        """
+        user = get_jwt_identity()
+        query = Submissions.objects(user=user)
+        fields = {
+            'id',
+            'quiz',
+            'answers',
+            'grade',
+        }
+        response = convert_query(query, include=fields)
+        return jsonify(response)
 
 
-# class SubmissionByQuizApi(Resource):
-#     """
-#     Flask-resftul resource for returning submissions for a specific quiz.
+class SubmissionByQuizApi(Resource):
+    """
+    Flask-resftul resource for returning submissions for a specific quiz.
 
-#     """
-#     @jwt_required
-#     @user_exists
-#     @dont_crash
-#     def get(self, quiz_id: str) -> Response:
-#         """
-#         GET response method for single document in Submission collection.
+    """
+    @jwt_required
+    @user_exists
+    @dont_crash
+    def get(self, quiz_id: str) -> Response:
+        """
+        GET response method for single document in Submission collection.
 
-#         :return: JSON object
-#         """
-#         user = get_jwt_identity()
-#         query = Submissions.objects.get(user=user, quiz=quiz_id)
-#         if len(query) == 0:
-#             return not_found()
+        :return: JSON object
+        """
+        user = get_jwt_identity()
+        query = Submissions.objects.get(user=user, quiz=quiz_id)
+        if len(query) == 0:
+            return not_found()
 
-#         fields = {
-#             'id',
-#             'quiz',
-#             'answers',
-#             'grade',
-#         }
-#         response = convert_query(query, include=fields)
-#         return jsonify(response)
+        fields = {
+            'id',
+            'quiz',
+            'answers',
+            'grade',
+        }
+        response = convert_query(query, include=fields)
+        return jsonify(response)
