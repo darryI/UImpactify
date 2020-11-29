@@ -43,8 +43,8 @@ def get_quiz(access_token, quiz_id):
     res = requests.get(
         api_url,
         headers={'Authorization': f'Bearer {access_token}'}
-        ).json()
-    print(res)
+        )
+    print(json.dumps(res.json(), indent=4, sort_keys=True), "\n")
     print("\n")
 
 

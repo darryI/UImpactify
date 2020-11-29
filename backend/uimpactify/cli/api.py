@@ -102,7 +102,7 @@ def course_run_test():
     # creating a bunch of courses
     c1_json = { "name": "testCourseOne", }
     c2_json = { "name": "testCourseTwo", "published": True, }
-    c3_json = { "name": "testCourseThree", }
+    c3_json = { "name": "testCourseThree", "published": True, }
 
     c1 = course_util.create_course(access_token, c1_json)
     c2 = course_util.create_course(access_token, c2_json)
@@ -149,6 +149,7 @@ def course_run_test():
     q2_json = {
         "name": "Quiz 1 for Course 3",
         "course": c3,
+        "published": True,
         "quizQuestions": [
                 {
                     "question": "What is real?",
@@ -191,10 +192,9 @@ def course_run_test():
                 }
             ],
         }
-    q4_json = { "name": "Empty Quiz Made By Wrong Instructor", "course": c2, }
+    q4_json = { "name": "Empty Unpublished Quiz", "course": c3, }
 
     # q1 should fail because students can't make courses
-    # q4 should fail because you can only add quizzes to your own courses
     q1 = quiz_util.create_quiz(s_token, q1_json)
     q2 = quiz_util.create_quiz(inst_token, q2_json)
     q3 = quiz_util.create_quiz(access_token, q3_json)
@@ -217,7 +217,6 @@ def course_run_test():
     # should only return q2 for valid case and q3 for admin override
     quiz_util.get_quizzes(access_token)
 
-    # last call fails
     quiz_util.get_quizzes_by_course(access_token, c3)
     quiz_util.get_quizzes_by_course(inst_token, c3)
     quiz_util.get_quizzes_by_course(s_token, c3)
