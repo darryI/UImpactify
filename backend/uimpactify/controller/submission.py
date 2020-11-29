@@ -12,7 +12,7 @@ from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
 # project resources
 from uimpactify.models.courses import Courses
 from uimpactify.models.quizzes import Quizzes
-from uimpactify.models.submissions import QuizSubmissions
+from uimpactify.models.submissions import Submissions
 from uimpactify.models.users import Users
 
 from uimpactify.utils.mongo_utils import convert_query, convert_doc, convert_embedded_doc, convert_embedded_query
@@ -39,13 +39,13 @@ class QuizSubmissionsApi(Resource):
         quiz_id = data['quiz']
 
         # already a submission from this user
-        if len(Submissions.objects.get(quiz=quiz_id, user=user)) > 0:
+        if len(Submissions.objects(quiz=quiz_id, user=user)) != 0:
             return forbidden()
 
         # quiz doesn't exist
         try:
             quiz = Quizzes.objects.get(id=quiz_id)
-            course = Courses.objects.get(id=quiz.course)
+            course = Courses.objects.get(id=quiz.course.id)
         except DoesNotExist as e:
             return not_found()
 
@@ -53,6 +53,7 @@ class QuizSubmissionsApi(Resource):
         courses = Courses.objects(students=user)
         if course in courses:
             try:
+                data['user'] = user
                 submission = Submissions(**data).save()
             except ValidationError as e:
                 return bad_request(e.to_dict())
@@ -79,7 +80,6 @@ class UserSubmissionsApi(Resource):
         query = Submissions.objects(user=user)
         fields = {
             'id',
-            'quiz',
             'answers',
             'grade',
         }
@@ -89,7 +89,7 @@ class UserSubmissionsApi(Resource):
 
 class SubmissionByQuizApi(Resource):
     """
-    Flask-resftul resource for returning submissions for a specific quiz.
+    Flask-resftul resource for returning the submission for a specific quiz.
 
     """
     @jwt_required
@@ -102,15 +102,14 @@ class SubmissionByQuizApi(Resource):
         :return: JSON object
         """
         user = get_jwt_identity()
-        query = Submissions.objects.get(user=user, quiz=quiz_id)
+        query = Submissions.objects(user=user, quiz=quiz_id)
         if len(query) == 0:
             return not_found()
 
         fields = {
             'id',
-            'quiz',
-            'answers',
             'grade',
+            'answers',
         }
         response = convert_query(query, include=fields)
         return jsonify(response)
