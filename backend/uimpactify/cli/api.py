@@ -246,6 +246,42 @@ def course_run_test():
     # q3 is published now
     quiz_util.get_quiz(access_token, q3)
 
+    # ## SUBMISSIONS
+
+    # sub1_json = {
+    #     "quiz": q1,
+    #     "answers": [],
+    # }
+
+    # sub2_json = {
+    #     "quiz": q2,
+    #     "answers": [
+    #         { "question": 1, "answer": 1 },
+    #         { "question": 2, "answer": 1 },
+    #         { "question": 3, "answer": 1 }
+    #     ],
+    # }
+
+    # sub3_json = {
+    #     "quiz": q3,
+    #     "answers": [
+    #         { "question": 1, "answer": 3 }
+    #     ],
+    # }
+
+    # # sub1 fails because student is not in c1 which q1 is part of
+    # sub1 = submission_util.create_submission(s_token, sub1_json)
+    # sub2 = submission_util.create_submission(s_token, sub2_json)
+    # sub3 = submission_util.create_submission(s_token, sub3_json)
+
+    # submissions_util.get_user_submissions(s_token)
+    # submissions_util.get_quiz_submissions(s_token, q2)
+    # submissions_util.get_quiz_submissions(s_token, q3)
+    # # submissions will be deleted with quizzes according to cascade delete
+
+    # ## END OF SUBMISSIONS
+
+
     # mass method test +
     # show instrucotrs can update their own quizzes
     q5_json = { "name": "testQuizFive", "course": c3, }
