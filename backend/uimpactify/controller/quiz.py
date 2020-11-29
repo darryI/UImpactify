@@ -166,14 +166,27 @@ class QuizzesByCourseApi(Resource):
 
         :return: JSON object
         """
-        queryCourse = Courses.objects.get(id=course_id)
         user = get_jwt_identity()
-        # only the course instructor can get quizzes
-        authorized: bool = queryCourse['instructor']['id'] == ObjectId(user)
+        try:
+            # check if the user is enrolled in the course
+            queryCourse = Courses.objects.get(id=course_id, students=ObjectId(user))
+            student = True
+        except DoesNotExist as e:
+            student = False
+
+        authorized = student
+        # otherwise, only the course instructor can get all course quizzes
+        if not student:
+            queryCourse = Courses.objects.get(id=course_id)
+            authorized: bool = authorized or queryCourse['instructor']['id'] == ObjectId(user)
+
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
         if authorized:
-            query = Quizzes.objects(course=queryCourse)
+            if student:
+                query = Quizzes.objects(course=queryCourse, published=True)
+            else:
+                query = Quizzes.objects(course=queryCourse)
 
             fields = {
                 'id',
