@@ -21,7 +21,7 @@ class Answers(EmbeddedDocument):
     question = IntField(required=True)
     answer = IntField(required=True)
 
-class QuizSubmissions(Document):
+class Submissions(Document):
     """
     a mongoengine document, which represents a quiz submission.
     :param quiz: quiz that the submission is for
