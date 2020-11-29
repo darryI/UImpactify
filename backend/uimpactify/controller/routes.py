@@ -10,7 +10,7 @@ from uimpactify.controller.feedback import *
 from uimpactify.controller.opportunity import *
 from uimpactify.controller.page import *
 from uimpactify.controller.analytics import *
-
+from uimpactify.controller.submission import *
 
 def create_routes(api: Api):
     """Adds resources to the api.
@@ -66,5 +66,7 @@ def create_routes(api: Api):
     api.add_resource(QuizApi, '/quiz/<quiz_id>/')
 
     api.add_resource(QuizzesByCourseApi, '/quiz/course/<course_id>/')
-    
-    
+
+    api.add_resource(QuizSubmissionsApi, '/quiz/submit/')
+    # api.add_resource(UserSubmissionsApi, '/quiz/submissions/')
+    # api.add_resource(SubmissionByQuizApi, '/quiz/submission/<quiz_id>')

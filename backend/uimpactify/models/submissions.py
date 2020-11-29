@@ -32,4 +32,4 @@ class QuizSubmissions(Document):
     quiz = ReferenceField('Quizzes', reverse_delete_rule=CASCADE, required=True)
     user = ReferenceField('Users', reverse_delete_rule=CASCADE, required=True)
     answers = ListField(EmbeddedDocumentField(Answers))
-    grade = IntField(default=-1)
+    grade = IntField(default=0)
