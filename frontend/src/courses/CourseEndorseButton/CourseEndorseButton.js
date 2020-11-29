@@ -88,7 +88,7 @@ function CourseEndorseButton(props) {
 
     const listEndorsers = (endorsers) =>{
         if(endorsers){
-            return endorsers.map((org, index) => <li key={index}>{org}</li>)
+            return endorsers.map((org) => <li key={org.name}>{org.name}</li>)
         }
     }
 
