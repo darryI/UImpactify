@@ -198,7 +198,6 @@ def course_run_test():
                 }
             ],
         }
-
     q4_json = { "name": "Empty Unpublished Quiz", "course": c3, }
     q5_json = { "name": "Empty Quiz (by Instructor)", "course": c1, "published": True, }
 
@@ -289,14 +288,14 @@ def course_run_test():
 
     # mass method test +
     # show instrucotrs can update their own quizzes
-    q5_json = { "name": "testQuizFive", "course": c3, }
-    q5 = quiz_util.create_quiz(inst_token, q5_json)
-    quiz_util.get_quiz(access_token, q5)
-    q5_update = { "published": True, }
-    quiz_util.update_quiz(inst_token, q5, q5_update)
+    q6_json = { "name": "testQuizFive", "course": c3, }
+    q6 = quiz_util.create_quiz(inst_token, q6_json)
+    quiz_util.get_quiz(access_token, q6)
+    q6_update = { "published": True, }
+    quiz_util.update_quiz(inst_token, q6, q6_update)
     quiz_util.get_quizzes_by_course(inst_token, c3)
-    quiz_util.delete_quiz(inst_token, q5)
-    quiz_util.get_quiz(access_token, q5)
+    quiz_util.delete_quiz(inst_token, q6)
+    quiz_util.get_quiz(access_token, q6)
     # other quizzes wil be deleted with courses according to cascade delete
 
     # CLEAN UP
