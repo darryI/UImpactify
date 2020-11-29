@@ -119,7 +119,7 @@ function QuizButtonStudent(props) {
                     </button>
                     <div className="buttonText" >{text}</div>
                 </div>
-                <div  style={{ display: buttonClicked ? "block" : "none" }}>
+                <div  style={{ display: buttonClicked && quizPublished ? "block" : "none" }}>
                     <QuizList quizzes={quiz}/>
                 </div>
             </div>

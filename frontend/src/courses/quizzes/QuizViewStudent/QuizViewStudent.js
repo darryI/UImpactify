@@ -7,16 +7,17 @@ import { ReactComponent as SaveIcon } from 'icons/save.svg';
 
 function QuizViewStudent(props) {
     const values = props.quiz;
+    const dummyStudentAnswers = new Array(values.quizQuestions.length).fill(0);
+    console.log(dummyStudentAnswers)
     console.log("we are called")
 
     const handleSubmit = (event) => {
         event.preventDefault();
         // update state with the new quiz
-        const quizJSON = {
-          ...values,
-        };
         props.setShowForm(false);
+        props.setStudentAnswers(dummyStudentAnswers);
         console.log("submit clicked")
+        console.log(dummyStudentAnswers)
         //API calls
     }
     
@@ -46,10 +47,10 @@ function QuizViewStudent(props) {
 //     });
 //   }
 
-  const handleOptionChange = (event, i, j) => {
-      console.log("option is changed?")
-    const updatedQuestions = [...values.quizQuestions]
-    updatedQuestions[i].options[j].option = event.target.value;
+    const handleOptionChange = (event, i, j) => {
+        //i is the question, j is the option
+        dummyStudentAnswers[i] = j
+        console.log(dummyStudentAnswers)
 
     // props.setValues({
     //   ...values,
@@ -130,7 +131,7 @@ function QuizViewStudent(props) {
           <input aria-label="option-text" className="rect-1643 mult-option" type="text" disabled={true}
           value={values.quizQuestions[i].options[j].option} onChange={e => handleOptionChange(e, i, j)} />
           <input className="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} 
-          checked={values.quizQuestions[i].answer === j} onChange={() => console.log("answer change")}></input>
+           onChange={e => handleOptionChange(e, i, j)}></input>
            {/* <input className="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} 
           checked={values.quizQuestions[i].answer === j} onChange={e => handleAnswerChange(e, i, j)}></input> */}
         </div>
@@ -171,11 +172,11 @@ function QuizViewStudent(props) {
       </button> */}
 
       <div className="row">
-        <div className="labelRectCombo">
-          <label className="label-text">Publish?</label>
+        {/* <div className="labelRectCombo"> */}
+          {/* <label className="label-text">Publish?</label> */}
           {/* <input aria-label="publish-input" type="checkbox" className="checkbox" 
           checked={values.published} onChange={e => handlePublishChange(e)}></input> */}
-        </div>
+        {/* </div> */}
         <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/>Save</button>
       </div>
     </form>
