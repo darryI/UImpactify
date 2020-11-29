@@ -436,6 +436,24 @@ def init_data():
     npo1 = auth_util.signup(npo1_json)
     npo1_token = auth_util.login(npo1_json)
 
+    npo2_json = {
+        "name": "Organization 2", 
+        "email": "npo2@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo2 = auth_util.signup(npo2_json)
+    npo2_token = auth_util.login(npo2_json)
+    
+    npo3_json = {
+        "name": "Organization 3", 
+        "email": "npo3@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo3 = auth_util.signup(npo3_json)
+    npo3_token = auth_util.login(npo3_json)
+
 
     # SETUP COURSES
     # Create courses taught by different instructors (with some being published)
@@ -455,6 +473,7 @@ def init_data():
 
     # Endorse a course
     course_util.endorse_course(npo1_token, c2)
+    course_util.endorse_course(npo2_token, c2)
     
     # Add feedback to courses
     f1_json = {
