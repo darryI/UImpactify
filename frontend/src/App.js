@@ -135,8 +135,4 @@ function App() {
   );
 }
 
-export const API = {
-  
-}
-
 export default App;

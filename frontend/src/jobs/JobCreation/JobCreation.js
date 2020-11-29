@@ -6,6 +6,7 @@ import CreationForm from '../CreationForm/CreationForm.js';
 import JobInfo from '../JobInfo/JobInfo.js';
 import './JobCreation.css'
 import NPOInfo from '../NPOInfo/NPOInfo'
+import EndorsedCourses from 'jobs/EndorsedCourses/EndorsedCourses';
 
 
 
@@ -103,6 +104,12 @@ function JobCreation(props) {
         <NPOInfo />
         <JobList jobs={jobs} selected={selected} handleCreate={handleCreate} handleSelection={handleSelection}/>
         {content}
+        <div className="EndorsedCourses">
+          <div className="info-text">
+            <big><strong>Courses you have endorsed:</strong></big>
+          </div>
+          <EndorsedCourses />
+        </div>
       </div>
     );
   }
