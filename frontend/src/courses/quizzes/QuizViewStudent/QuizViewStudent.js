@@ -1,189 +1,202 @@
 import React from 'react';
+import {useHistory} from 'react-router-dom';
+
+import { ReactComponent as EditIcon } from 'icons/7.svg';
+import { ReactComponent as AddIcon } from 'icons/add.svg';
+import { ReactComponent as SaveIcon } from 'icons/save.svg';
 
 function QuizViewStudent(props) {
+    const values = props.quiz;
+    console.log("we are called")
 
-    const id = props.id;
-
-    const [text, setText] = React.useState("")
-    const [showButton, setShowButton] = React.useState(false);
-    const [isDisabled, setIsDisabled] = React.useState(false);
-
-    const [error, setError] = React.useState(null);
-    const [isLoaded, setIsLoaded] = React.useState(false);
-
-    const [user, setUser] = React.useState([]);
-    const [enrolledIn, setEnrolledIn] = React.useState(false);
-
-    const [quizPublished, setQuizPublished] = React.useState(false);
-    const [quiz, setQuiz] = React.useState([])
-
-    const requestJSON = {
-        courseId: id
-      };
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // update state with the new quiz
+        const quizJSON = {
+          ...values,
+        };
+        props.setShowForm(false);
+        console.log("submit clicked")
+        //API calls
+    }
     
-    let userName = "none"
 
-    React.useEffect(() => {
-        var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
-        API.getUser(jwtToken.access_token)
-          .then(
-            (result) => {
-                console.log("1")
-                console.log(result)
-                setIsLoaded(true);
+//      const handleNameChange = (event) => {
+//     props.setValues({
+//       ...values,
+//       name: event.target.value,
+//     });
+//   }
 
-                setUser(result);
-                setShowButton(result.roles.student)
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            (error) => {
-                setIsLoaded(true);
-                setError(error);
-            }
-          )
+//   const handlePublishChange = (event) => {
+//     props.setValues({
+//       ...values,
+//       published: event.target.checked
+//     });
+//   }
 
-          API.getEnrolledCourses(jwtToken.access_token)
-          .then(
-            (result) => {
-                console.log("2")
-                console.log(result)
-                console.log(id)
-                setIsLoaded(true);
+//   const handleQuestionChange = (event, i) => {
+//     // unpack the quiz questions, and updated the current question's question (text) field
+//     const updatedQuestions = [...values.quizQuestions]
+//     updatedQuestions[i].question = event.target.value;
+    
+//     props.setValues({
+//       ...values,
+//       quizQuestions: updatedQuestions
+//     });
+//   }
 
-                for(var i = 0; i < result.length; i++){
-                    if(result[i].id === id){
-                        setEnrolledIn(true);
-                    }
-                }  
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            (error) => {
-                setIsLoaded(true);
-                setError(error);
-            }
-          )
+  const handleOptionChange = (event, i, j) => {
+      console.log("option is changed?")
+    const updatedQuestions = [...values.quizQuestions]
+    updatedQuestions[i].options[j].option = event.target.value;
 
-          API.getQuizInfo(jwtToken.access_token, id)
-          .then(
-            (result) => {
-                //returns 
-                console.log("3")
-                console.log(result)
-                setIsLoaded(true);
+    // props.setValues({
+    //   ...values,
+    //   quizQuestions: updatedQuestions
+    // });
+  }
 
-                for(var i = 0; i < result.length; i++){
-                    if(result[i].published){
-                        setQuizPublished(true);
-                        setQuiz(quiz.concat(result[i]))
-                    }
-                } 
-            },
-            // Note: it's important to handle errors here
-            // instead of a catch() block so that we don't swallow
-            // exceptions from actual bugs in components.
-            (error) => {
-                setIsLoaded(true);
-                setError(error);
-            }
-          )
+//   const handleAnswerChange = (event, i, j) => {
+//     const updatedQuestions = [...values.quizQuestions]
+//     updatedQuestions[i].answer = j;
 
-      }, [])
+//     props.setValues({
+//       ...values,
+//       quizQuestions: updatedQuestions
+//     });
+//   }
+  
+//   const handleNewQuestion = (event) => {
+//     // preventdefault to stop form from prematurely submitting
+//     event.preventDefault();
+//     const updatedQuestions = [...values.quizQuestions];
+//     const newQuestionValues = {
+//       "question": "to be or not to be?",
+//       "answer": 0,
+//       "options": [
+//         {
+//           index: 0,
+//           option: ""
+//         },
+//         {
+//           index: 1,
+//           option: ""
+//         },
+//         {
+//           index: 2,
+//           option: ""
+//         },
+//         {
+//           index: 3,
+//           option: ""
+//         }
+//       ],
+//       "index": values.quizQuestions.length
+//     }
+  
+//     updatedQuestions.push(newQuestionValues);
+//     props.setValues({
+//       ...values,
+//       quizQuestions: updatedQuestions
+//     });
+//   };
 
-    const handleClick = (event) => {
-        var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
-        // API.endorseCourse(jwtToken.access_token, requestJSON)
-        // .then(
-        //     (result) => {
-        //         setEndorsers(endorsers.concat(user.name))
-        //         setEndorsed(true)
-        //         setText("You have endorsed this course!")
-        //     },
-        //     // Note: it's important to handle errors here
-        //     // instead of a catch() block so that we don't swallow
-        //     // exceptions from actual bugs in components.
-        //     (error) => {
-        //         setError(error);
-        //         alert("Couldn't open the quiz!")
-        //     }
-        // )
-    }
+//   const handleDeleteQuestion = (event, i) => {
+//     event.preventDefault();
+//     const updatedQuestions = [...values.quizQuestions];
 
-    // const listEndorsers = (endorsers) =>{
-    //     if(endorsers){
-    //         return endorsers.map((org, index) => <li key={index}>{org}</li>)
-    //     }
-    // }
+//     // removing selected question
+//     updatedQuestions.splice(i, 1);
 
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  } else if (!isLoaded) {
-    return <div>Loading...</div>;
-  } else {
-        return(
-            <div>
-                <div  style={{ display: enrolledIn && quizPublished ? "block" : "none" }}>
-                    <div className="buttonText" >{text}</div>
-                    <button aria-label="endorse-button" type="button" onClick={handleClick} 
-                        disabled={isDisabled}>Quizzes
-                    </button>
-                </div>
-            </div>
-        )
-    }
+//     // updating indexs of each question -- I don't think this design :(
+//     updatedQuestions.forEach((qu) => {
+//       if (qu.index > i) {
+//         qu.index -= 1;
+//       }
+//     });
+//     props.setValues({
+//       ...values,
+//       quizQuestions: updatedQuestions
+//     });
+//   }
+
+  const questions = values.quizQuestions.map((qu, i) => {
+
+    const options = [0, 1, 2, 3].map((j) => {
+      return (
+        <div key={j}>
+          <label className="option-text"></label>
+          <input aria-label="option-text" className="rect-1643 mult-option" type="text" disabled={true}
+          value={values.quizQuestions[i].options[j].option} onChange={e => handleOptionChange(e, i, j)} />
+          <input className="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} 
+          checked={values.quizQuestions[i].answer === j} onChange={() => console.log("answer change")}></input>
+           {/* <input className="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} 
+          checked={values.quizQuestions[i].answer === j} onChange={e => handleAnswerChange(e, i, j)}></input> */}
+        </div>
+      )
+    });
+
+    return (
+      <div key={i} className="mult-question">
+        <div className="question-bar">
+          <label className="question-text"><h2>Question {i+1}</h2></label>
+          {/* <DeleteIcon className="clickable" onClick={e => handleDeleteQuestion(e, i)}/> */}
+        </div>
+
+        <input aria-label="question-text" className="rect-1643" type="text" disabled={true}
+        value={values.quizQuestions[i].question} onChange={() => console.log("what is this")} />
+        {/* <input aria-label="question-text" className="rect-1643" type="text" 
+        value={values.quizQuestions[i].question} onChange={e => handleQuestionChange(e, i)} /> */}
+
+        <h2>Options</h2>
+        {options}
+      </div>
+    )
+  });
+
+  return (
+    <form aria-label="creation-form" className="quiz-form " onSubmit={handleSubmit}>
+      <div className="labelRectCombo">
+        <label className="label-text quizName">Quiz Name:</label>  
+        <input aria-label="name-input" className="rect-1643" type="text" disabled={true}
+        value={values.name} onChange={() => console.log("this needs to be changed")} />
+      </div>
+
+      <h1>Multiple Choice Questions</h1>
+      {questions}
+      {/* <button aria-label="new-question" onClick={e => handleNewQuestion(e)} className="create-button">
+        <AddIcon width="30px" height="30px"/>
+        New Question
+      </button> */}
+
+      <div className="row">
+        <div className="labelRectCombo">
+          <label className="label-text">Publish?</label>
+          {/* <input aria-label="publish-input" type="checkbox" className="checkbox" 
+          checked={values.published} onChange={e => handlePublishChange(e)}></input> */}
+        </div>
+        <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/>Save</button>
+      </div>
+    </form>
+  )
 }
-
 
 export const API = {
+    getQuizzes: async (token, course_id) => {
+      const url = `http://localhost:5000/quiz/course/${course_id}/`;
+      return fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then(res => res.json());
+    },
 
-    getUser: async (token) => {
-        const url = 'http://localhost:5000/user/self/';
-    
-        return fetch(url, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          }
-        }).then( async res => {
-          // check to see if the server responded with a 200 request (ok)
-          // if not, then reject the promise so that proper error handling can take place
-          const json = await res.json();
-          return res.ok ? json : Promise.reject(json);
-        });
-      },
+    // getQuizzes: (token, course_id) => {
+    //     return Promise.resolve(jsonQuizzes);
+    // }
 
-      getEnrolledCourses: async (token) => {
-        const url = 'http://localhost:5000/course/student/';
-    
-        return fetch(url, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          }
-        }).then( async res => {
-          // check to see if the server responded with a 200 request (ok)
-          // if not, then reject the promise so that proper error handling can take place
-          const json = await res.json();
-          return res.ok ? json : Promise.reject(json);
-        });
-      },
-
-      getQuizInfo: async (token, id) => {
-        const url = `http://localhost:5000/quiz/course/${id}/`;
-    
-        return fetch(url, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          }
-        }).then( async res => {
-          // check to see if the server responded with a 200 request (ok)
-          // if not, then reject the promise so that proper error handling can take place
-          const json = await res.json();
-          return res.ok ? json : Promise.reject(json);
-        });
-      }
-}
+  }
 
 
-export default QuizViewStudent
+export default QuizViewStudent;

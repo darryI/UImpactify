@@ -1,7 +1,7 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
 import CourseEndorseButton from '../CourseEndorseButton/CourseEndorseButton'
-import QuizViewStudent from '../quizzes/QuizViewStudent/QuizViewStudent'
+import QuizButtonStudent from '../quizzes/QuizButtonStudent/QuizButtonStudent'
 
 function CourseLandingAPI(props) {
     let id = props.id;
@@ -41,7 +41,7 @@ function CourseLandingAPI(props) {
             <h2 className="courseLanding">Objective of this course: {currCourse.objective}</h2>
             <h4 className="courseLanding">Learning outcomes: {currCourse.learningOutcomes}</h4>
             <CourseEndorseButton id={id} />
-            <QuizViewStudent id={id}/>
+            <QuizButtonStudent id={id}/>
         </div>
     )
 }
