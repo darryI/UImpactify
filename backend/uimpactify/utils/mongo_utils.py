@@ -1,4 +1,6 @@
 import json
+import base64
+import tempfile
 from mongoengine.errors import DoesNotExist
 
 
@@ -68,3 +70,15 @@ def convert_embedded_query(queryset, non_embedded, embedded):
             print("document can't be parsed")
     return res
 
+
+def update_user_image(user, img):
+    img_binary = base64.b64decode(img)
+    bytes_image = bytearray(img_binary)
+    
+    with tempfile.TemporaryFile() as f:
+        f.write(bytes_image)
+        f.flush()
+        f.seek(0)
+        user.image.replace(f)
+
+    user.save()
