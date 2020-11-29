@@ -130,7 +130,6 @@ class OpportunityApi(Resource):
 
         if authorized:
             try:
-                print(data)
                 res = Opportunity.objects.get(id=op_id).update(**data)
             except ValidationError as e:
                 return bad_request(e.message)
