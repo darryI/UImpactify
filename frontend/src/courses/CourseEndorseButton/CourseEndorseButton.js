@@ -50,7 +50,13 @@ function CourseEndorseButton(props) {
                     if(result[0] !== undefined){
                         setEndorsed(true)
                     }
-                    if(result.includes(userName)){
+                    var endorsed = false;
+                    result.forEach((org) => {
+                      if(org.name === userName) {
+                        endorsed = true;
+                      }
+                    })
+                    if(endorsed){
                         setShowButton(false)
                         setIsDisabled(false)
                     }
@@ -72,7 +78,7 @@ function CourseEndorseButton(props) {
             (result) => {
                 setShowButton(false)
                 setIsDisabled(true)
-                setEndorsers(endorsers.concat(user.name))
+                setEndorsers(endorsers.concat({ name: user.name, image: user.image }))
                 setEndorsed(true)
                 setText("You have endorsed this course!")
             },
@@ -88,7 +94,7 @@ function CourseEndorseButton(props) {
 
     const listEndorsers = (endorsers) =>{
         if(endorsers){
-            return endorsers.map((org, index) => <li key={index}>{org}</li>)
+            return endorsers.map((org) => <li key={org.name}>{org.name}</li>)
         }
     }
 
