@@ -15,6 +15,7 @@ from uimpactify.cli import opportunity_util
 from uimpactify.cli import quiz_util
 from uimpactify.cli import page_util
 from uimpactify.cli import analytics_util
+from uimpactify.cli import submission_util
 
 from uimpactify.controller import routes
 
@@ -197,13 +198,16 @@ def course_run_test():
                 }
             ],
         }
+
     q4_json = { "name": "Empty Unpublished Quiz", "course": c3, }
+    q5_json = { "name": "Empty Quiz (by Instructor)", "course": c1, "published": True, }
 
     # q1 should fail because students can't make courses
     q1 = quiz_util.create_quiz(s_token, q1_json)
     q2 = quiz_util.create_quiz(inst_token, q2_json)
     q3 = quiz_util.create_quiz(access_token, q3_json)
     q4 = quiz_util.create_quiz(inst_token, q4_json)
+    q5 = quiz_util.create_quiz(access_token, q5_json)
 
 
     ## ANALYTICS
@@ -245,40 +249,42 @@ def course_run_test():
     # q3 is published now
     quiz_util.get_quiz(access_token, q3)
 
-    # ## SUBMISSIONS
+    ## SUBMISSIONS
 
-    # sub1_json = {
-    #     "quiz": q1,
-    #     "answers": [],
-    # }
+    sub1_json = {
+        "quiz": q5,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
 
-    # sub2_json = {
-    #     "quiz": q2,
-    #     "answers": [
-    #         { "question": 1, "answer": 1 },
-    #         { "question": 2, "answer": 1 },
-    #         { "question": 3, "answer": 1 }
-    #     ],
-    # }
+    sub2_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 1, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 1, }
+        ],
+    }
 
-    # sub3_json = {
-    #     "quiz": q3,
-    #     "answers": [
-    #         { "question": 1, "answer": 3 }
-    #     ],
-    # }
+    sub3_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 3, }
+        ],
+    }
 
-    # # sub1 fails because student is not in c1 which q1 is part of
-    # sub1 = submission_util.create_submission(s_token, sub1_json)
-    # sub2 = submission_util.create_submission(s_token, sub2_json)
-    # sub3 = submission_util.create_submission(s_token, sub3_json)
+    # sub1 fails because student is not in c1 which q1 is part of
+    # sub4 fails because a user can only have one submission per quiz
+    sub1 = submission_util.create_submission(s_token, sub1_json)
+    sub2 = submission_util.create_submission(s_token, sub2_json)
+    sub3 = submission_util.create_submission(s_token, sub3_json)
+    sub4 = submission_util.create_submission(s_token, sub2_json)
 
-    # submissions_util.get_user_submissions(s_token)
-    # submissions_util.get_quiz_submissions(s_token, q2)
-    # submissions_util.get_quiz_submissions(s_token, q3)
-    # # submissions will be deleted with quizzes according to cascade delete
+    submission_util.get_user_submissions(s_token)
+    submission_util.get_quiz_submission(s_token, q2)
+    submission_util.get_quiz_submission(s_token, q3)
+    # submissions will be deleted with quizzes according to cascade delete
 
-    # ## END OF SUBMISSIONS
+    ## END OF SUBMISSIONS
 
 
     # mass method test +
@@ -624,6 +630,35 @@ def init_data():
     q3 = quiz_util.create_quiz(inst1_token, q3_json)
     q4 = quiz_util.create_quiz(inst1_token, q4_json)
 
+    # Add student submissions for quizzes
+    sub1_json = {
+        "quiz": q1,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub2_json = {
+        "quiz": q4,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub3_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 3, }
+        ],
+    }
+
+    sub4_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 1, }
+        ],
+    }
+
+    sub1 = submission_util.create_submission(s1_token, sub1_json)
+    sub2 = submission_util.create_submission(s2_token, sub2_json)
+    sub3 = submission_util.create_submission(s3_token, sub3_json)
+    sub4 = submission_util.create_submission(s1_token, sub4_json)
 
 def init_app(app):
     app.cli.add_command(page_test)
