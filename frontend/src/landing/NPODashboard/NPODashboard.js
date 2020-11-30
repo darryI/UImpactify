@@ -1,10 +1,10 @@
 import React from 'react';
 import { useHistory } from "react-router-dom";
+import 'landing/StudentDashboard/StudentDashboard.css';
+import NPOInfo from './NPOInfo/NPOInfo';
+import EndorsedCrsCard from 'landing/NPODashboard/EndorsedCrsCard/EndorsedCrsCard'
 
-import EndorsedCrsCard from '../EndorsedCrsCard/EndorsedCrsCard'
-
-function EndorsedCourses(props) {
-
+function NPODashboard(props) {
     const [error, setError] = React.useState(null);
     const [isLoaded, setIsLoaded] = React.useState(false);
     const history = useHistory();
@@ -14,7 +14,7 @@ function EndorsedCourses(props) {
     React.useEffect(() => {
       var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
       if (jwtToken) {
-        API.getEndorsedCrs(jwtToken.access_token)
+        API.getCourses(jwtToken.access_token)
             .then(
             (result) => {
                 setIsLoaded(true);
@@ -33,24 +33,28 @@ function EndorsedCourses(props) {
       }
     }, [])
 
-    const courseCards = courses.map(c => <EndorsedCrsCard key={c.id} course={c}/>);
+    const dashboardCourseCards = courses.map(c => <EndorsedCrsCard key={c.id} course={c}/>);
 
     if (error) {
         return <p>courses could not be loaded</p>
     } else if (!isLoaded) {
         return <p>... loading</p>
     } else {
-        return ( 
-            <div>
-                {courseCards}
+        return (
+            <div className="student-dashboard">  
+                <div>
+                    <NPOInfo />
+                </div>
+                <div className="middle">
+                    {dashboardCourseCards}
+                </div>
             </div>
         ); 
     }
 }
 
-
 export const API = {
-    getEndorsedCrs: async (token) => {
+    getCourses: async (token) => {
       const url = "http://localhost:5000/user/endorsed/";
   
       return fetch(url, {
@@ -66,4 +70,4 @@ export const API = {
     },
 }
 
-export default EndorsedCourses;
+export default NPODashboard;

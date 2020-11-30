@@ -87,9 +87,8 @@ export default function StudentInfo(props) {
           {user.phone}
         </div>
         <div className="info-text">
-          <strong>Courses</strong>
-          &nbsp;<i>{user.name}</i>&nbsp;
-          <strong>is currently enrolled in:</strong>
+          <strong>Courses you currently enroll in:</strong>
+          <strong></strong>
         </div>
       </div>
     );

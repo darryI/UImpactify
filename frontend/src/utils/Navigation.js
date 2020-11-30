@@ -30,10 +30,12 @@ function TopBar(props) {
                 <Link to="/dashboard">Student</Link>
               </li>
               <li className="navItem" style={{ display: isInstructor || isAdmin ? "inline-block" : "none" }}>
-                <Link to="/create">Instructor</Link>
+                <Link to="/create">Create Courses</Link>
+                <Link to="/instructor">Instructor</Link>
               </li>
               <li className="navItem" style={{ display: isNPO || isAdmin ? "inline-block" : "none" }}>
-                <Link to="/jobs">Social Initiative</Link>
+                <Link to="/jobs">Jobs</Link>
+                <Link to="/npo">Social Initiative</Link>
               </li>
               <li className="navItem">
                 <Link to="/courses">Courses</Link>
@@ -42,7 +44,7 @@ function TopBar(props) {
           </nav>
         </div>
       );
-      
+
     } else {
         return (
           <div aria-label="topBar">

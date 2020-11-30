@@ -34,7 +34,7 @@ export default function StudentInfo(props) {
           <strong>Welcome back!</strong>
         </div>
         <div className="info-text">
-          <strong>Social Initiative:</strong>
+          <strong>Instructor:</strong>
           &nbsp;
           <i>{user.name}</i>
         </div>
@@ -49,9 +49,7 @@ export default function StudentInfo(props) {
           {user.phone}
         </div>
         <div className="info-text">
-          <strong>Jobs oppurtunities</strong>
-          &nbsp;<i>{user.name}</i>&nbsp;
-          <strong>posted:</strong>
+          <strong>Courses you are currently teaching:</strong>
         </div>
       </div>
     );

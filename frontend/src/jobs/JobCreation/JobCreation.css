@@ -4,14 +4,3 @@
     height: 1080px;
     padding: 20px;
 }
-
-.EndorsedCourses {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f3fafa;
-    width: 100%;
-    padding-bottom: 60px;
-    padding-top: 30px;
-    margin-top: 30px;
-}

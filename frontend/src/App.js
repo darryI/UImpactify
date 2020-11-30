@@ -18,6 +18,8 @@ import TopBar from './utils/Navigation.js';
 import Logout from './landing/login/Logout/Logout.js';
 import StudentDashboard from 'landing/StudentDashboard/StudentDashboard';
 import CourseLanding from './courses/CourseLanding/CourseLanding';
+import InstructorDashboard from 'landing/InstructorDashboard/InstructorDashboard';
+import NPODashboard from 'landing/NPODashboard/NPODashboard'
 
 function usePageViews() {
   // https://reactrouter.com/web/api/Hooks/uselocation
@@ -124,6 +126,16 @@ function App() {
         </Route>
         <Route path="/dashboard">
           <StudentDashboard 
+            setLoggedIn={setLoggedIn}
+          />
+        </Route>
+        <Route path="/instructor">
+          <InstructorDashboard 
+            setLoggedIn={setLoggedIn}
+          />
+        </Route>
+        <Route path="/npo">
+          <NPODashboard 
             setLoggedIn={setLoggedIn}
           />
         </Route>

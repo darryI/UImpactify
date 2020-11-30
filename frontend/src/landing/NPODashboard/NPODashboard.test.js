@@ -1,22 +1,21 @@
 import React from 'react';
 import { render, wait } from '@testing-library/react';
 
-import EndorsedCourses, {API} from './EndorsedCourses.js';
+import NPODashboard, {API} from './NPODashboard.js';
 import jsonCourses from 'courses/courses.json';
 import { StaticRouter } from 'react-router-dom'
 
 const setup = () => {
-  // testing with localStorage sucks: https://stackoverflow.com/questions/32911630/how-do-i-deal-with-localstorage-in-jest-tests
   jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
-
   const utils = render(
-    // need to wrap the CoursePage component with a static router to 
+    // need to wrap the StudentDashboard component with a static router to 
     // simulate the Router information for the real app
-    // This is needed because we use <Link/> tags inside <CoursesPage /> in <CourseCard />
+    // This is needed because we use <Link/> tags inside <StudentDashboard /> 
+    //                                            in <DashboardCrouseCard> in <LearnMoreButton />
 
     // ref: https://reactrouter.com/web/guides/testing
     <StaticRouter>
-        <EndorsedCourses />
+        <NPODashboard />
     </StaticRouter>
     
   );
@@ -26,8 +25,8 @@ const setup = () => {
   }
 };
 
-test('on startup, api call is made to get endorsed courses', async () => {
-  const getFunc = jest.spyOn(API, 'getEndorsedCrs').mockImplementationOnce(() => {
+test('on startup, api call is made to get courses with this NPO', async () => {
+  const getFunc = jest.spyOn(API, 'getCourses').mockImplementationOnce(() => {
     return Promise.resolve(jsonCourses);
   })
   
@@ -36,7 +35,6 @@ test('on startup, api call is made to get endorsed courses', async () => {
   await wait (() => expect(getFunc).toHaveBeenCalledTimes(1));
 
   // check that all the cards in the test data are rendered
-  const courseCards = container.querySelectorAll('.course-card');
-  expect(courseCards.length).toBe(0);
+  const dashboardCourseCards = container.querySelectorAll('.endorsed-course-card');
+  expect(dashboardCourseCards.length).toBe(jsonCourses.length);
 });
-

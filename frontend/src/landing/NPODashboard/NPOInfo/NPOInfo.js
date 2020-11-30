@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function StudentInfo(props) {
+export default function NPOInfo(props) {
   const [error, setError] = React.useState(null);
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [user, setUser] = React.useState([]);
@@ -34,7 +34,7 @@ export default function StudentInfo(props) {
           <strong>Welcome back!</strong>
         </div>
         <div className="info-text">
-          <strong>Instructor:</strong>
+          <strong>Social Initiative:</strong>
           &nbsp;
           <i>{user.name}</i>
         </div>
@@ -49,9 +49,7 @@ export default function StudentInfo(props) {
           {user.phone}
         </div>
         <div className="info-text">
-          <strong>Courses</strong>
-          &nbsp;<i>{user.name}</i>&nbsp;
-          <strong>is currently teaching:</strong>
+          <strong>Courses you have endorsed:</strong>
         </div>
       </div>
     );
