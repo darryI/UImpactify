@@ -9,14 +9,7 @@
     max-width: 420px;
     display: flex;
     flex-direction: column;
-    /* keep a transparent border always so that the content
-     doesn't shift when border is added on hover */
-    border: 1.5px solid transparent;
     font-family: OpenSans;
     text-align: center;
-}
-
-.endorsed-course-card:hover {
-    border: 1.5px solid #C6CACC;
-    background-color: #d4b8f5;
+    background-image: url("../../StudentDashboard/DashboardCourseCard/DashboardCourseCardBG.svg");
 }
