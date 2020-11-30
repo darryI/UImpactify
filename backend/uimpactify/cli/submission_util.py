@@ -26,6 +26,7 @@ def create_submission(access_token, submission_json):
     print("New submission id: " + submission_id + "\n")
     return submission_id
 
+
 def get_user_submissions(access_token):
     api_url = url_for("usersubmissionsapi")
 
@@ -34,8 +35,7 @@ def get_user_submissions(access_token):
         api_url,
         headers={'Authorization': f'Bearer {access_token}'}
         ).json()
-    print(res)
-    print("\n")
+    print(json.dumps(res, indent=4, sort_keys=True), "\n")
 
 
 def get_quiz_submission(access_token, quiz_id):
@@ -46,5 +46,4 @@ def get_quiz_submission(access_token, quiz_id):
         api_url,
         headers={'Authorization': f'Bearer {access_token}'}
         ).json()
-    print(res)
-    print("\n")
+    print(json.dumps(res, indent=4, sort_keys=True), "\n")

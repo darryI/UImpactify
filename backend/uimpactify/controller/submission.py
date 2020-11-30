@@ -102,8 +102,9 @@ class SubmissionByQuizApi(Resource):
         :return: JSON object
         """
         user = get_jwt_identity()
-        query = Submissions.objects(user=user, quiz=quiz_id)
-        if len(query) == 0:
+        try:
+            query = Submissions.objects.get(user=user, quiz=quiz_id)
+        except DoesNotExist as e:
             return not_found()
 
         fields = {
@@ -111,5 +112,5 @@ class SubmissionByQuizApi(Resource):
             'grade',
             'answers',
         }
-        response = convert_query(query, include=fields)
+        response = convert_doc(query, include=fields)
         return jsonify(response)
