@@ -7,48 +7,62 @@ import QuizViewStudent from "../QuizViewStudent/QuizViewStudent"
 
 function QuizList(props) {
     var quizzes = props.quizzes
-    const [showForm, setShowForm] = React.useState(false);
-    const [quiz, setQuiz] = React.useState([])
 
-    // const handleEdit = (event, i) => {
-    //     setShowForm(true);
-    //     setValues(quizzes[i]);
-    //     setSelected(i);
-    //   }
-    
-    //   const handleNew = (event) => {
-    //     setShowForm(true);
-    //     setSelected(quizzes.length);
-    //   }
+    const [error, setError] = React.useState(null);
+    const [isLoaded, setIsLoaded] = React.useState(false);
+
+    const [isSubmitted, setIsSubmitted] = React.useState(false);
+    const [submittedAnswers, setSubmittedAnswers] = React.useState([]);
+
+    const [showForm, setShowForm] = React.useState(false);
+    const [quiz, setQuiz] = React.useState([]);
 
     const handleClick = (quiz) => {
-        console.log("clicked")
+        // console.log("edit clicked, quiz below:")
         console.log(quiz)
-        setShowForm(true);
-        setQuiz(quiz)
+
+        var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
+        API.getQuizSubmissions(jwtToken.access_token, quiz.id)
+        .then(
+          (result) => {
+              console.log("5")
+              console.log(result)
+
+            setIsSubmitted(true);
+            setSubmittedAnswers(result.answers)
+            setQuiz(quiz);
+            setShowForm(true);
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          (error) => {
+              setIsLoaded(true);
+              setError(error);
+          }
+        )
     }
 
 
-    let quizBlocks = quizzes.map((q, i) => {
+    let quizBlocks = quizzes.map((quiz, i) => {
         return (
-          <div key={q.id} className="quiz-block">
-            <div>{q.name}</div>
-            <div className="edit-button"><EditIcon onClick={() => handleClick(q)}/></div>
+          <div key={quiz.id} className="quiz-block">
+            <div>{quiz.name}</div>
+            <div className="edit-button"><EditIcon onClick={() => handleClick(quiz)}/></div>
           </div>
         )
       });
 
-    if(showForm){
+    if(showForm ){
         return(
-            <div>
-                <QuizViewStudent quiz={quiz} setShowForm={setShowForm}/>
+            <div className="quiz-view">
+                <QuizViewStudent quiz={quiz} setShowForm={setShowForm} isSubmitted={isSubmitted} submittedAnswers={submittedAnswers}/>
             </div>
         )
     }else{
         return (
-            <div className="info-card">
+            <div className="quiz-selection-block-parent">
                 {quizBlocks}
-
             </div>
         ) 
     } 
@@ -56,5 +70,15 @@ function QuizList(props) {
 
 }
 
+export const API = {
+    getQuizSubmissions: async (token, quizID) => {
+      const url = `http://localhost:5000/quiz/submission/${quizID}/`;
+      return fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then(res => res.json());
+    }
+}
 
 export default QuizList;
