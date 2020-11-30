@@ -1,20 +1,24 @@
 import React from 'react';
 
 import './FeedbackList.css';
-import defaultPic from './defaultPP.png'
 
 function FeedbackList(props) {
 
     const feedbackList = props.feedback.reverse().map((comment) =>
-        <div className="userComment">
-            <img className="feedbackProfilePicture" src={defaultPic} />
-            <p className="commenter">{comment.user}</p>
-            <p className="comment">{comment.comment}</p>
-        </div>
+        <Feedback key={comment.toString()} value={comment} />
     );
 
     return feedbackList;
+}
 
+function Feedback(props) {
+    var PP = "data:image/png;base64," + props.value.image;
+
+    return <div className="userComment">
+                 <img className="feedbackProfilePicture" src={PP} />
+                 <p className="commenter">{props.value.user}</p>
+                 <p className="comment">{props.value.comment}</p>
+               </div>
 }
 
 export default FeedbackList;
