@@ -85,7 +85,11 @@ class QuizApi(Resource):
 
         :return: JSON object
         """
-        quiz = Quizzes.objects.get(id=quiz_id)
+        try:
+            quiz = Quizzes.objects.get(id=quiz_id)
+        except DoesNotExist as e:
+            return not_found()
+
         fields = {
             'id',
             'name',
@@ -109,17 +113,17 @@ class QuizApi(Resource):
 
         user = get_jwt_identity()
         # only the course instructor can delete their quizzes
-        authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
+        authorized: bool = query.course.instructor.id == ObjectId(user)
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
         if not authorized:
             return forbidden()
 
         data = request.get_json()
-        if (data['course']):
-            data['course'] = ObjectId(data['course'])
+        # if (data['course']):
+        #     data['course'] = ObjectId(data['course'])
         try:
-            res = Quizzes.objects.get(id=quiz_id).update(**data)
+            res = query.update(**data)
         except ValidationError as e:
             return bad_request(e.message)
         return jsonify(res)
@@ -138,12 +142,12 @@ class QuizApi(Resource):
 
         user = get_jwt_identity()
         # only the course instructor can delete their quizzes
-        authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
+        authorized: bool = query.course.instructor.id == ObjectId(user)
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
 
         if authorized:
-            output = Quizzes.objects(id=quiz_id).delete()
+            output = query.delete()
             if output == 0:
                 return not_found()
             else:
@@ -166,14 +170,27 @@ class QuizzesByCourseApi(Resource):
 
         :return: JSON object
         """
-        queryCourse = Courses.objects.get(id=course_id)
         user = get_jwt_identity()
-        # only the course instructor can get quizzes
-        authorized: bool = queryCourse['instructor']['id'] == ObjectId(user)
+        try:
+            # check if the user is enrolled in the course
+            queryCourse = Courses.objects.get(id=course_id, students=ObjectId(user))
+            student = True
+        except DoesNotExist as e:
+            student = False
+
+        authorized = student
+        # otherwise, only the course instructor can get all course quizzes
+        if not student:
+            queryCourse = Courses.objects.get(id=course_id)
+            authorized: bool = authorized or queryCourse['instructor']['id'] == ObjectId(user)
+
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
         if authorized:
-            query = Quizzes.objects(course=queryCourse)
+            if student:
+                query = Quizzes.objects(course=queryCourse, published=True)
+            else:
+                query = Quizzes.objects(course=queryCourse)
 
             fields = {
                 'id',
