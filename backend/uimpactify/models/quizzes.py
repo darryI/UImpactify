@@ -5,11 +5,9 @@ from mongoengine import (Document,
                          ListField,
                          StringField,
                          IntField,
-                         EmailField,
                          BooleanField,
                          ReferenceField,
-                         CASCADE,
-                         PULL)
+                         CASCADE)
 
 # project resources
 from uimpactify.models.courses import Courses
