@@ -317,6 +317,24 @@ def opportunity_run_test():
     # removing the new users
     user_util.delete_self(org_token)
 
+@click.command("user-test")
+@with_appcontext
+def user_test():
+    user_run_test()
+
+def user_run_test():
+    # recreate npo to sign in as
+    npo1_json = {
+        "name": "Organization 1",
+        "email": "npo1@uimpactify.com",
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo1_token = auth_util.login(npo1_json)
+
+    # Get all endorsed courses
+    user_util.get_all_endorsed_courses(npo1_token);
+
 @click.command("test")
 @with_appcontext
 def test_all():
@@ -340,6 +358,13 @@ def test_all():
         "----------------------------\n"
         )
     opportunity_run_test()
+
+    print(
+        "----------------------------\n" +
+        "RUNNING USER RELATED TESTS\n" +
+        "----------------------------\n"
+        )
+    user_run_test()
 
 
 @click.command("init-data")
@@ -542,3 +567,4 @@ def init_app(app):
     app.cli.add_command(opportunity_test)
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)
+    app.cli.add_command(user_test)

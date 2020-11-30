@@ -40,3 +40,14 @@ def get_self(access_token):
         headers={'Authorization': f'Bearer {access_token}'}
         )
     print(json.dumps(res.json(), indent=4, sort_keys=True), "\n")
+
+def get_all_endorsed_courses(access_token):
+    api_url = url_for("coursesnpohasendorsedapi")
+
+    print("*** GETTING ALL ENDORSED COURSES ***\n")
+    # use the token as authorization in the request headers to create a course with get call
+    res = requests.get(
+        api_url,
+        headers={'Authorization': f'Bearer {access_token}'}
+        )
+    print(json.dumps(res.json(), indent=4, sort_keys=True), "\n")
