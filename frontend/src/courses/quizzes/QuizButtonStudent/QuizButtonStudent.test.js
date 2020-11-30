@@ -58,14 +58,12 @@ test('when course landing page opens API call needs to be made to get user and w
     const { getByText } = setup();
     await wait(() => expect(userInfo).toHaveBeenCalled());
     await wait (() => expect(enrolledCourses).toHaveBeenCalled());
-    await wait (() => expect(quizInfo).toHaveBeenCalled());
 
+    const quizzesButton = getByText("Quizzes");
+    expect(quizzesButton).toBeInTheDocument();
+    fireEvent.click(quizzesButton);
+    await wait (() => expect(quizInfo).toHaveBeenCalled());
 
     const quizPosted = getByText("Your instructor has posted quizzes!");
     expect(quizPosted).toBeInTheDocument();
-    const quizButton = getByText("Quizzes");
-    expect(quizButton).toBeInTheDocument();
-
-    //fireEvent.click(quizButton);
-
 });

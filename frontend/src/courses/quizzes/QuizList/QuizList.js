@@ -18,28 +18,32 @@ function QuizList(props) {
     const [quiz, setQuiz] = React.useState([]);
 
     const handleClick = (quiz) => {
-        // console.log("edit clicked, quiz below:")
-        console.log(quiz)
-
         var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
-        API.getQuizSubmissions(jwtToken.access_token, quiz.id)
+        API.getQuizSubmissions(jwtToken.access_token)
         .then(
-          (result) => {
-              console.log("5")
-              console.log(result)
+            (result) => {
+            console.log("5")
+            console.log(result)
+            console.log(quiz)
 
-            setIsSubmitted(true);
-            setSubmittedAnswers(result.answers)
+            for(var i = 0; i < result.length; i++){
+                if(result[i].quiz === quiz.id){
+                    console.log("inside if")
+                    setIsSubmitted(true);
+                    console.log(result[i])
+                    setSubmittedAnswers(result[i].answers)
+                }
+            }
             setQuiz(quiz);
             setShowForm(true);
-          },
-          // Note: it's important to handle errors here
-          // instead of a catch() block so that we don't swallow
-          // exceptions from actual bugs in components.
-          (error) => {
-              setIsLoaded(true);
-              setError(error);
-          }
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+                setIsLoaded(true);
+                setError(error);
+            }
         )
     }
 
@@ -48,7 +52,7 @@ function QuizList(props) {
         return (
           <div key={quiz.id} className="quiz-block">
             <div>{quiz.name}</div>
-            <div className="edit-button"><EditIcon onClick={() => handleClick(quiz)}/></div>
+            <div className="edit-button"><EditIcon onClick={() => handleClick(quiz)}/>Start Quiz</div>
           </div>
         )
       });
@@ -56,7 +60,8 @@ function QuizList(props) {
     if(showForm ){
         return(
             <div className="quiz-view">
-                <QuizViewStudent quiz={quiz} setShowForm={setShowForm} isSubmitted={isSubmitted} submittedAnswers={submittedAnswers}/>
+                <QuizViewStudent quiz={quiz} setShowForm={setShowForm} isSubmitted={isSubmitted} 
+                setIsSubmitted={setIsSubmitted} submittedAnswers={submittedAnswers}/>
             </div>
         )
     }else{
@@ -66,13 +71,11 @@ function QuizList(props) {
             </div>
         ) 
     } 
-
-
 }
 
 export const API = {
-    getQuizSubmissions: async (token, quizID) => {
-      const url = `http://localhost:5000/quiz/submission/${quizID}/`;
+    getQuizSubmissions: async (token) => {
+      const url = `http://localhost:5000/quiz/submissions/`;
       return fetch(url, {
         headers: {
           'Authorization': `Bearer ${token}`,

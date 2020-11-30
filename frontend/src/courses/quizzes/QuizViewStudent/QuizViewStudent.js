@@ -21,84 +21,66 @@ function QuizViewStudent(props) {
 
 
     const handleSubmit = (event) => {
-        if(isSubmitted){
-            // console.log("answers were submitted")
-        }else{
-            event.preventDefault();
-            props.setShowForm(false);
-            // console.log("submit clicked")
-            // console.log(dummyStudentAnswers)
-            //answers creation
-            var question = 0;
-            var answer = 0;
-            var answerPair = {};
-            var finalAnswer = [];
-            for(let i = 0; i < dummyStudentAnswers.length; i++){
-                question = i;
-                answer = dummyStudentAnswers[i];
-                answerPair = {"question": question, "answer": answer}
-                finalAnswer.push(answerPair);
-            }
-            // console.log(finalAnswer)
-            //API calls
-    
-            const quizSubmissionJSON = {
-                quiz: values.id,
-                answers : finalAnswer
-              };
-    
-            var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
-            API.postAnswers(jwtToken.access_token, quizSubmissionJSON)
-            .then(
-                (result) => {
-                    // console.log(result)
-                    // console.log("sent submisison")
-                    // setShowButton(false)
-                    // setIsDisabled(true)
-                    // setEndorsers(endorsers.concat({ name: user.name, image: user.image }))
-                    // setEndorsed(true)
-                    // setText("You have endorsed this course!")
-                },
-                // Note: it's important to handle errors here
-                // instead of a catch() block so that we don't swallow
-                // exceptions from actual bugs in components.
-                (error) => {
-                    alert("Couldn't post answers properly!");
-                    setIsLoaded(true);
-                    setError(error);
-                }
-            )
+        event.preventDefault();
+        console.log("do we ever submit?")
+        var question = 0;
+        var answer = 0;
+        var answerPair = {};
+        var finalAnswer = [];
+        for(let i = 0; i < dummyStudentAnswers.length; i++){
+            question = i;
+            answer = dummyStudentAnswers[i];
+            answerPair = {"question": question, "answer": answer}
+            finalAnswer.push(answerPair);
         }
+        //API calls
+        const quizSubmissionJSON = {
+            quiz: values.id,
+            answers : finalAnswer
+        };
+    
+        var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
+        API.postAnswers(jwtToken.access_token, quizSubmissionJSON)
+        .then(
+            (result) => {
+                // console.log(result)
+                console.log("sent submisison")
+                props.setShowForm(false);
+            },
+            // Note: it's important to handle errors here
+            // instead of a catch() block so that we don't swallow
+            // exceptions from actual bugs in components.
+            (error) => {
+                alert("Couldn't post answers properly!");
+                setIsLoaded(true);
+                setError(error);
+            }
+        )
     }
 
     const handleOptionChange = (event, i, j) => {
-        //i is the question, j is the option
-        dummyStudentAnswers[i] = j
-        // console.log(dummyStudentAnswers)
+        dummyStudentAnswers[i] = j;
+    }
 
-    // props.setValues({
-    //   ...values,
-    //   quizQuestions: updatedQuestions
-    // });
-  }
+    const handleFormClose = () => {
+        props.setShowForm(false);
+        props.setIsSubmitted(false);
+    }
 
   const questions = values.quizQuestions.map((qu, i) => {
 
     const options = [0, 1, 2, 3].map((j) => {
         if(isSubmitted){
-            console.log("submitted")
             return (
                 <div key={j}>
                   <label className="option-text"></label>
                   <input aria-label="option-text" className="rect-1643 mult-option" type="text" disabled={true}
                   value={values.quizQuestions[i].options[j].option} onChange={e => handleOptionChange(e, i, j)} />
                    <input className="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} 
-                  checked={values.quizQuestions[i].answer === j} onChange={()=>console.log("these are users old answers")}></input>
+                  checked={submittedAnswers[i].answer === j} onChange={()=>console.log("these are users old answers")}></input>
                 </div>
               )
         }else{
-            console.log("not submitted")
-
             return (
                 <div key={j}>
                   <label className="option-text"></label>
@@ -106,26 +88,19 @@ function QuizViewStudent(props) {
                   value={values.quizQuestions[i].options[j].option} onChange={e => handleOptionChange(e, i, j)} />
                   <input className="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} 
                    onChange={e => handleOptionChange(e, i, j)}></input>
-                   {/* <input className="radio-answer"  title="Correct Answer" type="radio" name={`answer-${i}`} 
-                  checked={values.quizQuestions[i].answer === j} onChange={e => handleAnswerChange(e, i, j)}></input> */}
                 </div>
               )
         }
-
     });
 
     return (
       <div key={i} className="mult-question">
         <div className="question-bar">
-          <label className="question-text"><h2>Question {i+1}</h2></label>
-          {/* <DeleteIcon className="clickable" onClick={e => handleDeleteQuestion(e, i)}/> */}
+            <label className="question-text"><h2>Question {i+1}</h2></label>
         </div>
 
         <input aria-label="question-text" className="rect-1643" type="text" disabled={true}
         value={values.quizQuestions[i].question} onChange={() => console.log("what is this")} />
-        {/* <input aria-label="question-text" className="rect-1643" type="text" 
-        value={values.quizQuestions[i].question} onChange={e => handleQuestionChange(e, i)} /> */}
-
         <h2>Options</h2>
         {options}
       </div>
@@ -141,22 +116,13 @@ if(isSubmitted){
             <input aria-label="name-input" className="rect-1643" type="text" disabled={true}
             value={values.name} onChange={() => console.log("this needs to be changed")} />
           </div>
-    
+
           <h1>Multiple Choice Questions</h1>
           {questions}
-          {/* <button aria-label="new-question" onClick={e => handleNewQuestion(e)} className="create-button">
-            <AddIcon width="30px" height="30px"/>
-            New Question
-          </button> */}
-    
+
           <div className="row">
-            {/* <div className="labelRectCombo"> */}
-              {/* <label className="label-text">Publish?</label> */}
-              {/* <input aria-label="publish-input" type="checkbox" className="checkbox" 
-              checked={values.published} onChange={e => handlePublishChange(e)}></input> */}
-            {/* </div> */}
-            {/* <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/> Submit </button> */}
-            <button aria-label="close-button" className="rect-1627" type="button" onClick={() => props.setShowForm(false)}> Close </button>
+            <button aria-label="close-button" className="rect-1627" type="button" 
+            onClick={() => handleFormClose()}> Close </button>
           </div>
         </form>
       )
@@ -168,22 +134,14 @@ if(isSubmitted){
             <input aria-label="name-input" className="rect-1643" type="text" disabled={true}
             value={values.name} onChange={() => console.log("this needs to be changed")} />
           </div>
-    
+
           <h1>Multiple Choice Questions</h1>
           {questions}
-          {/* <button aria-label="new-question" onClick={e => handleNewQuestion(e)} className="create-button">
-            <AddIcon width="30px" height="30px"/>
-            New Question
-          </button> */}
-    
+
           <div className="row">
-            {/* <div className="labelRectCombo"> */}
-              {/* <label className="label-text">Publish?</label> */}
-              {/* <input aria-label="publish-input" type="checkbox" className="checkbox" 
-              checked={values.published} onChange={e => handlePublishChange(e)}></input> */}
-            {/* </div> */}
             <button aria-label="submit-button" className="rect-1627" type="submit"><SaveIcon/> Submit </button>
-            <button aria-label="close-button" className="rect-1627" type="button" onClick={() => props.setShowForm(false)}> Close </button>
+            <button aria-label="close-button" className="rect-1627" type="button" 
+            onClick={() => handleFormClose()}> Close </button>
           </div>
         </form>
       )

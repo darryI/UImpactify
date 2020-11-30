@@ -31,8 +31,8 @@ function QuizButtonStudent(props) {
         API.getUser(jwtToken.access_token)
           .then(
             (result) => {
-                // console.log("1")
-                // console.log(result)
+                console.log("1")
+                console.log(result)
                 setIsLoaded(true);
                 //setCondition1(true);
                 setUser(result);
@@ -50,8 +50,8 @@ function QuizButtonStudent(props) {
           API.getEnrolledCourses(jwtToken.access_token)
           .then(
             (result) => {
-                // console.log("2")
-                // console.log(result)
+                console.log("2")
+                console.log(result)
                 // console.log(id)
                 setIsLoaded(true);
                 //setCondition2(true);
@@ -70,111 +70,43 @@ function QuizButtonStudent(props) {
                 setError(error);
             }
           )
-            //ask gordie if all students can retrieve the data or what should i do
-                API.getQuizInfo(jwtToken.access_token, id)
-                .then(
-                  (result) => {
-                    //   console.log("3")
-                    //   console.log(result)
-                      setIsLoaded(true);
-        
-                      if(result === undefined || result.length == 0){
-                        setText("No quizzes published yet!")
-                      }else{
-                          var arr = [];
-                        for(var i = 0; i < result.length; i++){
-                            if(result[i].published){
-                                arr = [...arr, result[i]]
-                                setQuizPublished(true);
-                                setText("Your instructor has posted quizzes!")
-                            }
-                            setQuiz(arr)
-                        }
-                      }
-        
-                  },
-                  // Note: it's important to handle errors here
-                  // instead of a catch() block so that we don't swallow
-                  // exceptions from actual bugs in components.
-                  (error) => {
-                      setIsLoaded(true);
-                      setError(error);
-                  }
-                )
-
       }, [])
-    //   console.log(condition1)
-
-        //     if(condition1 && condition2){
-        //         var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
-        //         API.getQuizInfo(jwtToken.access_token, id)
-        //         .then(
-        //           (result) => {
-        //               console.log("3")
-        //               console.log(result)
-        //               setIsLoaded(true);
-        
-        //               if(result === undefined || result.length == 0){
-        //                 setText("No quizzes published yet!")
-        //               }else{
-        //                   var arr = [];
-        //                 for(var i = 0; i < result.length; i++){
-        //                     if(result[i].published){
-        //                         arr = [...arr, result[i]]
-        //                         setQuizPublished(true);
-        //                         setText("Your instructor has posted quizzes!")
-        //                     }
-        //                     setQuiz(arr)
-        //                 }
-        //               }
-        
-        //           },
-        //           // Note: it's important to handle errors here
-        //           // instead of a catch() block so that we don't swallow
-        //           // exceptions from actual bugs in components.
-        //           (error) => {
-        //               setIsLoaded(true);
-        //               setError(error);
-        //           }
-        //         )
-        //   }
 
     const handleClick = (event) => {
         setButtonClicked(!buttonClicked);
         setShowQuiz(!showQuiz);
-        // var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
-        // API.getQuizInfo(jwtToken.access_token, id)
-        // .then(
-        //   (result) => {
-        //       console.log("3")
-        //       console.log(result)
-        //       setIsLoaded(true);
+        console.log("inside handle click")
+        var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
+        API.getQuizInfo(jwtToken.access_token, id)
+        .then(
+          (result) => {
+              console.log("3")
+              console.log(result)
+              setIsLoaded(true);
 
-        //       if(result === undefined || result.length == 0){
-        //         setText("No quizzes published yet!")
-        //       }else{
-        //           var arr = [];
-        //         for(var i = 0; i < result.length; i++){
-        //             if(result[i].published){
-        //                 arr = [...arr, result[i]]
-        //                 setQuizPublished(true);
-        //                 setText("Your instructor has posted quizzes!")
-        //             }
-        //             setQuiz(arr)
-        //         }
-        //       }
+              if(result === undefined || result.length == 0){
+                setText("No quizzes published yet!")
+              }else{
+                  var arr = [];
+                for(var i = 0; i < result.length; i++){
+                    if(result[i].published){
+                        arr = [...arr, result[i]]
+                        setQuizPublished(true);
+                        setText("Your instructor has posted quizzes!")
+                    }
+                    setQuiz(arr)
+                }
+              }
 
-        //   },
-        //   // Note: it's important to handle errors here
-        //   // instead of a catch() block so that we don't swallow
-        //   // exceptions from actual bugs in components.
-        //   (error) => {
-        //       setIsLoaded(true);
-        //       setError(error);
-        //   }
-        // )
-        console.log(quiz)
-
+          },
+          // Note: it's important to handle errors here
+          // instead of a catch() block so that we don't swallow
+          // exceptions from actual bugs in components.
+          (error) => {
+              setIsLoaded(true);
+              setError(error);
+          }
+        )
     }
 
   if (error) {
@@ -185,8 +117,8 @@ function QuizButtonStudent(props) {
         return(
             <div>
                 <div  style={{ display: enrolledIn && isStudent ? "block" : "none" }}>
-                    <button aria-label="endorse-button" type="button" onClick={handleClick} 
-                    disabled={!quizPublished}>Quizzes
+                    <button aria-label="endorse-button" type="button" 
+                    onClick={handleClick}>Quizzes
                     </button>
                     <div className="buttonText" >{text}</div>
   
