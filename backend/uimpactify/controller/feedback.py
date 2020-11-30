@@ -1,3 +1,6 @@
+# packages
+import base64
+
 # flask packages
 from flask import Response, request, jsonify
 from flask_restful import Resource
@@ -45,9 +48,15 @@ class FeedbackByCourseApi(Resource):
             else:
                 query = Feedback.objects(course=course_id)
 
-            fields = { 'comment' }
-            embedded = { 'user': {'name': 'user'} }
-            res = convert_embedded_query(query, fields, embedded)
+            res = []
+            for fb in query:
+                img_b64 = base64.b64encode(fb.user.image.thumbnail.read())
+                fb_json = {
+                    'comment': fb.comment,
+                    'user': fb.user.name,
+                    'image': img_b64.decode('utf-8')
+                    }
+                res.append(fb_json)
 
             return jsonify(res)
         else:
