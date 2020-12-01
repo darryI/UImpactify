@@ -323,17 +323,59 @@ def user_test():
     user_run_test()
 
 def user_run_test():
-    # recreate npo to sign in as
+    # Create instructors
+    inst1_json = {
+        "name": "Cool instructor!",
+        "email": "inst1@uimpactify.com",
+        "password": "password",
+        "roles": {"student": True, "instructor": True},
+        }
+    inst1 = auth_util.signup(inst1_json)
+    inst1_token = auth_util.login(inst1_json)
+
+    # Create NPOs
     npo1_json = {
-        "name": "Organization 1",
+        "name": "Cool organization!",
         "email": "npo1@uimpactify.com",
         "password": "password",
         "roles": {"organization": True},
         }
+    npo1 = auth_util.signup(npo1_json)
     npo1_token = auth_util.login(npo1_json)
 
-    # Get all endorsed courses
+    # SETUP COURSES
+    # Create courses taught by different instructors (with some being published)
+    c1_json = { "name": "Course One (I1)", }
+    c2_json = { "name": "Course Two (I1)", "published": True}
+    c3_json = { "name": "Course Three (I2)", "published": True}
+
+    c1 = course_util.create_course(inst1_token, c1_json)
+    c2 = course_util.create_course(inst1_token, c2_json)
+    c3 = course_util.create_course(inst1_token, c3_json)
+
+    # Endorse a course
+    course_util.endorse_course(npo1_token, c1)
+
+    # Get all endorsed courses, should return just c1
     user_util.get_all_endorsed_courses(npo1_token);
+
+    # Endorse a course
+    course_util.endorse_course(npo1_token, c3)
+
+    # Get all endorsed courses, should return c1 and c3
+    user_util.get_all_endorsed_courses(npo1_token);
+
+    # removing new courses
+    course_util.delete_course(inst1_token, c1)
+    course_util.delete_course(inst1_token, c2)
+    course_util.delete_course(inst1_token, c3)
+
+    # Get all endorsed courses, should return nothing
+    user_util.get_all_endorsed_courses(npo1_token);
+
+    # removing the new users
+    user_util.delete_self(inst1_token)
+    user_util.delete_self(npo1_token)
 
 @click.command("test")
 @with_appcontext
