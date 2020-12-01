@@ -120,8 +120,9 @@ class QuizApi(Resource):
             return forbidden()
 
         data = request.get_json()
-        # if (data['course']):
-        #     data['course'] = ObjectId(data['course'])
+
+        if ('course' in data):
+            data['course'] = ObjectId(data['course'])
         try:
             res = query.update(**data)
         except ValidationError as e:
