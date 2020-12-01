@@ -730,24 +730,27 @@ def init_demo_data():
         }
     npo1 = auth_util.signup(npo1_json)
     npo1_token = auth_util.login(npo1_json)
+    user_util.update_picture(npo1_token, 'uimpactify/resources/testdata/npo-redcross.png')
 
     npo2_json = {
-        "name": "World Health Organization", 
+        "name": "WHO", 
         "email": "who@uimpactify.com", 
         "password": "password",
         "roles": {"organization": True},
         }
     npo2 = auth_util.signup(npo2_json)
     npo2_token = auth_util.login(npo2_json)
+    user_util.update_picture(npo2_token, 'uimpactify/resources/testdata/npo-who.png')
 
     npo3_json = {
-        "name": "World Wildlife Fund", 
+        "name": "WWF", 
         "email": "wwf@uimpactify.com", 
         "password": "password",
         "roles": {"organization": True},
         }
     npo3 = auth_util.signup(npo3_json)
     npo3_token = auth_util.login(npo3_json)
+    user_util.update_picture(npo3_token, 'uimpactify/resources/testdata/npo-wwf.png')
 
     npo4_json = {
         "name": "Salvation Army", 
@@ -757,6 +760,7 @@ def init_demo_data():
         }
     npo4 = auth_util.signup(npo4_json)
     npo4_token = auth_util.login(npo4_json)
+    user_util.update_picture(npo4_token, 'uimpactify/resources/testdata/npo-salvation-army.png')
 
 
     # SETUP COURSES
@@ -974,7 +978,10 @@ def init_demo_data():
         }
     q3 = quiz_util.create_quiz(inst1_token, q3_json)
 
-    q4_json = { "name": "Empty Quiz - Course 2", "course": c2, }
+    q4_json = {
+        "name": "Empty Quiz - Course 2",
+        "course": c2,
+        }
     q4 = quiz_util.create_quiz(inst1_token, q4_json)
 
 
