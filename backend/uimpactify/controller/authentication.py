@@ -9,6 +9,7 @@ from mongoengine.errors import NotUniqueError, ValidationError, DoesNotExist
 from uimpactify.models.users import Users
 from uimpactify.controller.errors import unauthorized, bad_request, conflict
 from uimpactify.controller.dont_crash import dont_crash
+from uimpactify.utils.mongo_utils import create_user
 
 # external packages
 import datetime
@@ -41,9 +42,8 @@ class SignUpApi(Resource):
         """
         data = request.get_json()
         try:
-            post_user = Users(**data)
-            post_user.save()
-            output = {'id': str(post_user.id)}
+            user = create_user(data)
+            output = {'id': str(user.id)}
             return jsonify(output)
         except NotUniqueError as e:
             # the only unique field for a User is the email address

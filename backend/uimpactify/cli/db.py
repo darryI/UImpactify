@@ -8,6 +8,7 @@ from flask import current_app, g
 from flask.cli import with_appcontext
 
 from uimpactify.models.users import Users
+from uimpactify.utils.mongo_utils import create_user
 
 from mongoengine import NotUniqueError, ValidationError
 
@@ -25,8 +26,13 @@ def close_db(e=None):
 
 def create_admin():
     try:
-        user = Users(name="admin", email=ADMIN_USER['email'], password=ADMIN_USER['password'], roles={"admin": True})
-        user.save()
+        data = {
+            'name': 'admin',
+            'email': ADMIN_USER['email'],
+            'password': ADMIN_USER['password'],
+            'roles': {"admin": True}
+            }
+        user = create_user(data)
         print(f"Added: {user.name} | {user.email} | {user.password} | Admin-{user.roles.admin is True} => {user.id}")
     except NotUniqueError:
         print(f'Invalid Entry: {user.email} is already taken.')
