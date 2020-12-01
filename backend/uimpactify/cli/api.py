@@ -26,7 +26,12 @@ def auth_test():
 
 def auth_run_test():
     # Create a new user, sign in as the user, and delete the user
-    user = {"email": "test_user@uimpactify.com", "password": "password", "name": "Jeffarious", "phone": "1112223333"}
+    user = {
+        "email": "test_user@uimpactify.com",
+        "password": "password",
+        "name": "Jeffarious",
+        "phone": "1112223333"
+        }
     user_id = auth_util.signup(user)
     user_token = auth_util.login(user)
     user_util.get_self(user_token)
@@ -102,7 +107,7 @@ def course_run_test():
     # creating a bunch of courses
     c1_json = { "name": "testCourseOne", }
     c2_json = { "name": "testCourseTwo", "published": True, }
-    c3_json = { "name": "testCourseThree", }
+    c3_json = { "name": "testCourseThree", "published": True, }
 
     c1 = course_util.create_course(access_token, c1_json)
     c2 = course_util.create_course(access_token, c2_json)
@@ -149,6 +154,7 @@ def course_run_test():
     q2_json = {
         "name": "Quiz 1 for Course 3",
         "course": c3,
+        "published": True,
         "quizQuestions": [
                 {
                     "question": "What is real?",
@@ -191,10 +197,9 @@ def course_run_test():
                 }
             ],
         }
-    q4_json = { "name": "Empty Quiz Made By Wrong Instructor", "course": c2, }
+    q4_json = { "name": "Empty Unpublished Quiz", "course": c3, }
 
     # q1 should fail because students can't make courses
-    # q4 should fail because you can only add quizzes to your own courses
     q1 = quiz_util.create_quiz(s_token, q1_json)
     q2 = quiz_util.create_quiz(inst_token, q2_json)
     q3 = quiz_util.create_quiz(access_token, q3_json)
@@ -217,7 +222,6 @@ def course_run_test():
     # should only return q2 for valid case and q3 for admin override
     quiz_util.get_quizzes(access_token)
 
-    # last call fails
     quiz_util.get_quizzes_by_course(access_token, c3)
     quiz_util.get_quizzes_by_course(inst_token, c3)
     quiz_util.get_quizzes_by_course(s_token, c3)
@@ -268,6 +272,7 @@ def course_run_test():
 
     # getting all courses again to show that they are gone
     course_util.get_all_courses(access_token)
+
 
 @click.command("opportunity-test")
 @with_appcontext
@@ -373,9 +378,38 @@ def user_run_test():
     # Get all endorsed courses, should return nothing
     user_util.get_all_endorsed_courses(npo1_token);
 
+
     # removing the new users
     user_util.delete_self(inst1_token)
     user_util.delete_self(npo1_token)
+
+@click.command("picture-test")
+@with_appcontext
+def profile_picture_test():
+    profile_picture_run_test()
+
+def profile_picture_run_test():
+    # create a test user
+    user = {
+        "email": "pic_test_user@uimpactify.com",
+        "password": "password",
+        "name": "Picture Guy",
+        "phone": "1112223333",
+        }
+    user_id = auth_util.signup(user)
+    user_token = auth_util.login(user)
+
+    # show the default profile picture
+    user_util.display_picture(user_token)
+
+    # update the user's profile picture
+    user_util.update_picture(user_token, 'uimpactify/resources/alternate-picture.png')
+
+    # show the updated profile picture
+    user_util.display_picture(user_token)
+
+    # delete the test user
+    user_util.delete_self(user_token)
 
 @click.command("test")
 @with_appcontext
@@ -467,6 +501,24 @@ def init_data():
     npo1 = auth_util.signup(npo1_json)
     npo1_token = auth_util.login(npo1_json)
 
+    npo2_json = {
+        "name": "Organization 2", 
+        "email": "npo2@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo2 = auth_util.signup(npo2_json)
+    npo2_token = auth_util.login(npo2_json)
+    
+    npo3_json = {
+        "name": "Organization 3", 
+        "email": "npo3@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo3 = auth_util.signup(npo3_json)
+    npo3_token = auth_util.login(npo3_json)
+
 
     # SETUP COURSES
     # Create courses taught by different instructors (with some being published)
@@ -486,6 +538,7 @@ def init_data():
 
     # Endorse a course
     course_util.endorse_course(npo1_token, c2)
+    course_util.endorse_course(npo2_token, c2)
     
     # Add feedback to courses
     f1_json = {
@@ -607,6 +660,7 @@ def init_app(app):
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
     app.cli.add_command(opportunity_test)
+    app.cli.add_command(profile_picture_test)
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)
     app.cli.add_command(user_test)

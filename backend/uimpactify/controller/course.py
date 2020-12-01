@@ -1,6 +1,7 @@
 # packages
 from bson.objectid import ObjectId
 from bson.errors import InvalidId
+import base64
 
 # flask packages
 from flask import Response, request, jsonify
@@ -359,15 +360,15 @@ class CourseEndorsedByApi(Resource):
         """
         # get the course
         try:
-            doc = Courses.objects().get(id=course_id)
+            course = Courses.objects().get(id=course_id)
         except DoesNotExist:
             return not_found("404 Error: The requested course does not exist")
 
-        # get the names of the organizations endorsing the course
-        endorsedBy = getattr(doc, 'endorsedBy')
-        names = []
-        for org in endorsedBy:
-            name = getattr(org, 'name')
-            names.append(name)
+        # get the names and pictures of the organizations endorsing the course
+        orgs = []
+        for org in course.endorsedBy:
+            img_b64 = base64.b64encode(org.image.thumbnail.read())
+            org_json = { 'name': org.name, 'image': img_b64.decode('utf-8') }
+            orgs.append(org_json)
 
-        return jsonify(names)
+        return jsonify(orgs)
