@@ -15,6 +15,7 @@ from uimpactify.cli import opportunity_util
 from uimpactify.cli import quiz_util
 from uimpactify.cli import page_util
 from uimpactify.cli import analytics_util
+from uimpactify.cli import submission_util
 
 from uimpactify.controller import routes
 
@@ -107,7 +108,7 @@ def course_run_test():
     # creating a bunch of courses
     c1_json = { "name": "testCourseOne", }
     c2_json = { "name": "testCourseTwo", "published": True, }
-    c3_json = { "name": "testCourseThree", }
+    c3_json = { "name": "testCourseThree", "published": True, }
 
     c1 = course_util.create_course(access_token, c1_json)
     c2 = course_util.create_course(access_token, c2_json)
@@ -154,6 +155,7 @@ def course_run_test():
     q2_json = {
         "name": "Quiz 1 for Course 3",
         "course": c3,
+        "published": True,
         "quizQuestions": [
                 {
                     "question": "What is real?",
@@ -196,14 +198,15 @@ def course_run_test():
                 }
             ],
         }
-    q4_json = { "name": "Empty Quiz Made By Wrong Instructor", "course": c2, }
+    q4_json = { "name": "Empty Unpublished Quiz", "course": c3, }
+    q5_json = { "name": "Empty Quiz (by Instructor)", "course": c1, "published": True, }
 
     # q1 should fail because students can't make courses
-    # q4 should fail because you can only add quizzes to your own courses
     q1 = quiz_util.create_quiz(s_token, q1_json)
     q2 = quiz_util.create_quiz(inst_token, q2_json)
     q3 = quiz_util.create_quiz(access_token, q3_json)
     q4 = quiz_util.create_quiz(inst_token, q4_json)
+    q5 = quiz_util.create_quiz(access_token, q5_json)
 
 
     ## ANALYTICS
@@ -222,7 +225,6 @@ def course_run_test():
     # should only return q2 for valid case and q3 for admin override
     quiz_util.get_quizzes(access_token)
 
-    # last call fails
     quiz_util.get_quizzes_by_course(access_token, c3)
     quiz_util.get_quizzes_by_course(inst_token, c3)
     quiz_util.get_quizzes_by_course(s_token, c3)
@@ -246,16 +248,54 @@ def course_run_test():
     # q3 is published now
     quiz_util.get_quiz(access_token, q3)
 
+    ## SUBMISSIONS
+
+    sub1_json = {
+        "quiz": q5,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub2_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 1, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 1, }
+        ],
+    }
+
+    sub3_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 3, }
+        ],
+    }
+
+    # sub1 fails because student is not in c1 which q1 is part of
+    # sub4 fails because a user can only have one submission per quiz
+    sub1 = submission_util.create_submission(s_token, sub1_json)
+    sub2 = submission_util.create_submission(s_token, sub2_json)
+    sub3 = submission_util.create_submission(s_token, sub3_json)
+    sub4 = submission_util.create_submission(s_token, sub2_json)
+
+    submission_util.get_user_submissions(s_token)
+    submission_util.get_quiz_submission(s_token, q2)
+    submission_util.get_quiz_submission(s_token, q3)
+    # submissions will be deleted with quizzes according to cascade delete
+
+    ## END OF SUBMISSIONS
+
+
     # mass method test +
     # show instrucotrs can update their own quizzes
-    q5_json = { "name": "testQuizFive", "course": c3, }
-    q5 = quiz_util.create_quiz(inst_token, q5_json)
-    quiz_util.get_quiz(access_token, q5)
-    q5_update = { "published": True, }
-    quiz_util.update_quiz(inst_token, q5, q5_update)
+    q6_json = { "name": "testQuizFive", "course": c3, }
+    q6 = quiz_util.create_quiz(inst_token, q6_json)
+    quiz_util.get_quiz(access_token, q6)
+    q6_update = { "published": True, }
+    quiz_util.update_quiz(inst_token, q6, q6_update)
     quiz_util.get_quizzes_by_course(inst_token, c3)
-    quiz_util.delete_quiz(inst_token, q5)
-    quiz_util.get_quiz(access_token, q5)
+    quiz_util.delete_quiz(inst_token, q6)
+    quiz_util.get_quiz(access_token, q6)
     # other quizzes wil be deleted with courses according to cascade delete
 
     # CLEAN UP
@@ -589,6 +629,35 @@ def init_data():
     q3 = quiz_util.create_quiz(inst1_token, q3_json)
     q4 = quiz_util.create_quiz(inst1_token, q4_json)
 
+    # Add student submissions for quizzes
+    sub1_json = {
+        "quiz": q1,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub2_json = {
+        "quiz": q4,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub3_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 3, }
+        ],
+    }
+
+    sub4_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 1, }
+        ],
+    }
+
+    sub1 = submission_util.create_submission(s1_token, sub1_json)
+    sub2 = submission_util.create_submission(s2_token, sub2_json)
+    sub3 = submission_util.create_submission(s3_token, sub3_json)
+    sub4 = submission_util.create_submission(s1_token, sub4_json)
 
 def init_app(app):
     app.cli.add_command(page_test)
