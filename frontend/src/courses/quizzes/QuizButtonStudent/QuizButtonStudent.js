@@ -31,8 +31,8 @@ function QuizButtonStudent(props) {
         API.getUser(jwtToken.access_token)
           .then(
             (result) => {
-                console.log("1")
-                console.log(result)
+                // console.log("1")
+                // console.log(result)
                 setIsLoaded(true);
                 //setCondition1(true);
                 setUser(result);
@@ -50,8 +50,8 @@ function QuizButtonStudent(props) {
           API.getEnrolledCourses(jwtToken.access_token)
           .then(
             (result) => {
-                console.log("2")
-                console.log(result)
+                // console.log("2")
+                // console.log(result)
                 // console.log(id)
                 setIsLoaded(true);
                 //setCondition2(true);
@@ -75,13 +75,13 @@ function QuizButtonStudent(props) {
     const handleClick = (event) => {
         setButtonClicked(!buttonClicked);
         setShowQuiz(!showQuiz);
-        console.log("inside handle click")
+        // console.log("inside handle click")
         var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"));
         API.getQuizInfo(jwtToken.access_token, id)
         .then(
           (result) => {
-              console.log("3")
-              console.log(result)
+            //   console.log("3")
+            //   console.log(result)
               setIsLoaded(true);
 
               if(result === undefined || result.length == 0){

@@ -22,7 +22,7 @@ function QuizViewStudent(props) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("do we ever submit?")
+        // console.log("do we ever submit?")
         var question = 0;
         var answer = 0;
         var answerPair = {};
@@ -44,7 +44,7 @@ function QuizViewStudent(props) {
         .then(
             (result) => {
                 // console.log(result)
-                console.log("sent submisison")
+                // console.log("sent submisison")
                 props.setShowForm(false);
             },
             // Note: it's important to handle errors here
@@ -150,15 +150,6 @@ if(isSubmitted){
 }
 
 export const API = {
-    getQuizzes: async (token, course_id) => {
-      const url = `http://localhost:5000/quiz/course/${course_id}/`;
-      return fetch(url, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        }
-      }).then(res => res.json());
-    },
-
     postAnswers: async (token, answers) => {
         const url = `http://localhost:5000/quiz/submit/`;
         

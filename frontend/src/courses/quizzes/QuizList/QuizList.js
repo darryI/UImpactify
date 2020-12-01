@@ -7,7 +7,7 @@ import QuizViewStudent from "../QuizViewStudent/QuizViewStudent"
 
 function QuizList(props) {
     var quizzes = props.quizzes
-
+    
     const [error, setError] = React.useState(null);
     const [isLoaded, setIsLoaded] = React.useState(false);
 
@@ -22,15 +22,15 @@ function QuizList(props) {
         API.getQuizSubmissions(jwtToken.access_token)
         .then(
             (result) => {
-            console.log("5")
-            console.log(result)
-            console.log(quiz)
+            // console.log("5")
+            // console.log(result)
+            // console.log(quiz)
 
             for(var i = 0; i < result.length; i++){
                 if(result[i].quiz === quiz.id){
-                    console.log("inside if")
+                    // console.log("inside if")
                     setIsSubmitted(true);
-                    console.log(result[i])
+                    // console.log(result[i])
                     setSubmittedAnswers(result[i].answers)
                 }
             }
@@ -52,7 +52,7 @@ function QuizList(props) {
         return (
           <div key={quiz.id} className="quiz-block">
             <div>{quiz.name}</div>
-            <div className="edit-button"><EditIcon onClick={() => handleClick(quiz)}/>Start Quiz</div>
+            <button className="edit-button" onClick={() => handleClick(quiz)}><EditIcon/>Start Quiz</button>
           </div>
         )
       });
