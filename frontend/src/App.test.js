@@ -7,6 +7,7 @@ import {API as CoursePageAPI} from 'courses/CoursesPage/CoursesPage.js';
 import {API as CourseLandingAPI} from 'courses/CourseLanding/CourseLanding.js';
 import {API as CourseLandingInfoAPI} from 'courses/CourseLanding/CourseLandingInfo.js';
 import jsonCourses from 'courses/courses.json';
+import mockUser from 'landing/SignUp/SignUp/mockUser.json';
 
 test('renders landing page and navigation', () => {
   const { getAllByText, getByText } = render(<Router><App/></Router>);
@@ -16,12 +17,18 @@ test('renders landing page and navigation', () => {
 
 test('visiting a course home page should be tracked', async () => {
   // mock auth token to appear as logged in
+
   // required to have access to courses links
   jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
 
   // mock the api call to get published courses on the COURSES PAGE
   const getCourses = jest.spyOn(CoursePageAPI, 'getCourses').mockImplementationOnce(() => {
     return Promise.resolve(jsonCourses);
+  });
+
+  // mock the api call to get a user
+  const getUser = jest.spyOn(API, 'getUser').mockImplementationOnce(() => {
+    return Promise.resolve(mockUser[0]);
   });
 
   // mock the api call to get individual course info on the COURSE LANDING PAGE
@@ -39,9 +46,10 @@ test('visiting a course home page should be tracked', async () => {
     return Promise.resolve();
   });
 
-
   // render the app
   const { container } = render(<Router><App/></Router>);
+
+  await wait (() => expect(getUser).toHaveBeenCalled());
 
   // we are currently on the home page
   // --> should only track visits to a course homepage

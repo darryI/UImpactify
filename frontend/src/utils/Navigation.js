@@ -5,9 +5,8 @@ function TopBar(props) {
 
     const loggedIn = props.loggedIn;
     const user = props.user;
-    
+
     if (loggedIn && user.roles){
-      const isStudent = user.roles.student;
       const isInstructor = user.roles.instructor;
       const isNPO = user.roles.organization;
       const isAdmin = user.roles.admin;
@@ -26,16 +25,14 @@ function TopBar(props) {
               <li className="navItem">
                 <Link to="/about">About</Link>
               </li>
-              <li className="navItem" style={{ display: isStudent || isAdmin ? "inline-block" : "none" }}>
-                <Link to="/dashboard">Student</Link>
+              <li className="navItem">
+                <Link to="/dashboard">Dashboard</Link>
               </li>
               <li className="navItem" style={{ display: isInstructor || isAdmin ? "inline-block" : "none" }}>
                 <Link to="/create">Create Courses</Link>
-                <Link to="/instructor">Instructor</Link>
               </li>
               <li className="navItem" style={{ display: isNPO || isAdmin ? "inline-block" : "none" }}>
                 <Link to="/jobs">Jobs</Link>
-                <Link to="/npo">Social Initiative</Link>
               </li>
               <li className="navItem">
                 <Link to="/courses">Courses</Link>

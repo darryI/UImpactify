@@ -88,7 +88,7 @@ export default function StudentInfo(props) {
           <strong>Welcome back!</strong>
         </div>
         <div className="info-text">
-          <strong>Student:</strong>
+          <strong>User:</strong>
           &nbsp;
           <i>{user.name}</i>
         </div>
@@ -101,10 +101,6 @@ export default function StudentInfo(props) {
           <strong>Phone:</strong>
           &nbsp;
           {user.phone}
-        </div>
-        <div className="info-text">
-          <strong>Courses you currently enroll in:</strong>
-          <strong></strong>
         </div>
       </div>
     );
