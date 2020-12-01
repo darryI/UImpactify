@@ -19,6 +19,7 @@ from uimpactify.utils.mongo_utils import convert_query, convert_doc, convert_emb
 from uimpactify.controller.errors import unauthorized, bad_request, conflict, not_found, forbidden
 from uimpactify.controller.dont_crash import dont_crash, user_exists
 
+
 class QuizSubmissionsApi(Resource):
     """
     Flask-resftul resource for returning db.submission collection.
@@ -83,7 +84,9 @@ class UserSubmissionsApi(Resource):
             'answers',
             'grade',
         }
-        response = convert_query(query, include=fields)
+
+        embedded = {'quiz': {'id': 'quiz'}}
+        response = convert_embedded_query(query, fields, embedded)
         return jsonify(response)
 
 
