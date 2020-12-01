@@ -5,7 +5,7 @@ import './EndorsersList.css';
 function EndorsersList(props) {
 
     const listEndorsers = props.endorsers.reverse().map((endorser) =>
-        <EndorserIcon key={props.endorsers.toString()} value={endorser}/>
+        <EndorserIcon key={endorser.name} value={endorser}/>
     );
 
     return <ul aria-label="endorsers-list" className="endorsersList">{listEndorsers}</ul>;

@@ -5,7 +5,7 @@ import './FeedbackList.css';
 function FeedbackList(props) {
 
     const feedbackList = props.feedback.reverse().map((comment) =>
-        <Feedback key={comment.toString()} value={comment} />
+        <Feedback key={comment.comment} value={comment} />
     );
 
     return feedbackList;
