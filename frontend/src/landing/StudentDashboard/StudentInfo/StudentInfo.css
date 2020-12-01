@@ -10,22 +10,25 @@
 }
 
 .profilePictureContainer {
-  padding: 30px 10px 10px 10px;
-  border-radius: 6px;
+  padding: 10px 10px 10px 10px;
+  border-radius: 50%;
   background-color: #EAE4F9;
   border: 1.5px solid transparent;
   margin-left: auto;
   margin-right: auto;
   width: 205px;
-  height: 207px;
+  height: 205px;
+
 }
 
 .profilePicture {
-  width: 90%;
-  height: 90%;
+  width: 200px;
+  height: 200px;
     display: block;
     margin-left: auto;
     margin-right: auto;
+    object-fit: cover;
+  border-radius: 50%;
 
 }
 

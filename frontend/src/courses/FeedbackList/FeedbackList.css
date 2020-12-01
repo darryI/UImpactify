@@ -26,4 +26,8 @@
 .feedbackProfilePicture{
     width: 102px;
     height: 107px;
+    border-radius: 50%;
+    background-color: #d6ccff;
+    padding: 3px;
+    object-fit: cover;
 }
