@@ -1,12 +1,12 @@
 import React from 'react';
 import { render, wait } from '@testing-library/react';
-import UserInfo, {API} from './UserInfo.js';
+import StudentInfo, {API} from './StudentInfo.js.js';
 
 const setup = () => {
     jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
 
     const utils = render(
-        <UserInfo />
+        <StudentInfo />
     )
 
     return {

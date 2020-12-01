@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import DashboardCourseCard from './DashboardCourseCard/DashboardCourseCard'
 import DeleteAccountButton from '../DeleteAccount/DeleteAccountButton';
 import './Dashboard.css';
-import UserInfo from './UserInfo/UserInfo';
+import StudentInfo from './StudentInfo/StudentInfo';
 import EndorsedCrsCard from './EndorsedCrsCard/EndorsedCrsCard'
 
 
@@ -93,7 +93,7 @@ function Dashboard(props) {
         return (
             <div className="student-dashboard">  
                 <div>
-                    <UserInfo />
+                    <StudentInfo />
                 </div>
                 <div style={{ display: isStudent ? "inline-block" : "none" }}>
                   <div className="middle">
