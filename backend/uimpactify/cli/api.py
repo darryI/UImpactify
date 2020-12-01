@@ -911,7 +911,7 @@ def init_demo_data():
     q2_json = {
         "name": "Objectivity",
         "course": c3,
-        "published": True
+        "published": True,
         "quizQuestions": [
             {
                 "question": "What is real?",
@@ -956,7 +956,7 @@ def init_demo_data():
     q3_json = {
         "name": "True Test",
         "course": c2,
-        "published": True
+        "published": True,
         "quizQuestions": [
                 {
                     "question": "The answer to this question is (c)",
