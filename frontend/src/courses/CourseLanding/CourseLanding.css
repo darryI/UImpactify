@@ -20,3 +20,8 @@
 .comments {
     padding: 20px;
 }
+
+
+.courseEndorsers {
+    display: flex;
+}
