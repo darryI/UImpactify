@@ -1,5 +1,6 @@
 import React from 'react';
 import {useHistory, useParams} from 'react-router-dom';
+import EndorsersList from "./EndorsersList.js";
 
 function CourseEndorseButton(props) {
 
@@ -92,12 +93,6 @@ function CourseEndorseButton(props) {
         )
     }
 
-    const listEndorsers = (endorsers) =>{
-        if(endorsers){
-            return endorsers.map((org) => <li key={org.name}>{org.name}</li>)
-        }
-    }
-
   if (error) {
     return <div>Error: {error.message}</div>;
   } else if (!isUserLoaded || !isEndorsedLoaded) {
@@ -107,7 +102,8 @@ function CourseEndorseButton(props) {
             <div>
                 <div className="courseEndorsers" style={{ display: endorsed ? "block" : "none" }}>
                     <p>This course is Endorsed by:</p>
-                    <ul aria-label="endorsers-list">{listEndorsers(endorsers)}</ul>
+                    <EndorsersList endorsers={endorsers}/>
+
                 </div>
 
                 <div  style={{ display: showButton ? "block" : "none" }}>
