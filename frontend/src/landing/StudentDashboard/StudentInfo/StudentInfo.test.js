@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, wait } from '@testing-library/react';
-import StudentInfo, {API} from './StudentInfo.js';
+import StudentInfo, {API} from './StudentInfo.js.js';
 
 const setup = () => {
     jest.spyOn(window.localStorage.__proto__, 'getItem').mockImplementation((key) => '{"accessToken":"yo"}');
@@ -14,7 +14,7 @@ const setup = () => {
     }
 };
 
-test('on startup, api call is made to get published courses', async () => {
+test('on startup, api call is made to get student info', async () => {
     // mock user
     const mockUser = {
         "name": "ymart1n",

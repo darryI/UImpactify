@@ -84,17 +84,20 @@ export default function StudentInfo(props) {
           <input type="file" name="file" accept="image/png" className="file-upload" onChange={onChangeHandler}/>
           <button type="button" className="update-button" onClick={updateHandler}>Update</button>
         </div>
-        <div className="student-info-text">
+        <div className="info-header">
           <strong>Welcome back!</strong>
-          &nbsp;&nbsp;
-          {user.name}
         </div>
-        <div className="student-info-text">
+        <div className="info-text">
+          <strong>User:</strong>
+          &nbsp;
+          <i>{user.name}</i>
+        </div>
+        <div className="info-text">
           <strong>Email:</strong>
           &nbsp;
           {user.email}
         </div>
-        <div className="student-info-text">
+        <div className="info-text">
           <strong>Phone:</strong>
           &nbsp;
           {user.phone}

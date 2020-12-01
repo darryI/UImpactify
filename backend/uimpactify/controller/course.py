@@ -371,4 +371,31 @@ class CourseEndorsedByApi(Resource):
             org_json = { 'name': org.name, 'image': img_b64.decode('utf-8') }
             orgs.append(org_json)
 
+        # return jsonify(names)
         return jsonify(orgs)
+
+
+class CoursesNpoHasEndorsedApi(Resource):
+    """
+    Flask-resftul resource for returning all courses
+
+    """
+    @jwt_required
+    @user_exists
+    @dont_crash
+    def get(self) -> Response:
+        """
+        GET response method for all documents in course collection with published=true.
+
+        :return: JSON object
+        """
+        user_id = get_jwt_identity()
+
+        query = Courses.objects(endorsedBy=user_id)
+
+        fields = {
+            'id',
+            'name'
+            }
+        values = convert_query(query, fields)
+        return jsonify(values)
