@@ -659,6 +659,258 @@ def init_data():
     sub3 = submission_util.create_submission(s3_token, sub3_json)
     sub4 = submission_util.create_submission(s1_token, sub4_json)
 
+
+@click.command("demo-data")
+@with_appcontext
+def init_demo_data():
+    # SETUP USERS
+    # Create instructors
+    inst1_json = {
+        "name": "Instructor Zachary",
+        "email": "zachary@uimpactify.com",
+        "password": "password",
+        "roles": {"student": True, "instructor": True},
+        }
+    inst1 = auth_util.signup(inst1_json)
+    inst1_token = auth_util.login(inst1_json)
+    
+    inst2_json = {
+        "name": "Instructor Brock",
+        "email": "brock@uimpactify.com",
+        "password": "password",
+        "roles": {"instructor": True},
+        }
+    inst2 = auth_util.signup(inst2_json)
+    inst2_token = auth_util.login(inst2_json) 
+    
+    # Create students
+    s1_json = {
+        "name": "Student Jake Peralta", 
+        "email": "jake@uimpactify.com", 
+        "password": "password",
+        }
+    s1 = auth_util.signup(s1_json)
+    s1_token = auth_util.login(s1_json)
+    
+    s2_json = {
+        "name": "Student Jessica", 
+        "email": "jessica@uimpactify.com", 
+        "password": "password",
+        }
+    s2 = auth_util.signup(s2_json)
+    s2_token = auth_util.login(s2_json)
+    
+    s3_json = {
+        "name": "Student Ghost", 
+        "email": "ghost@uimpactify.com", 
+        "password": "password",
+        }
+    s3 = auth_util.signup(s3_json)
+    s3_token = auth_util.login(s3_json)
+    
+    # Create NPOs
+    npo1_json = {
+        "name": "Red Cross", 
+        "email": "redcross@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo1 = auth_util.signup(npo1_json)
+    npo1_token = auth_util.login(npo1_json)
+
+    npo2_json = {
+        "name": "World Health Organization", 
+        "email": "who@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo2 = auth_util.signup(npo2_json)
+    npo2_token = auth_util.login(npo2_json)
+    
+    npo3_json = {
+        "name": "World Wildlife Fund", 
+        "email": "wwf@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo3 = auth_util.signup(npo3_json)
+    npo3_token = auth_util.login(npo3_json)
+    
+    npo4_json = {
+        "name": "Salvation Army", 
+        "email": "salvationarmy@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo4 = auth_util.signup(npo4_json)
+    npo4_token = auth_util.login(npo4_json)
+
+
+    # SETUP COURSES
+    # Create courses taught by different instructors (with some being published)
+    c1_json = { "name": "Course One (I1)", }
+    c2_json = { "name": "Course Two (I1)", "published": True}
+    c3_json = { "name": "Course Three (I2)", "published": True}
+
+    c1 = course_util.create_course(inst1_token, c1_json)
+    c2 = course_util.create_course(inst1_token, c2_json)
+    c3 = course_util.create_course(inst2_token, c3_json)
+
+    # Enroll students in courses
+    course_util.enroll_student(s1_token, c1)
+    course_util.enroll_student(s1_token, c2)
+    course_util.enroll_student(s2_token, c2)
+    course_util.enroll_student(s3_token, c2)
+
+    # Endorse a course
+    course_util.endorse_course(npo1_token, c2)
+    course_util.endorse_course(npo2_token, c2)
+    
+    # Add feedback to courses
+    f1_json = {
+        "comment": "This course was the best course I've ever taken and I'm so glad it was able to provide so much value it's just absolutely insane I loved it and I feel like a better human being for taking it and I'm about to change the world by removing financial burgers one step at a time. Nom nom nom.",
+        "course": c2,
+        "public": True
+    }
+    f1 = feedback_util.create_feedback(s1_token, f1_json)
+
+    f2_json = {
+        "comment": "Sick course. Keep it up homie.",
+        "course": c2,
+        "public": False
+    }
+    f2 = feedback_util.create_feedback(s2_token, f2_json)
+
+    f3_json = {
+        "comment": "I HATE THIS COURSE AND I'M NEVER TAKING IT AGAIN :(",
+        "course": c2,
+        "public": True
+    }
+    f3 = feedback_util.create_feedback(s3_token, f3_json)
+
+    f4_json = {
+        "comment": "I haven't taken this course but I just want to let you know it kinda smells here",
+        "course": c1,
+        "public": False
+    }
+    f4 = feedback_util.create_feedback(s2_token, f4_json)
+
+    # Add opportunities
+    O1_json = {
+        "paid": False,
+        "description": "happy job that makes me happy",
+        "published": True
+    }
+    O1 = opportunity_util.create_opportunity(npo1_token, O1_json)
+
+    O2_json = {
+        "paid": True,
+        "description": "happier job that makes me happier",
+        "published": True
+    }
+    O2 = opportunity_util.create_opportunity(npo1_token, O2_json)
+
+    O3_json = {
+        "paid": True,
+        "description": "happier job that makes me happier but isnt published yet :(",
+        "published": False
+    }
+    O3 = opportunity_util.create_opportunity(npo1_token, O3_json)
+    
+    # Add quizzes to different courses
+    q1_json = { "name": "Empty Quiz 1 for Course 2", "course": c2, }
+    q2_json = {
+        "name": "Quiz 1 for Course 3",
+        "course": c3,
+        "quizQuestions": [
+            {
+                "question": "What is real?",
+                "index": 1,
+                "options":
+                    [
+                        { "option": "something", "index": 0, },
+                        { "option": "everything", "index": 1, },
+                        { "option": "nothing", "index": 2, },
+                        { "option": "nothing", "index": 3, }
+                    ],
+                "answer": 2,
+            },
+            {
+                "question": "What is truth?",
+                "index": 2,
+                "options": [ { "option": "subjective", "index": 1 } ],
+                "answer": 1,
+            },
+            {
+                "question": "What is beauty?",
+                "index": 3,
+                "options": 
+                    [
+                        { "option": "fleeting", "index": 0 },
+                        { "option": "fleeting", "index": 1 },
+                        { "option": "fleeting", "index": 2 },
+                        { "option": "fleeting", "index": 3 },
+                    ],
+                "answer": 1,
+            }
+            ],
+        }
+    q3_json = {
+        "name": "Quiz 1 for Course 2",
+        "course": c2,
+        "quizQuestions": [
+                {
+                    "question": "The answer to this question is (c)",
+                    "index": "1",
+                    "options":
+                        [
+                            {"option": "(b)", "index": 0, },
+                            {"option": "(c)", "index": 1, },
+                            {"option": "(a)", "index": 2, },
+                            {"option": "(a)", "index": 3, },
+                        ],
+                    "answer": 2,
+                }
+            ],
+        }
+    q4_json = { "name": "Empty Quiz 2 for Course 2", "course": c2, "published": True }
+
+    q1 = quiz_util.create_quiz(inst1_token, q1_json)
+    q2 = quiz_util.create_quiz(inst2_token, q2_json)
+    q3 = quiz_util.create_quiz(inst1_token, q3_json)
+    q4 = quiz_util.create_quiz(inst1_token, q4_json)
+
+    # Add student submissions for quizzes
+    sub1_json = {
+        "quiz": q1,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub2_json = {
+        "quiz": q4,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub3_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 3, }
+        ],
+    }
+
+    sub4_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 1, }
+        ],
+    }
+
+    sub1 = submission_util.create_submission(s1_token, sub1_json)
+    sub2 = submission_util.create_submission(s2_token, sub2_json)
+    sub3 = submission_util.create_submission(s3_token, sub3_json)
+    sub4 = submission_util.create_submission(s1_token, sub4_json)
+
+
 def init_app(app):
     app.cli.add_command(page_test)
     app.cli.add_command(auth_test)
@@ -667,3 +919,4 @@ def init_app(app):
     app.cli.add_command(profile_picture_test)
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)
+    app.cli.add_command(init_demo_data)
