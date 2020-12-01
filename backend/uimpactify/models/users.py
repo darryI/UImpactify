@@ -82,13 +82,3 @@ class Users(Document):
     # Use documentation from BCrypt for password hashing
     check_pw_hash.__doc__ = check_password_hash.__doc__
 
-
-    def save(self, *args, **kwargs):
-        # Overwrite Document save method to generate password hash prior to saving
-        self.generate_pw_hash()
-        # set default image
-        if not self.image:
-            default_image = open('uimpactify/resources/default-profile-picture.png', 'rb')
-            self.image.replace(default_image)
-            default_image.close()
-        super(Users, self).save(*args, **kwargs)

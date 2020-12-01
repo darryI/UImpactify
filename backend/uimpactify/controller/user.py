@@ -9,7 +9,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 # project resources
 from uimpactify.models.users import Users
 from uimpactify.controller.errors import forbidden
-from uimpactify.utils.mongo_utils import convert_query, convert_doc, update_user_image
+from uimpactify.utils.mongo_utils import convert_query, convert_doc, update_user_image, create_user
 from uimpactify.controller.dont_crash import dont_crash, user_exists
 
 class UsersApi(Resource):
@@ -83,8 +83,8 @@ class UsersApi(Resource):
 
         if authorized:
             data = request.get_json()
-            post_user = Users(**data).save()
-            output = {'id': str(post_user.id)}
+            user = create_user(data)
+            output = {'id': str(user.id)}
             return jsonify(output)
         else:
             return forbidden()
