@@ -28,6 +28,9 @@ test('on startup, api calls are made', async () => {
   const getQuizzes = jest.spyOn(API, 'getQuizzes').mockImplementationOnce(() => {
     return Promise.resolve({'quizzes': 7});
   })
+  const getAverages = jest.spyOn(API, 'getAverages').mockImplementationOnce(() => {
+    return Promise.resolve({'quizzes': 7});
+  })
 
   const { container } = setup();
 
