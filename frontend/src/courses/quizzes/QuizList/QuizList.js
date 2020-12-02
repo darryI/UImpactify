@@ -14,6 +14,9 @@ function QuizList(props) {
     const [isSubmitted, setIsSubmitted] = React.useState(false);
     const [submittedAnswers, setSubmittedAnswers] = React.useState([]);
 
+
+    const [grade, setGrade] = React.useState(-1);
+
     const [showForm, setShowForm] = React.useState(false);
     const [quiz, setQuiz] = React.useState([]);
 
@@ -25,11 +28,13 @@ function QuizList(props) {
             // console.log("5")
             // console.log(result)
             // console.log(quiz)
-
+            console.log(result);
             for(var i = 0; i < result.length; i++){
                 if(result[i].quiz === quiz.id){
                     // console.log("inside if")
                     setIsSubmitted(true);
+                    setGrade(result[i].grade);
+                    
                     // console.log(result[i])
                     setSubmittedAnswers(result[i].answers)
                 }
@@ -61,7 +66,7 @@ function QuizList(props) {
         return(
             <div className="quiz-view">
                 <QuizViewStudent quiz={quiz} setShowForm={setShowForm} isSubmitted={isSubmitted} 
-                setIsSubmitted={setIsSubmitted} submittedAnswers={submittedAnswers}/>
+                setIsSubmitted={setIsSubmitted} grade={grade} submittedAnswers={submittedAnswers}/>
             </div>
         )
     }else{
