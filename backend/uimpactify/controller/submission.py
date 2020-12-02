@@ -132,3 +132,41 @@ class SubmissionByQuizApi(Resource):
         }
         response = convert_doc(query, include=fields)
         return jsonify(response)
+
+class QuizAverageApi(Resource):
+    """
+    Flask-resftul resource for returning the average grade of a quiz.
+
+    """
+    @jwt_required
+    @user_exists
+    @dont_crash
+    def get(self, quiz_id: str) -> Response:
+        """
+        GET response method for single document in Submission collection.
+
+        :return: JSON object
+        """
+        # query = Submissions.objects.aggregate({
+        #     '$group': {
+        #         '_id': quiz_id,
+        #         'average': { '$avg': '$grade' },
+        #     }
+        # })
+
+        # fields = {
+        #     'average',
+        # }
+        # response = convert_query(query, include=fields)
+        query = Submissions.objects(quiz=quiz_id)
+
+        # quiz doesn't exist or no one has taken it
+        if len(query) == 0:
+            return not_found()
+
+        total = 0
+        for submission in query:
+            total += submission.grade
+
+        response = { 'average': total/len(query) }
+        return jsonify(response)

@@ -509,7 +509,9 @@ def init_data():
     course_util.enroll_student(s1_token, c1)
     course_util.enroll_student(s1_token, c2)
     course_util.enroll_student(s2_token, c2)
+    course_util.enroll_student(s2_token, c3)
     course_util.enroll_student(s3_token, c2)
+    course_util.enroll_student(s3_token, c3)
 
     # Endorse a course
     course_util.endorse_course(npo1_token, c2)
@@ -654,10 +656,38 @@ def init_data():
         ],
     }
 
+    sub5_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 2, }
+        ],
+    }
+
+    sub6_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 2, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 1, }
+        ],
+    }
+
+    sub7_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 2, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 2, }
+        ],
+    }
+
     sub1 = submission_util.create_submission(s1_token, sub1_json)
     sub2 = submission_util.create_submission(s2_token, sub2_json)
     sub3 = submission_util.create_submission(s3_token, sub3_json)
     sub4 = submission_util.create_submission(s1_token, sub4_json)
+    sub5 = submission_util.create_submission(s2_token, sub5_json)
+    sub6 = submission_util.create_submission(s2_token, sub6_json)
+    sub7 = submission_util.create_submission(s3_token, sub7_json)
 
 def init_app(app):
     app.cli.add_command(page_test)
