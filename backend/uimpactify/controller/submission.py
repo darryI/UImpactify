@@ -52,16 +52,31 @@ class QuizSubmissionsApi(Resource):
 
         # student must be enrolled in the course of the quiz
         courses = Courses.objects(students=user)
-        if course in courses:
-            try:
-                data['user'] = user
-                submission = Submissions(**data).save()
-            except ValidationError as e:
-                return bad_request(e.to_dict())
-            output = {'id': str(submission.id)}
-            return jsonify(output)
-        else:
+        if course not in courses:
             return forbidden()
+
+        # student is in course and has not submitted
+        # generate the answer key
+        answer_key = {}
+        for question in quiz.quizQuestions:
+            answer_key[question.index] = question.answer
+
+        # compare answer key to student responses
+        student_responses = data['answers']
+        grade = 0
+        for response in student_responses:
+            index = response['question']
+            if index in answer_key and answer_key[index] == response['answer']:
+                grade += 1
+
+        try:
+            data['user'] = user
+            data['grade'] = grade
+            submission = Submissions(**data).save()
+        except ValidationError as e:
+            return bad_request(e.to_dict())
+        output = {'id': str(submission.id)}
+        return jsonify(output)
 
 
 class UserSubmissionsApi(Resource):
