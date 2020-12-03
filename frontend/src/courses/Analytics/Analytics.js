@@ -151,7 +151,7 @@ function Analytics(props) {
     if (averagesError == null && averages.length > 0) {
       averagesContent = averages.map(avg => 
         <div key = {avg.quiz}>
-          <p><strong>{avg.quiz}</strong> has recieved <strong>{avg.totalSubmissions}</strong> submissions with an average score of <strong>{avg.average}%</strong></p>
+          <p><strong>{avg.quiz}</strong> has received <strong>{avg.totalSubmissions}</strong> submissions with an average score of <strong>{avg.average}%</strong></p>
         </div>
       );
       
