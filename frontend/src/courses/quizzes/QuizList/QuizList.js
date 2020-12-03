@@ -57,7 +57,7 @@ function QuizList(props) {
         return (
           <div key={quiz.id} className="quiz-block">
             <div>{quiz.name}</div>
-            <button className="edit-button" onClick={() => handleClick(quiz)}><EditIcon/>Start Quiz</button>
+            <button className="edit-button" onClick={() => handleClick(quiz)}><EditIcon/>View Quiz</button>
           </div>
         )
       });
