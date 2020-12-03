@@ -123,7 +123,6 @@ class AveragesApi(Resource):
         # output will be a list of quiz objects (name, # of submissions, and average)
         output = []
         for quiz in quizzes:
-            print(quiz)
             query = Submissions.objects(quiz=quiz.id)
             if (len(query) > 0 and len(quiz.quizQuestions) > 0):
                 total = 0  
@@ -131,6 +130,11 @@ class AveragesApi(Resource):
                     total += submission.grade
                 
                 average = total / (len(query) * len(quiz.quizQuestions))
+                # the following two lines take the decimal average and convert it to whole number with 2 digits remaining
+                # examples:
+                # 0.01 -> 100.0 -> 1
+                # 0.234 -> 234.0 -> 23
+            
                 average *= 10000
                 average //= 100
                 totalSubs = len(query)
