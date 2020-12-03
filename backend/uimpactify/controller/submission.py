@@ -147,17 +147,6 @@ class QuizAverageApi(Resource):
 
         :return: JSON object
         """
-        # query = Submissions.objects.aggregate({
-        #     '$group': {
-        #         '_id': quiz_id,
-        #         'average': { '$avg': '$grade' },
-        #     }
-        # })
-
-        # fields = {
-        #     'average',
-        # }
-        # response = convert_query(query, include=fields)
         query = Submissions.objects(quiz=quiz_id)
 
         # quiz doesn't exist or no one has taken it
