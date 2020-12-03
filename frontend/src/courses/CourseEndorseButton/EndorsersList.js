@@ -4,7 +4,7 @@ import './EndorsersList.css';
 
 function EndorsersList(props) {
 
-    const listEndorsers = props.endorsers.reverse().map((endorser) =>
+    const listEndorsers = props.endorsers.map((endorser) =>
         <EndorserIcon key={endorser.name} value={endorser}/>
     );
 

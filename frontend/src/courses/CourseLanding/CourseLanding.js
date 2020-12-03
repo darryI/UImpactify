@@ -38,7 +38,7 @@ function CourseLanding(props) {
       } else {
         history.push("./login")
       }
-    }, [])
+    }, [feedback])
 
     if (error) {
         return <p>comments could not be loaded</p>

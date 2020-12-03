@@ -54,9 +54,7 @@ export default function StudentInfo(props) {
       .then(
         (result) => {
           setIsLoaded(true);
-          console.log(result)
           setUser(result);
-          console.log(user.name)
         },
         // Note: it's important to handle errors here
         // instead of a catch() block so that we don't swallow

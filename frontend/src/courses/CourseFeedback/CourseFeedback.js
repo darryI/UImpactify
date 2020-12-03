@@ -18,11 +18,11 @@ function CourseFeedback(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // update state with the new course
-    const feedbackJSON = {
-      ...feedback,
-      course: id
-    };
+
+    var feedbackJSON = {
+        ...feedback,
+        course: id
+    }
 
     var jwtToken = JSON.parse(localStorage.getItem("jwtAuthToken"))
 
@@ -31,6 +31,21 @@ function CourseFeedback(props) {
     } else {
       API.postFeedback(feedbackJSON, jwtToken.access_token).then(
         (result) => {
+          API.getUser(jwtToken.access_token).then(
+            (result) => {
+
+                feedbackJSON = {
+                    ...feedback,
+                    course: id,
+                    image: result.image
+
+                }
+                console.log(feedbackJSON)
+            },
+            (error) => {
+                alert(JSON.stringify(error));
+            }
+          );
           props.addFeedback(feedbackJSON);
           // reset form values
           setFeedback(initialComment);
@@ -97,6 +112,21 @@ export const API = {
       });
   });
   },
+
+  getUser: async (token) => {
+      const url = 'http://localhost:5000/user/self/';
+
+      return fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      }).then( async res => {
+        // check to see if the server responded with a 200 request (ok)
+        // if not, then reject the promise so that proper error handling can take place
+        const json = await res.json();
+        return res.ok ? json : Promise.reject(json);
+      });
+    },
 
 }
 
