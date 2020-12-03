@@ -331,7 +331,7 @@ def user_run_test():
     # Create instructors
     inst1_json = {
         "name": "Cool instructor!",
-        "email": "inst1@uimpactify.com",
+        "email": "testInstructor@uimpactify.com",
         "password": "password",
         "roles": {"student": True, "instructor": True},
         }
@@ -341,7 +341,7 @@ def user_run_test():
     # Create NPOs
     npo1_json = {
         "name": "Cool organization!",
-        "email": "npo1@uimpactify.com",
+        "email": "testNPO@uimpactify.com",
         "password": "password",
         "roles": {"organization": True},
         }
@@ -350,7 +350,7 @@ def user_run_test():
 
     # SETUP COURSES
     # Create courses taught by different instructors (with some being published)
-    c1_json = { "name": "Course One (I1)", }
+    c1_json = { "name": "Course One (I1)", "published": True}
     c2_json = { "name": "Course Two (I1)", "published": True}
     c3_json = { "name": "Course Three (I2)", "published": True}
 
