@@ -109,8 +109,17 @@ function QuizViewStudent(props) {
 
 
 if(isSubmitted){
+
+  let gradeContent = null;
+
+  if (props.grade != -1) {
+    gradeContent = <h1>You've already completed this quiz! Your grade was: {props.grade} / {props.quiz.quizQuestions.length}</h1>
+  }
+
+  console.log(props);
     return (
         <form aria-label="creation-form" className="quiz-form " onSubmit={handleSubmit}>
+          {gradeContent}
           <div className="labelRectCombo">
             <label className="label-text quizName">Quiz Name:</label>  
             <input aria-label="name-input" className="rect-1643" type="text" disabled={true}

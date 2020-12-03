@@ -363,6 +363,66 @@ def opportunity_run_test():
     # removing the new users
     user_util.delete_self(org_token)
 
+@click.command("user-test")
+@with_appcontext
+def user_test():
+    user_run_test()
+
+def user_run_test():
+    # Create instructors
+    inst1_json = {
+        "name": "Cool instructor!",
+        "email": "testInstructor@uimpactify.com",
+        "password": "password",
+        "roles": {"student": True, "instructor": True},
+        }
+    inst1 = auth_util.signup(inst1_json)
+    inst1_token = auth_util.login(inst1_json)
+
+    # Create NPOs
+    npo1_json = {
+        "name": "Cool organization!",
+        "email": "testNPO@uimpactify.com",
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo1 = auth_util.signup(npo1_json)
+    npo1_token = auth_util.login(npo1_json)
+
+    # SETUP COURSES
+    # Create courses taught by different instructors (with some being published)
+    c1_json = { "name": "Course One (I1)", "published": True}
+    c2_json = { "name": "Course Two (I1)", "published": True}
+    c3_json = { "name": "Course Three (I2)", "published": True}
+
+    c1 = course_util.create_course(inst1_token, c1_json)
+    c2 = course_util.create_course(inst1_token, c2_json)
+    c3 = course_util.create_course(inst1_token, c3_json)
+
+    # Endorse a course
+    course_util.endorse_course(npo1_token, c1)
+
+    # Get all endorsed courses, should return just c1
+    user_util.get_all_endorsed_courses(npo1_token);
+
+    # Endorse a course
+    course_util.endorse_course(npo1_token, c3)
+
+    # Get all endorsed courses, should return c1 and c3
+    user_util.get_all_endorsed_courses(npo1_token);
+
+    # removing new courses
+    course_util.delete_course(inst1_token, c1)
+    course_util.delete_course(inst1_token, c2)
+    course_util.delete_course(inst1_token, c3)
+
+    # Get all endorsed courses, should return nothing
+    user_util.get_all_endorsed_courses(npo1_token);
+
+
+    # removing the new users
+    user_util.delete_self(inst1_token)
+    user_util.delete_self(npo1_token)
 
 @click.command("picture-test")
 @with_appcontext
@@ -392,7 +452,6 @@ def profile_picture_run_test():
     # delete the test user
     user_util.delete_self(user_token)
 
-
 @click.command("test")
 @with_appcontext
 def test_all():
@@ -416,6 +475,13 @@ def test_all():
         "----------------------------\n"
         )
     opportunity_run_test()
+
+    print(
+        "----------------------------\n" +
+        "RUNNING USER RELATED TESTS\n" +
+        "----------------------------\n"
+        )
+    user_run_test()
 
 
 @click.command("init-data")
@@ -509,7 +575,9 @@ def init_data():
     course_util.enroll_student(s1_token, c1)
     course_util.enroll_student(s1_token, c2)
     course_util.enroll_student(s2_token, c2)
+    course_util.enroll_student(s2_token, c3)
     course_util.enroll_student(s3_token, c2)
+    course_util.enroll_student(s3_token, c3)
 
     # Endorse a course
     course_util.endorse_course(npo1_token, c2)
@@ -654,10 +722,38 @@ def init_data():
         ],
     }
 
+    sub5_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 2, }
+        ],
+    }
+
+    sub6_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 2, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 1, }
+        ],
+    }
+
+    sub7_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 2, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 2, }
+        ],
+    }
+
     sub1 = submission_util.create_submission(s1_token, sub1_json)
     sub2 = submission_util.create_submission(s2_token, sub2_json)
     sub3 = submission_util.create_submission(s3_token, sub3_json)
     sub4 = submission_util.create_submission(s1_token, sub4_json)
+    sub5 = submission_util.create_submission(s2_token, sub5_json)
+    sub6 = submission_util.create_submission(s2_token, sub6_json)
+    sub7 = submission_util.create_submission(s3_token, sub7_json)
 
 
 @click.command("demo-data")
@@ -1032,6 +1128,7 @@ def init_demo_data():
 
 
 def init_app(app):
+    app.cli.add_command(user_test)
     app.cli.add_command(page_test)
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
@@ -1040,3 +1137,4 @@ def init_app(app):
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)
     app.cli.add_command(init_demo_data)
+
