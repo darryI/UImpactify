@@ -10,12 +10,14 @@ import About from './landing/About/About.js';
 import Home from './landing/Home/Home.js';
 import SignUp from './landing/SignUp/SignUp/SignUp.js'
 import CourseCreation from './courses/CourseCreation/CourseCreation.js';
+import JobCreation from './jobs/JobCreation/JobCreation.js';
+
 import CoursesPage from './courses/CoursesPage/CoursesPage.js';
-import Course from './courses/Course/Course.js';
 import Login from './landing/login/Login/Login.js';
 import TopBar from './utils/Navigation.js';
 import Logout from './landing/login/Logout/Logout.js';
-
+import StudentDashboard from 'landing/StudentDashboard/StudentDashboard';
+import CourseLanding from './courses/CourseLanding/CourseLanding'
 
 function App() {
 
@@ -51,17 +53,25 @@ function App() {
                 setLoggedIn={setLoggedIn}
             />
           </Route>
+          <Route path="/jobs">
+            <JobCreation />
+          </Route>
           <Route path="/create">
             <CourseCreation />
           </Route>
           <Route path="/courses/:id">
-            <Course/>
+              <CourseLanding />
           </Route>
           <Route path="/courses">
             <CoursesPage />
           </Route>
           <Route path="/SignUp">
             <SignUp />
+          </Route>
+          <Route path="/dashboard">
+            <StudentDashboard 
+              setLoggedIn={setLoggedIn}
+            />
           </Route>
           <Route path="/">
             <Home />
