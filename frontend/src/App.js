@@ -16,7 +16,7 @@ import CoursesPage from './courses/CoursesPage/CoursesPage.js';
 import Login from './landing/login/Login/Login.js';
 import TopBar from './utils/Navigation.js';
 import Logout from './landing/login/Logout/Logout.js';
-import StudentDashboard from 'landing/StudentDashboard/StudentDashboard';
+import Dashboard from 'landing/StudentDashboard/Dashboard';
 import CourseLanding from './courses/CourseLanding/CourseLanding';
 
 function usePageViews() {
@@ -50,12 +50,28 @@ export const API = {
     const json = await res.json();
     return res.ok ? json : Promise.reject(json);
   },
+  
+  getUser: async (token) => {
+    const url = 'http://localhost:5000/user/self/';
+
+    return fetch(url, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    }).then( async res => {
+      // check to see if the server responded with a 200 request (ok)
+      // if not, then reject the promise so that proper error handling can take place
+      const json = await res.json();
+      return res.ok ? json : Promise.reject(json);
+    });
+  }
 }
 
 function App() {
   usePageViews();
 
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [user, setUser] = React.useState([]);
 
   React.useEffect(() => {
       var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
@@ -63,13 +79,18 @@ function App() {
         setLoggedIn(false);
       } else {
         setLoggedIn(true);
+        API.getUser(token.access_token)
+        .then(
+          (result) => {
+            setUser(result);
+          }
+        )
       }
     }, [loggedIn])
 
   return (
     <div className="header">
-      <TopBar loggedIn={loggedIn} />
-
+      <TopBar loggedIn={loggedIn} user={user}/>
       {/* A <Switch> looks through its children <Route>s and
           renders the first one that matches the current URL. */}
       <Switch>
@@ -102,8 +123,9 @@ function App() {
           <SignUp />
         </Route>
         <Route path="/dashboard">
-          <StudentDashboard 
+          <Dashboard 
             setLoggedIn={setLoggedIn}
+            user={user}
           />
         </Route>
         <Route path="/">

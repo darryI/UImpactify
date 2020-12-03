@@ -153,7 +153,8 @@ function CourseCreation(props) {
 
     return (
       <div className="CreateCoursePage">
-        {/* <h1>{`Courses ${props.user.name} is currently teaching:`} </h1> */}
+        <div className="info-header"><strong>Welcome back!</strong></div>
+        <div className="info-text">Instructor can manage your courses here:</div>
         <CourseList courses={courses} selected={selected} handleCreate={handleCreate} handleSelection={handleSelection}/>
 
         <div className="forms">

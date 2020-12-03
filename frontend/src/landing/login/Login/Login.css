@@ -60,6 +60,7 @@ button {
   text-align: center;
   cursor: pointer;
   box-shadow: 0 2px 2px 0 rgba(59, 56, 56, 0.5);
+  margin: 18px 0 12px 0;
 }
 
 [type=submit] {

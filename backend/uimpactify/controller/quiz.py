@@ -85,7 +85,11 @@ class QuizApi(Resource):
 
         :return: JSON object
         """
-        quiz = Quizzes.objects.get(id=quiz_id)
+        try:
+            quiz = Quizzes.objects.get(id=quiz_id)
+        except DoesNotExist as e:
+            return not_found()
+
         fields = {
             'id',
             'name',
@@ -109,17 +113,18 @@ class QuizApi(Resource):
 
         user = get_jwt_identity()
         # only the course instructor can delete their quizzes
-        authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
+        authorized: bool = query.course.instructor.id == ObjectId(user)
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
         if not authorized:
             return forbidden()
 
         data = request.get_json()
-        if (data['course']):
+
+        if ('course' in data):
             data['course'] = ObjectId(data['course'])
         try:
-            res = Quizzes.objects.get(id=quiz_id).update(**data)
+            res = query.update(**data)
         except ValidationError as e:
             return bad_request(e.message)
         return jsonify(res)
@@ -138,12 +143,12 @@ class QuizApi(Resource):
 
         user = get_jwt_identity()
         # only the course instructor can delete their quizzes
-        authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
+        authorized: bool = query.course.instructor.id == ObjectId(user)
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
 
         if authorized:
-            output = Quizzes.objects(id=quiz_id).delete()
+            output = query.delete()
             if output == 0:
                 return not_found()
             else:
