@@ -52,16 +52,31 @@ class QuizSubmissionsApi(Resource):
 
         # student must be enrolled in the course of the quiz
         courses = Courses.objects(students=user)
-        if course in courses:
-            try:
-                data['user'] = user
-                submission = Submissions(**data).save()
-            except ValidationError as e:
-                return bad_request(e.to_dict())
-            output = {'id': str(submission.id)}
-            return jsonify(output)
-        else:
+        if course not in courses:
             return forbidden()
+
+        # student is in course and has not submitted
+        # generate the answer key
+        answer_key = {}
+        for question in quiz.quizQuestions:
+            answer_key[question.index] = question.answer
+
+        # compare answer key to student responses
+        student_responses = data['answers']
+        grade = 0
+        for response in student_responses:
+            index = response['question']
+            if index in answer_key and answer_key[index] == response['answer']:
+                grade += 1
+
+        try:
+            data['user'] = user
+            data['grade'] = grade
+            submission = Submissions(**data).save()
+        except ValidationError as e:
+            return bad_request(e.to_dict())
+        output = {'id': str(submission.id)}
+        return jsonify(output)
 
 
 class UserSubmissionsApi(Resource):
@@ -116,4 +131,31 @@ class SubmissionByQuizApi(Resource):
             'answers',
         }
         response = convert_doc(query, include=fields)
+        return jsonify(response)
+
+class QuizAverageApi(Resource):
+    """
+    Flask-resftul resource for returning the average grade of a quiz.
+
+    """
+    @jwt_required
+    @user_exists
+    @dont_crash
+    def get(self, quiz_id: str) -> Response:
+        """
+        GET response method for single document in Submission collection.
+
+        :return: JSON object
+        """
+        query = Submissions.objects(quiz=quiz_id)
+
+        # quiz doesn't exist or no one has taken it
+        if len(query) == 0:
+            return not_found()
+
+        total = 0
+        for submission in query:
+            total += submission.grade
+
+        response = { 'average': total/len(query) }
         return jsonify(response)

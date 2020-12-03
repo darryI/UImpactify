@@ -71,3 +71,5 @@ def create_routes(api: Api):
     api.add_resource(QuizSubmissionsApi, '/quiz/submit/')
     api.add_resource(UserSubmissionsApi, '/quiz/submissions/')
     api.add_resource(SubmissionByQuizApi, '/quiz/submission/<quiz_id>/')
+
+    api.add_resource(QuizAverageApi, '/quiz/avg/<quiz_id>/')
