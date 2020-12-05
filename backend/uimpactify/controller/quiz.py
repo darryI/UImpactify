@@ -85,7 +85,11 @@ class QuizApi(Resource):
 
         :return: JSON object
         """
-        quiz = Quizzes.objects.get(id=quiz_id)
+        try:
+            quiz = Quizzes.objects.get(id=quiz_id)
+        except DoesNotExist as e:
+            return not_found()
+
         fields = {
             'id',
             'name',
@@ -109,17 +113,18 @@ class QuizApi(Resource):
 
         user = get_jwt_identity()
         # only the course instructor can delete their quizzes
-        authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
+        authorized: bool = query.course.instructor.id == ObjectId(user)
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
         if not authorized:
             return forbidden()
 
         data = request.get_json()
-        if (data['course']):
+
+        if ('course' in data):
             data['course'] = ObjectId(data['course'])
         try:
-            res = Quizzes.objects.get(id=quiz_id).update(**data)
+            res = query.update(**data)
         except ValidationError as e:
             return bad_request(e.message)
         return jsonify(res)
@@ -138,12 +143,12 @@ class QuizApi(Resource):
 
         user = get_jwt_identity()
         # only the course instructor can delete their quizzes
-        authorized: bool = query['course']['instructor']['id'] == ObjectId(user)
+        authorized: bool = query.course.instructor.id == ObjectId(user)
         # or an admin
         authorized = authorized or Users.objects.get(id=user).roles.admin
 
         if authorized:
-            output = Quizzes.objects(id=quiz_id).delete()
+            output = query.delete()
             if output == 0:
                 return not_found()
             else:
@@ -166,14 +171,33 @@ class QuizzesByCourseApi(Resource):
 
         :return: JSON object
         """
-        queryCourse = Courses.objects.get(id=course_id)
+        # check if the given course id is valid or not
+        try:
+            course = Courses.objects.get(id=course_id)
+        except DoesNotExist as e:
+            return not_found()
+        except ValidationError as e:
+            return bad_request()
+
+
         user = get_jwt_identity()
-        # only the course instructor can get quizzes
-        authorized: bool = queryCourse['instructor']['id'] == ObjectId(user)
-        # or an admin
-        authorized = authorized or Users.objects.get(id=user).roles.admin
+        try:
+            # check if the user is enrolled in the course
+            queryCourse = Courses.objects.get(id=course_id, students=ObjectId(user))
+            student = True
+        except DoesNotExist as e:
+            student = False
+        
+        # check if the user is the instructor of the course or if they are an admin
+        inst = str(course.instructor.id) == user
+        admin = Users.objects.get(id=user).roles.admin
+        authorized = student or inst or admin
+
         if authorized:
-            query = Quizzes.objects(course=queryCourse)
+            if inst or admin:
+                query = Quizzes.objects(course=course)
+            elif student:
+                query = Quizzes.objects(course=course, published=True)
 
             fields = {
                 'id',

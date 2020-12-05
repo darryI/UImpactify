@@ -13,6 +13,9 @@ from uimpactify.cli import user_util
 from uimpactify.cli import feedback_util
 from uimpactify.cli import opportunity_util
 from uimpactify.cli import quiz_util
+from uimpactify.cli import page_util
+from uimpactify.cli import analytics_util
+from uimpactify.cli import submission_util
 
 from uimpactify.controller import routes
 
@@ -24,12 +27,45 @@ def auth_test():
 
 def auth_run_test():
     # Create a new user, sign in as the user, and delete the user
-    user = {"email": "test_user@uimpactify.com", "password": "password", "name": "Jeffarious", "phone": "1112223333"}
+    user = {
+        "email": "test_user@uimpactify.com",
+        "password": "password",
+        "name": "Jeffarious",
+        "phone": "1112223333"
+        }
     user_id = auth_util.signup(user)
     user_token = auth_util.login(user)
     user_util.get_self(user_token)
     user_util.delete_self(user_token)
 
+@click.command("page-test")
+@with_appcontext
+def page_test():
+    page_run_test()
+
+def page_run_test():
+    # this should fail because course with id "fakeid" does not exist
+    page_util.update_count('~courses~fakeid')
+
+    # create some courses for testing
+    c1_json = { "name": "testCourseOne", }
+    c2_json = { "name": "testCourseTwo", "published": True, }
+
+    access_token = auth_util.login()
+    c1 = course_util.create_course(access_token, c1_json)
+    c2 = course_util.create_course(access_token, c2_json)
+
+    # this should fail, id is real but course is not published
+    page_util.update_count(f'~courses~{c1}')
+
+    # this should pass, id is real and course is published
+    # update the count 3 times
+    for i in range(3):
+        page_util.update_count(f'~courses~{c2}')
+    
+    # removing courses
+    course_util.delete_course(access_token, c1)
+    course_util.delete_course(access_token, c2)
 
 @click.command("course-test")
 @with_appcontext
@@ -72,7 +108,7 @@ def course_run_test():
     # creating a bunch of courses
     c1_json = { "name": "testCourseOne", }
     c2_json = { "name": "testCourseTwo", "published": True, }
-    c3_json = { "name": "testCourseThree", }
+    c3_json = { "name": "testCourseThree", "published": True, }
 
     c1 = course_util.create_course(access_token, c1_json)
     c2 = course_util.create_course(access_token, c2_json)
@@ -119,6 +155,7 @@ def course_run_test():
     q2_json = {
         "name": "Quiz 1 for Course 3",
         "course": c3,
+        "published": True,
         "quizQuestions": [
                 {
                     "question": "What is real?",
@@ -161,19 +198,33 @@ def course_run_test():
                 }
             ],
         }
-    q4_json = { "name": "Empty Quiz Made By Wrong Instructor", "course": c2, }
+    q4_json = { "name": "Empty Unpublished Quiz", "course": c3, }
+    q5_json = { "name": "Empty Quiz (by Instructor)", "course": c1, "published": True, }
 
     # q1 should fail because students can't make courses
-    # q4 should fail because you can only add quizzes to your own courses
     q1 = quiz_util.create_quiz(s_token, q1_json)
     q2 = quiz_util.create_quiz(inst_token, q2_json)
     q3 = quiz_util.create_quiz(access_token, q3_json)
     q4 = quiz_util.create_quiz(inst_token, q4_json)
+    q5 = quiz_util.create_quiz(access_token, q5_json)
+
+
+    ## ANALYTICS
+
+    analytics_util.get_quizzes(access_token, c2)
+    analytics_util.get_enrolled(access_token, c2)
+    safe_course_page = '~courses~' + c2
+    page_util.update_count(safe_course_page)
+    page_util.update_count(safe_course_page)
+    page_util.update_count(safe_course_page)
+    analytics_util.get_views(access_token, c2)
+
+    ## END OF ANALYTICS
+
 
     # should only return q2 for valid case and q3 for admin override
     quiz_util.get_quizzes(access_token)
 
-    # last call fails
     quiz_util.get_quizzes_by_course(access_token, c3)
     quiz_util.get_quizzes_by_course(inst_token, c3)
     quiz_util.get_quizzes_by_course(s_token, c3)
@@ -197,16 +248,54 @@ def course_run_test():
     # q3 is published now
     quiz_util.get_quiz(access_token, q3)
 
+    ## SUBMISSIONS
+
+    sub1_json = {
+        "quiz": q5,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub2_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 1, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 1, }
+        ],
+    }
+
+    sub3_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 3, }
+        ],
+    }
+
+    # sub1 fails because student is not in c1 which q1 is part of
+    # sub4 fails because a user can only have one submission per quiz
+    sub1 = submission_util.create_submission(s_token, sub1_json)
+    sub2 = submission_util.create_submission(s_token, sub2_json)
+    sub3 = submission_util.create_submission(s_token, sub3_json)
+    sub4 = submission_util.create_submission(s_token, sub2_json)
+
+    submission_util.get_user_submissions(s_token)
+    submission_util.get_quiz_submission(s_token, q2)
+    submission_util.get_quiz_submission(s_token, q3)
+    # submissions will be deleted with quizzes according to cascade delete
+
+    ## END OF SUBMISSIONS
+
+
     # mass method test +
     # show instrucotrs can update their own quizzes
-    q5_json = { "name": "testQuizFive", "course": c3, }
-    q5 = quiz_util.create_quiz(inst_token, q5_json)
-    quiz_util.get_quiz(access_token, q5)
-    q5_update = { "published": True, }
-    quiz_util.update_quiz(inst_token, q5, q5_update)
+    q6_json = { "name": "testQuizFive", "course": c3, }
+    q6 = quiz_util.create_quiz(inst_token, q6_json)
+    quiz_util.get_quiz(access_token, q6)
+    q6_update = { "published": True, }
+    quiz_util.update_quiz(inst_token, q6, q6_update)
     quiz_util.get_quizzes_by_course(inst_token, c3)
-    quiz_util.delete_quiz(inst_token, q5)
-    quiz_util.get_quiz(access_token, q5)
+    quiz_util.delete_quiz(inst_token, q6)
+    quiz_util.get_quiz(access_token, q6)
     # other quizzes wil be deleted with courses according to cascade delete
 
     # CLEAN UP
@@ -224,6 +313,7 @@ def course_run_test():
 
     # getting all courses again to show that they are gone
     course_util.get_all_courses(access_token)
+
 
 @click.command("opportunity-test")
 @with_appcontext
@@ -273,6 +363,95 @@ def opportunity_run_test():
     # removing the new users
     user_util.delete_self(org_token)
 
+@click.command("user-test")
+@with_appcontext
+def user_test():
+    user_run_test()
+
+def user_run_test():
+    # Create instructors
+    inst1_json = {
+        "name": "Cool instructor!",
+        "email": "testInstructor@uimpactify.com",
+        "password": "password",
+        "roles": {"student": True, "instructor": True},
+        }
+    inst1 = auth_util.signup(inst1_json)
+    inst1_token = auth_util.login(inst1_json)
+
+    # Create NPOs
+    npo1_json = {
+        "name": "Cool organization!",
+        "email": "testNPO@uimpactify.com",
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo1 = auth_util.signup(npo1_json)
+    npo1_token = auth_util.login(npo1_json)
+
+    # SETUP COURSES
+    # Create courses taught by different instructors (with some being published)
+    c1_json = { "name": "Course One (I1)", "published": True}
+    c2_json = { "name": "Course Two (I1)", "published": True}
+    c3_json = { "name": "Course Three (I2)", "published": True}
+
+    c1 = course_util.create_course(inst1_token, c1_json)
+    c2 = course_util.create_course(inst1_token, c2_json)
+    c3 = course_util.create_course(inst1_token, c3_json)
+
+    # Endorse a course
+    course_util.endorse_course(npo1_token, c1)
+
+    # Get all endorsed courses, should return just c1
+    user_util.get_all_endorsed_courses(npo1_token);
+
+    # Endorse a course
+    course_util.endorse_course(npo1_token, c3)
+
+    # Get all endorsed courses, should return c1 and c3
+    user_util.get_all_endorsed_courses(npo1_token);
+
+    # removing new courses
+    course_util.delete_course(inst1_token, c1)
+    course_util.delete_course(inst1_token, c2)
+    course_util.delete_course(inst1_token, c3)
+
+    # Get all endorsed courses, should return nothing
+    user_util.get_all_endorsed_courses(npo1_token);
+
+
+    # removing the new users
+    user_util.delete_self(inst1_token)
+    user_util.delete_self(npo1_token)
+
+@click.command("picture-test")
+@with_appcontext
+def profile_picture_test():
+    profile_picture_run_test()
+
+def profile_picture_run_test():
+    # create a test user
+    user = {
+        "email": "pic_test_user@uimpactify.com",
+        "password": "password",
+        "name": "Picture Guy",
+        "phone": "1112223333",
+        }
+    user_id = auth_util.signup(user)
+    user_token = auth_util.login(user)
+
+    # show the default profile picture
+    user_util.display_picture(user_token)
+
+    # update the user's profile picture
+    user_util.update_picture(user_token, 'uimpactify/resources/alternate-picture.png')
+
+    # show the updated profile picture
+    user_util.display_picture(user_token)
+
+    # delete the test user
+    user_util.delete_self(user_token)
+
 @click.command("test")
 @with_appcontext
 def test_all():
@@ -296,6 +475,13 @@ def test_all():
         "----------------------------\n"
         )
     opportunity_run_test()
+
+    print(
+        "----------------------------\n" +
+        "RUNNING USER RELATED TESTS\n" +
+        "----------------------------\n"
+        )
+    user_run_test()
 
 
 @click.command("init-data")
@@ -356,6 +542,24 @@ def init_data():
     npo1 = auth_util.signup(npo1_json)
     npo1_token = auth_util.login(npo1_json)
 
+    npo2_json = {
+        "name": "Organization 2", 
+        "email": "npo2@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo2 = auth_util.signup(npo2_json)
+    npo2_token = auth_util.login(npo2_json)
+    
+    npo3_json = {
+        "name": "Organization 3", 
+        "email": "npo3@uimpactify.com", 
+        "password": "password",
+        "roles": {"organization": True},
+        }
+    npo3 = auth_util.signup(npo3_json)
+    npo3_token = auth_util.login(npo3_json)
+
 
     # SETUP COURSES
     # Create courses taught by different instructors (with some being published)
@@ -371,10 +575,13 @@ def init_data():
     course_util.enroll_student(s1_token, c1)
     course_util.enroll_student(s1_token, c2)
     course_util.enroll_student(s2_token, c2)
+    course_util.enroll_student(s2_token, c3)
     course_util.enroll_student(s3_token, c2)
+    course_util.enroll_student(s3_token, c3)
 
     # Endorse a course
     course_util.endorse_course(npo1_token, c2)
+    course_util.endorse_course(npo2_token, c2)
     
     # Add feedback to courses
     f1_json = {
@@ -490,10 +697,70 @@ def init_data():
     q3 = quiz_util.create_quiz(inst1_token, q3_json)
     q4 = quiz_util.create_quiz(inst1_token, q4_json)
 
+    # Add student submissions for quizzes
+    sub1_json = {
+        "quiz": q1,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub2_json = {
+        "quiz": q4,
+        "answers": [ { "question": -1, "answer": -1, } ],
+    }
+
+    sub3_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 3, }
+        ],
+    }
+
+    sub4_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 1, }
+        ],
+    }
+
+    sub5_json = {
+        "quiz": q3,
+        "answers": [
+            { "question": 1, "answer": 2, }
+        ],
+    }
+
+    sub6_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 2, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 1, }
+        ],
+    }
+
+    sub7_json = {
+        "quiz": q2,
+        "answers": [
+            { "question": 1, "answer": 2, },
+            { "question": 2, "answer": 1, },
+            { "question": 3, "answer": 2, }
+        ],
+    }
+
+    sub1 = submission_util.create_submission(s1_token, sub1_json)
+    sub2 = submission_util.create_submission(s2_token, sub2_json)
+    sub3 = submission_util.create_submission(s3_token, sub3_json)
+    sub4 = submission_util.create_submission(s1_token, sub4_json)
+    sub5 = submission_util.create_submission(s2_token, sub5_json)
+    sub6 = submission_util.create_submission(s2_token, sub6_json)
+    sub7 = submission_util.create_submission(s3_token, sub7_json)
 
 def init_app(app):
+    app.cli.add_command(page_test)
     app.cli.add_command(auth_test)
     app.cli.add_command(course_test)
     app.cli.add_command(opportunity_test)
+    app.cli.add_command(profile_picture_test)
     app.cli.add_command(test_all)
     app.cli.add_command(init_data)
+    app.cli.add_command(user_test)

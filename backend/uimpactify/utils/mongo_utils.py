@@ -1,5 +1,8 @@
 import json
+import base64
+import tempfile
 from mongoengine.errors import DoesNotExist
+from uimpactify.models.users import Users
 
 
 # converts Document object fields to a jsonifiable dictionary that's
@@ -68,3 +71,29 @@ def convert_embedded_query(queryset, non_embedded, embedded):
             print("document can't be parsed")
     return res
 
+
+def create_user(data):
+    user = Users(**data)
+    # Save password hash when creating new user
+    user.generate_pw_hash()
+    # set default image
+    if not user.image:
+        default_image = open('uimpactify/resources/default-profile-picture.png', 'rb')
+        user.image.replace(default_image)
+        default_image.close()
+
+    user.save()
+    return user
+
+
+def update_user_image(user, img):
+    img_binary = base64.b64decode(img)
+    bytes_image = bytearray(img_binary)
+    
+    with tempfile.TemporaryFile() as f:
+        f.write(bytes_image)
+        f.flush()
+        f.seek(0)
+        user.image.replace(f)
+
+    user.save()

@@ -104,7 +104,10 @@ function QuizCreation(props) {
     }
   } else {
     return (
-      <p>loading...</p>
+      <div className="info-card">
+        <p>Hacking into the mainframe...</p>
+      </div>
+      
     )
   }
 

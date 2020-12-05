@@ -1,10 +1,14 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-
+import CourseEndorseButton from '../CourseEndorseButton/CourseEndorseButton'
+import QuizButtonStudent from '../quizzes/QuizButtonStudent/QuizButtonStudent'
 
 function CourseLandingAPI(props) {
     let id = props.id;
     const [currCourse, setCurrCourse] = React.useState([])
+    const [error, setError] = React.useState(null);
+    const [isLoaded, setIsLoaded] = React.useState(false);
+
     const history = useHistory();
 
     React.useEffect(() => {
@@ -16,11 +20,14 @@ function CourseLandingAPI(props) {
             .then(
                 (result) => {
                     setCurrCourse(result)
+                    setIsLoaded(true);
                 },
                 // Note: it's important to handle errors here
                 // instead of a catch() block so that we don't swallow
                 // exceptions from actual bugs in components.
                 (error) => {
+                    setIsLoaded(true);
+                    setError(error);
                     alert("Couldn't retrieve course information!")
                 }
             )
@@ -33,6 +40,8 @@ function CourseLandingAPI(props) {
             <h1 className="courseLanding">{currCourse.name} by {currCourse.instructor}</h1>
             <h2 className="courseLanding">Objective of this course: {currCourse.objective}</h2>
             <h4 className="courseLanding">Learning outcomes: {currCourse.learningOutcomes}</h4>
+            <CourseEndorseButton id={id} />
+            <QuizButtonStudent id={id}/>
         </div>
     )
 }

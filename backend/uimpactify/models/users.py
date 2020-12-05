@@ -6,7 +6,8 @@ from mongoengine import (Document,
                          StringField,
                          EmailField,
                          BooleanField,
-                         ReferenceField)
+                         ReferenceField,
+                         ImageField)
 
 # flask packages
 from flask_bcrypt import generate_password_hash, check_password_hash
@@ -65,6 +66,7 @@ class Users(Document):
     password = StringField(required=True, min_length=6, regex=None)
     name = StringField()
     phone = PhoneField()
+    image = ImageField(thumbnail_size=(128, 128, True))
     # default user is a student
     default_roles = {'student':True, 'instructor':False, 'organization':False, 'admin':False}
     roles = EmbeddedDocumentField(Roles, default=Roles(**default_roles))
@@ -80,8 +82,3 @@ class Users(Document):
     # Use documentation from BCrypt for password hashing
     check_pw_hash.__doc__ = check_password_hash.__doc__
 
-
-    def save(self, *args, **kwargs):
-        # Overwrite Document save method to generate password hash prior to saving
-        self.generate_pw_hash()
-        super(Users, self).save(*args, **kwargs)

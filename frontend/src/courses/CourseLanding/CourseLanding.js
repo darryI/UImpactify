@@ -49,6 +49,7 @@ function CourseLanding(props) {
             <div className="coursePage">
                 <div className="landingInfo">
                     <CourseLandingInfo id={id}/>
+
                 </div>
                 <div className="leaveFeedback">
                     <CourseFeedback id={id} addFeedback={addFeedback} />
