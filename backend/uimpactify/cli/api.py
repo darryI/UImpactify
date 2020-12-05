@@ -884,7 +884,6 @@ def init_demo_data():
     # endorse this course
     course_util.endorse_course(npo1_token, c2)
     course_util.endorse_course(npo2_token, c2)
-    course_util.endorse_course(npo3_token, c2)
     course_util.endorse_course(npo4_token, c2)
 
     c3_json = {
