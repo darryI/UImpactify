@@ -712,7 +712,7 @@ def init_demo_data():
         }
     s2 = auth_util.signup(s2_json)
     s2_token = auth_util.login(s2_json)
-    user_util.update_picture(s1_token, 'uimpactify/resources/testdata/student-jessica.png')
+    user_util.update_picture(s2_token, 'uimpactify/resources/testdata/student-jessica.png')
 
     s3_json = {
         "name": "Student Ghost", 
