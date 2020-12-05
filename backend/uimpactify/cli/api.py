@@ -988,7 +988,7 @@ def init_demo_data():
                 "index": 1,
                 "options": [
                     { "option": "Save lives", "index": 0 },
-                    { "option": "Activisim", "index": 1 },
+                    { "option": "Activism", "index": 1 },
                     { "option": "Eating financial burgers", "index": 2 },
                     { "option": "Magic", "index": 3 },
                 ],
