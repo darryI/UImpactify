@@ -29,6 +29,7 @@ def create_routes(api: Api):
     api.add_resource(EnrollmentCountApi, '/analytics/enrolled/<course_id>/')
     api.add_resource(ViewCountApi, '/analytics/views/<course_id>/')
     api.add_resource(QuizCountApi, '/analytics/quizzes/<course_id>/')
+    api.add_resource(AveragesApi, '/analytics/averages/<course_id>/')
 
     api.add_resource(SignUpApi, '/authentication/signup/')
     api.add_resource(LoginApi, '/authentication/login/')
@@ -71,3 +72,5 @@ def create_routes(api: Api):
     api.add_resource(QuizSubmissionsApi, '/quiz/submit/')
     api.add_resource(UserSubmissionsApi, '/quiz/submissions/')
     api.add_resource(SubmissionByQuizApi, '/quiz/submission/<quiz_id>/')
+
+    api.add_resource(QuizAverageApi, '/quiz/avg/<quiz_id>/')

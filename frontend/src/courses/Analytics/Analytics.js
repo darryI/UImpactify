@@ -22,6 +22,12 @@ function Analytics(props) {
   const [quizzesLoaded, setQuizzesLoaded] = React.useState(false);
   const [quizzes, setQuizzes] = React.useState(0);
 
+  // averages states
+  const [averagesError, setAveragesError] = React.useState(null);
+  const [averagesLoaded, setAveragesLoaded] = React.useState(false);
+  // list of information showing averages for published quizes in this course
+  const [averages, setAverages] = React.useState([]);
+
   React.useEffect(() => {
     var token = JSON.parse(localStorage.getItem("jwtAuthToken"))
     API.getViews(token.access_token, props.course)
@@ -68,6 +74,23 @@ function Analytics(props) {
         setQuizzesError(error);
       }
     );
+
+    API.getAverages(token.access_token, props.course)
+    .then(
+      (result) => {
+        setAveragesLoaded(true);
+        setAverages(result);
+      },
+      // Note: it's important to handle errors here
+      // instead of a catch() block so that we don't swallow
+      // exceptions from actual bugs in components.
+      (error) => {
+        setAveragesLoaded(true);
+        setAveragesError(error);
+      }
+    );
+
+    
 
 
       
@@ -122,6 +145,24 @@ function Analytics(props) {
     }  
   }
 
+  let averagesContent;
+
+  if (averagesLoaded) {
+    if (averagesError == null && averages.length > 0) {
+      averagesContent = averages.map(avg => 
+        <div key = {avg.quiz}>
+          <p><strong>{avg.quiz}</strong> has received <strong>{avg.totalSubmissions}</strong> submissions with an average score of <strong>{avg.average}%</strong></p>
+        </div>
+      );
+      
+    } else {
+      averagesContent = 
+      <div>
+        <p>You haven't published a quiz yet! Your students are waiting!</p>
+      </div>
+    }  
+  }
+
   let analyticContent;
   // wait for all requests to complete before showing anything
   // the render time might be too slow for some people so might want to change this later
@@ -142,6 +183,13 @@ function Analytics(props) {
         <blockquote>
           {quizzesContent}
         </blockquote>
+
+        <h3>💯 What are the averages for each quiz?</h3>
+        <blockquote>
+          {averagesContent}
+        </blockquote>
+
+
         
       </div>
   } else {
@@ -195,6 +243,18 @@ export const API = {
       const json = await res.json();
       return res.ok ? json : Promise.reject(json);
     },
+
+    getAverages: async (token, course) => {
+      const url = "http://localhost:5000/analytics/averages/" + course.id + "/";
+      const res = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+      const json = await res.json();
+      return res.ok ? json : Promise.reject(json);
+    },
+
 }
 
 export default Analytics;

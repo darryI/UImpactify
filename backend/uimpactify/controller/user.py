@@ -8,6 +8,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 
 # project resources
 from uimpactify.models.users import Users
+from uimpactify.models.courses import Courses
 from uimpactify.controller.errors import forbidden
 from uimpactify.utils.mongo_utils import convert_query, convert_doc, update_user_image, create_user
 from uimpactify.controller.dont_crash import dont_crash, user_exists
@@ -228,3 +229,28 @@ class SelfDeleteApi(Resource):
         """
         output = Users.objects(id=get_jwt_identity()).delete()
         return jsonify(output)
+
+class CoursesNpoHasEndorsedApi(Resource):
+    """
+    Flask-resftul resource for returning all courses endorsed by an npo
+
+    """
+    @jwt_required
+    @user_exists
+    @dont_crash
+    def get(self) -> Response:
+        """
+        GET response method for returning all courses endorsed by an npo
+
+        :return: JSON object
+        """
+        user_id = get_jwt_identity()
+
+        query = Courses.objects(endorsedBy=user_id)
+
+        fields = {
+            'id',
+            'name'
+            }
+        values = convert_query(query, fields)
+        return jsonify(values)
