@@ -7,7 +7,8 @@
     - remark requests must be received within **2 weeks** of receiving your mark
 	- rubric: https://cmsweb.utsc.utoronto.ca/cscc01f20/project/Sprint1_marking.txt
 
-**total mark for sprint 1**: 75/76
+**total mark for sprint 1**: 74/75
+edit: removed extra mark from system design, counted as non capping bonus after discussing with TAs
 
 ---
 
