@@ -25,6 +25,6 @@ pytz==2020.1
 requests==2.24.0
 six==1.15.0
 -e git+https://github.com/UTSCCSCC01/project-luke-warm-beans.git@64e6f50359861cf6dfbfaf55661d074648a3a3c5#egg=uimpactify&subdirectory=backend
-urllib3==1.25.11
+urllib3==1.26.5
 Werkzeug==1.0.1
 WTForms==2.3.3
